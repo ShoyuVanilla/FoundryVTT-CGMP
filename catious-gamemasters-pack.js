@@ -54,14 +54,12 @@ Hooks.on("preCreateChatMessage", messageData => {
 });
 
 // Disable arrow key recall
-Hooks.once("ready", () => {
+Hooks.once("init", () => {
   if (!game.settings.get("CautiousGamemastersPack", "disableChatRecall")) return;
-  ui.chat._onChatKeyDownOrigin = ui.chat._onChatKeyDown;
-  ui.chat._onChatKeyDown = (event) => {
-    const code = game.keyboard.getKey(event);
-    if (["ArrowUp", "ArrowDown"].includes(code)) {
-      return;
-    }
-    ui.chat._onChatKeyDownOrigin(event);
-  }
+  ChatLog.prototype._onChatKeyDownOrigin = ChatLog.prototype._onChatKeyDown;
+  ChatLog.prototype._onChatKeyDown = new Function("event", 
+    `const code = game.keyboard.getKey(event); ` +
+    `if (["ArrowUp", "ArrowDown"].includes(code)) return; ` +
+    `this._onChatKeyDownOrigin(event);`
+  );
 });
