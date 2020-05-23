@@ -2,12 +2,13 @@
   "name": "CautiousGamemastersPack",
   "title": "Cautious Gamemaster's Pack",
   "description": "Offers various simple handy options.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "minimumCoreVersion" : "0.5.7",
-  "compatibleCoreVersion": "0.5.7",
+  "compatibleCoreVersion": "0.6.0",
   "author": "Shoyu Vanilla",
   
   "scripts": ["cautious-gamemasters-pack.js"],
+  "styles": ["style.css"],
   
   "languages": [
     {
@@ -23,6 +24,6 @@
   ],
   
   "url": "https://github.com/ShoyuVanilla/FoundryVTT-CGMP",
-  "manifest": "https://raw.githubusercontent.com/ShoyuVanilla/FoundryVTT-CGMP/master/v0.1.1.json",
-  "download": "https://github.com/ShoyuVanilla/FoundryVTT-CGMP/archive/v0.1.1.zip"
+  "manifest": "https://raw.githubusercontent.com/ShoyuVanilla/FoundryVTT-CGMP/v0.1.2/module.json",
+  "download": "https://github.com/ShoyuVanilla/FoundryVTT-CGMP/archive/v0.1.2.zip"
 }

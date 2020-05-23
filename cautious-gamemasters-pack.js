@@ -1,3 +1,35 @@
+const CGMP_CHAT_MESSAGE_TYPES = {
+  DESCRIPTION: '#CGMP_DESCRIPTION'
+}
+
+class cautiousGMPack {
+  static processExtendedChatCommands(messageData) {
+    const asPattern = new RegExp(/^(\/as )(\((?:[^\)]+)\)|\[(?:[^\]]+)\]|(?:[^\s]+))\s+([^]*)/, 'i');
+    const descPattern = new RegExp('^(\/desc )([^]*)', 'i');
+
+    let asMatch = messageData.content.match(asPattern);
+    if (asMatch) {
+      let alias = asMatch[2].replace(/[\[\]]|[\(\)]/g, "");
+      messageData.speaker = {};
+      messageData.speaker.alias = alias;
+      messageData.content = asMatch[3];
+      messageData.type = CONST.CHAT_MESSAGE_TYPES.IC;
+      return true;
+    }
+
+    let descMatch = messageData.content.match(descPattern);
+    if (descMatch) {
+      messageData.speaker = {};
+      messageData.speaker.alias = CGMP_CHAT_MESSAGE_TYPES.DESCRIPTION;
+      messageData.content = descMatch[2];
+      messageData.type = CONST.CHAT_MESSAGE_TYPES.OOC;
+      return true;
+    }
+
+    return false;
+  }
+}
+
 Hooks.once("init", () => {
   game.settings.register("CautiousGamemastersPack", "disableGMAsPC", {
     name: "cgmp.disable-gm-as-pc-s",
@@ -32,10 +64,13 @@ Hooks.once("init", () => {
 
 Hooks.on("preCreateChatMessage", messageData => {
   if (!game.user.isGM) return;
-
   const author = game.users.get(messageData.user);
+  if (!author.isGM) return;
+
+  if (cautiousGMPack.processExtendedChatCommands(messageData)) return;
+
   const speaker = messageData.speaker;
-  if (!author.isGM || !speaker) return;
+  if (!speaker) return;
   const token = canvas.tokens.get(speaker.token);
 
   // Check if token is hidden
@@ -62,4 +97,10 @@ Hooks.once("init", () => {
     `if (["ArrowUp", "ArrowDown"].includes(code)) return; ` +
     `this._onChatKeyDownOrigin(event);`
   );
+});
+
+Hooks.on("renderChatMessage", (chatMessage, html, messageData) => {
+  if (messageData.message.speaker.alias === CGMP_CHAT_MESSAGE_TYPES.DESCRIPTION) {
+    html[0].className = html[0].className + 'desc'
+  }
 });
