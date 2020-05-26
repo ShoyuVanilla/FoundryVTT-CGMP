@@ -6,7 +6,7 @@
 	"cgmp.disable-chat-recall-s": "Disable Chat Recalls",
 	"cgmp.disable-chat-recall-l": "Disable using up and down arrow keys to recall chats, so that they can be used to move the text cursor",
 	"cgmp.notify-typing-s": "Notify typings",
-	"cgmp.notify-typing-l": "Notify wether the other players are typing chat messages",
+	"cgmp.notify-typing-l": "Notify whether the other players are typing chat messages",
 	"cgmp.typing-one": "{user} is typing...", 
 	"cgmp.typing-two": "{user1} and {user2} are typing...",
 	"cgmp.typing-many": "{user1}, {user2} and other {others} players are typing..."

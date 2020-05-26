@@ -10,7 +10,7 @@ Offers various simple handy options.
 
 ![](notify_typing.gif)
 
-* Notify wether the other players are typing chat messages (Toggle)
+* Notify whether the other players are typing chat messages (Toggle)
 
 ![](additional_chat_commands.png)
 
