@@ -1,0 +1,13 @@
+{
+	"cgmp.disable-gm-as-pc-s": "GM이 PC 토큰으로 말하기 비활성화",
+	"cgmp.disable-gm-as-pc-l": "GM이 PC 토큰을 선택한 상태로 입력한 채팅을 GM의 일반 채팅으로 변환합니다. 주사위 굴림은 예외입니다.",
+	"cgmp.blind-hidden-tokens-s": "숨겨진 토큰 채팅 비공개",
+	"cgmp.blind-hidden-tokens-l": "숨겨진 토큰으로 말한 채팅 및 주사위 굴림이 GM에게만 보이도록 합니다.",
+	"cgmp.disable-chat-recall-s": "지난 채팅 불러오기 비활성화",
+	"cgmp.disable-chat-recall-l": "위, 아래 화살표 키를 누르면 지난 채팅을 불러오는 기능을 비활성화하여 해당 키로 텍스트 커서를 움직일 수 있도록 합니다.",
+	"cgmp.notify-typing-s": "채팅 입력 중 알리기",
+	"cgmp.notify-typing-l": "다른 플레이어가 채팅 메시지를 입력 중인지 표시합니다.",
+	"cgmp.typing-one": "{user} 님이 입력하고 있어요...", 
+	"cgmp.typing-two": "{user1} 님, {user2} 님이 입력하고 있어요...",
+	"cgmp.typing-many": "{user1} 님, {user2} 님 외 {others}명이 입력하고 있어요..."
+}

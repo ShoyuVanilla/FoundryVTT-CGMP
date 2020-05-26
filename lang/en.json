@@ -1,8 +1,0 @@
-{
-  "cgmp.disable-gm-as-pc-s": "Disable GM from speaking as PC token",
-  "cgmp.disable-gm-as-pc-l": "Make all chats GM says as PC into out of character chats, except rolls.",
-  "cgmp.whisper-hidden-tokens-s": "Whisper chats from hidden tokens",
-  "cgmp.whisper-hidden-tokens-l": "Whisper all chats from hidden tokens to GM, including rolls.",
-  "cgmp.disable-chat-recall-s": "Disable chat recalls",
-  "cgmp.disable-chat-recall-l": "Disable chat recalls by up and down arrow keys, so these keys can be used to move the text cursor."
-}
