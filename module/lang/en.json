@@ -1,8 +1,8 @@
 {
 	"cgmp.disable-gm-as-pc-s": "Disable GM speaking as PC tokens",
 	"cgmp.disable-gm-as-pc-l": "Make all chats GM says as PC into Out of Character chats, except rolls",
-	"cgmp.blind-hidden-tokens-s": "Blind chats out of hidden tokens",
-	"cgmp.blind-hidden-tokens-l": "Blind all chats out of hidden tokens, including rolls. Only GM can see them",
+	"cgmp.blind-hidden-tokens-s": "Blind chats made by hidden tokens",
+	"cgmp.blind-hidden-tokens-l": "Blind all chats made by hidden tokens, including rolls. Only GM can see them",
 	"cgmp.disable-chat-recall-s": "Disable Chat Recalls",
 	"cgmp.disable-chat-recall-l": "Disable using up and down arrow keys to recall chats, so that they can be used to move the text cursor",
 	"cgmp.notify-typing-s": "Notify typings",
