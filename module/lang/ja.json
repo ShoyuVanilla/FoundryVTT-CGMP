@@ -1,0 +1,13 @@
+{
+	"cgmp.disable-gm-as-pc-s": "GMのプレイヤーコマ発言禁止",
+	"cgmp.disable-gm-as-pc-l": "GMがプレイヤーのコマを選択している状態でチャットに発言をした場合、そのコマの名前ではなくGMの名前を出力するようになります。",
+	"cgmp.blind-hidden-tokens-s": "不可視のコマはブラインドロールを使用する",
+	"cgmp.blind-hidden-tokens-l": "不可視のコマが行うすべてのロールはブラインドロールに変換され、プレイヤーに情報がもれないように処理します。",
+	"cgmp.disable-chat-recall-s": "チャットの上下キーの動作変更",
+	"cgmp.disable-chat-recall-l": "キーボードの上や下キーを使用すると過去のチャットを呼び起こせますが、この機能をオンにすることでこれらを使用不可にし、テキスト内で動きやすくなります。",
+	"cgmp.notify-typing-s": "入力中表示",
+	"cgmp.notify-typing-l": "他のプレイヤーがキーボードで入力しているときにそれを知らせるメッセージを表示します。",
+	"cgmp.typing-one": "{user}が入力中...", 
+	"cgmp.typing-two": "{user1}と{user2}が入力中...",
+	"cgmp.typing-many": "{user1}、{user2}とその他が入力中..."
+}
