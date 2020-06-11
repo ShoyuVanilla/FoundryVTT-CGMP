@@ -8,15 +8,13 @@ const REMOTE_TYPING_TIMEOUT = 5000;
 const TYPING_EMIT_INTERVAL = 200;
 
 export class TypingNotifier {
-	_notifyWrapperElement;
-	_notifyDiv;
-	_typingUsers;
-	_isNoticeVisible;
-	_lastPacketSent;
 
 	constructor() {
+		this._notifyWrapperElement = null;
+		this._notifyDiv = null;
 		this._typingUsers = new Map();
 		this._isNoticeVisible = false;
+		this._lastPacketSent = null;
 		this._render();
 		game.socket.on('module.CautiousGamemastersPack', data => this._onRemotePacket(data));
 	}
@@ -121,4 +119,5 @@ export class TypingNotifier {
 
 		this._setVisible(true);
 	}
+
 }
