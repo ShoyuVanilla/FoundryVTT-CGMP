@@ -1,0 +1,13 @@
+{
+	"cgmp.disable-gm-as-pc-s": "Desativar GM falando como tokens de PC",
+	"cgmp.disable-gm-as-pc-l": "Transforme todas as conversas que a GM diz como PC em conversas Fora de Personagem, exceto as rolagens",
+	"cgmp.blind-hidden-tokens-s": "Bate-papo oculto feito por tokens ocultos",
+	"cgmp.blind-hidden-tokens-l": "Oculta todas as conversas feitas por fichas ocultas, incluindo jogadas. Somente o GM pode vê-las",
+	"cgmp.disable-chat-recall-s": "Desativar recuperações de bate-papo",
+	"cgmp.disable-chat-recall-l": "Desative o uso das teclas de seta para cima e para baixo para recuperar chats, para que possam ser usadas para mover o cursor de texto",
+	"cgmp.notify-typing-s": "Notificar digitações",
+	"cgmp.notify-typing-l": "Notifique se os outros jogadores estão digitando mensagens de bate-papo",
+	"cgmp.typing-one": "{user} está digitando ...", 
+	"cgmp.typing-two": "{user1} e {user2} estão digitando ...",
+	"cgmp.typing-many": "{user1}, {user2} e outros {others} jogadores estão digitando ..."
+}
