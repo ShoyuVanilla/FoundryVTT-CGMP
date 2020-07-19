@@ -1,0 +1,13 @@
+{
+	"cgmp.disable-gm-as-pc-s": "Disactivar que el DM hable como tokens de los PJs",
+	"cgmp.disable-gm-as-pc-l": "Hacer que todo lo que el DM diga como un PJ sea chat fuera del personaje (OOC), exceptuando las tiradas",
+	"cgmp.blind-hidden-tokens-s": "Ocultar los mensajes de chat hechos por tokens ocultos",
+	"cgmp.blind-hidden-tokens-l": "Ocultar todos los mensajes de chat hechos por tokens ocultos, incluyendo tiradas, solo los DM pueden verlos",
+	"cgmp.disable-chat-recall-s": "Desactivar el registro de chat",
+	"cgmp.disable-chat-recall-l": "Desactivar que las flechas arriba y abajo del teclado recuperen mensajes, para que pueden ser usuadas para recorrer el texto con el cursor",
+	"cgmp.notify-typing-s": "Avisar de los tecleos",
+	"cgmp.notify-typing-l": "Avisar cuando otros usuarios están escribiendo en el chat",
+	"cgmp.typing-one": "{user} está tecleando...", 
+	"cgmp.typing-two": "{user1} y {user2} están tecleando...",
+	"cgmp.typing-many": "{user1}, {user2} y otros jugadores ({others}) están tecleando..."
+}
