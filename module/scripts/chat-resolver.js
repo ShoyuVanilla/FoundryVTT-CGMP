@@ -88,7 +88,7 @@ export class ChatResolver {
 			const createOptions = {};
 			switch (command) {
 				case "roll": case "gmroll": case "blindroll": case "selfroll":
-					game.ui._processDiceCommand(command, match, chatData, createOptions);
+					this._processDiceCommand(command, match, chatData, createOptions);
 					break;
 				case "whisper":
 					this._processWhisperCommand(command, match, chatData, createOptions);
