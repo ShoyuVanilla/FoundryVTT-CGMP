@@ -28,6 +28,7 @@
 	display: block;
 	left: 0px;
 	right: 0px;
+	z-index: 1000;
 }
 .typing-notify.hidden {
 	max-height: 0px;
