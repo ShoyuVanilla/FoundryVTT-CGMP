@@ -137,7 +137,7 @@ export class ChatResolver {
 
 	static resolveRenderMessage(chatMessage, html, messageData) {
 		if (messageData.message.speaker.alias === CHAT_MESSAGE_TYPES.DESCRIPTION) {
-			html[0].className = html[0].className + 'desc'
+			html[0].classList.add('desc');
 		}
 	}
 
