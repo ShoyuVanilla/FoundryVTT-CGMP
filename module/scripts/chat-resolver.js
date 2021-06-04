@@ -106,33 +106,57 @@ export class ChatResolver {
 		);
 	}
 
-	static _resolveHiddenToken(messageData) {
+	static _resolveHiddenToken(message) {
 		if (!game.user.isGM) return;
 		if (!CGMPSettings.getSetting(CGMP_OPTIONS.BLIND_HIDDEN_TOKENS)) return;
-		const speaker = messageData.speaker;
+		const speaker = message.data.speaker;
 		if (!speaker) return;
 		const token = canvas.tokens.get(speaker.token);
-		if (token && token.data.hidden) {
-			messageData.whisper = ChatMessage.getWhisperRecipients("GM");
+		if (token?.data?.hidden) {
+			if (message.data.roll)
+			{
+				// Whisper any rolls
+				message.data.update({
+					whisper : ChatMessage.getWhisperRecipients("GM")
+				});
+			}
+			else
+			{
+				// Don't whisper non-rolls, but talk OOC.
+				message.data.update({
+					speaker: {
+						actor: null,
+						alias: game.users.get(message.data.user).name,
+						scene: null,
+						token: null
+					},
+				});
+			}
 		}
 	}
 
-	static _resolvePCToken(messageData) {
+	static _resolvePCToken(message) {
 		if (!game.user.isGM) return;
 		if (!CGMPSettings.getSetting(CGMP_OPTIONS.DISABLE_GM_AS_PC)) return;
-		const speaker = messageData.speaker;
+		const speaker = message.data.speaker;
 		if (!speaker) return;
 		const token = canvas.tokens.get(speaker.token);
-		if (!messageData.roll && token && token.actor && token.actor.isPC) {
-			messageData.speaker = {};
-			messageData.speaker.alias = game.users.get(messageData.user).name;
-			messageData.type = CONST.CHAT_MESSAGE_TYPES.OOC;
+		if (!message.data.roll && token?.actor?.hasPlayerOwner) {
+			message.data.update({
+				speaker: {
+					actor: null,
+					alias: game.users.get(message.data.user).name,
+					scene: null,
+					token: null
+				},
+				type: CONST.CHAT_MESSAGE_TYPES.OOC
+			});
 		}
 	}
 
-	static resolvePreCreateMessage(messageData) {
-		ChatResolver._resolveHiddenToken(messageData);
-		ChatResolver._resolvePCToken(messageData); 
+	static resolvePreCreateMessage(message) {
+		ChatResolver._resolveHiddenToken(message);
+		ChatResolver._resolvePCToken(message); 
 	}
 
 	static resolveRenderMessage(chatMessage, html, messageData) {
