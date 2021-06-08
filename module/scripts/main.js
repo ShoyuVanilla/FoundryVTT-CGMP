@@ -6,25 +6,40 @@ Hooks.once('init', () => {
 	CGMPSettings.registerSettings();
 	game.cgmp = {};
 
-	let patchFuncStr = '';
-
+	let shouldWrapOnChatKeyDown = false;
 	if (CGMPSettings.getSetting(CGMP_OPTIONS.NOTIFY_TYPING)) {
 		Hooks.once('renderChatLog', _ => game.cgmp.typingNotifier = new TypingNotifier());
-		patchFuncStr += "if (game.cgmp.typingNotifier) game.cgmp.typingNotifier.onChatKeyDown(event);"
+		shouldWrapOnChatKeyDown = true;
 	}
 
-	if (CGMPSettings.getSetting(CGMP_OPTIONS.DISABLE_CHAT_RECALL)) {
-		patchFuncStr += 'const code = game.keyboard.getKey(event);' +
-			'if (["ArrowUp", "ArrowDown"].includes(code)) return;';
+	game.cgmp.disableChatRecall = CGMPSettings.getSetting(CGMP_OPTIONS.DISABLE_CHAT_RECALL);
+	shouldWrapOnChatKeyDown |= game.cgmp.disableChatRecall;
+
+	if (shouldWrapOnChatKeyDown)
+	{
+		const _ChatLog_prototype_onChatKeyDown = function(wrapped, event) {
+			if (game.cgmp.typingNotifier)
+				game.cgmp.typingNotifier.onChatKeyDown(event);
+
+			if (game.cgmp.disableChatRecall) {
+				const code = game.keyboard.getKey(event);
+				if (["ArrowUp", "ArrowDown"].includes(code))
+					return;
+			}
+
+			wrapped(event);
+		};
+
+		libWrapper.register('CautiousGamemastersPack', 'ChatLog.prototype._onChatKeyDown', _ChatLog_prototype_onChatKeyDown, 'MIXED');
 	}
 
-	if (patchFuncStr != '') {
-		patchFuncStr += 'this._onChatKeyDownOrigin(event);';
-		ChatLog.prototype._onChatKeyDownOrigin = ChatLog.prototype._onChatKeyDown;
-		ChatLog.prototype._onChatKeyDown = new Function("event", patchFuncStr);
-	}
+	Hooks.on('preCreateChatMessage', ChatResolver.resolvePreCreateMessage);
+	Hooks.on('renderChatMessage', ChatResolver.resolveRenderMessage);
+	ChatResolver.wrapFoundryMethods();
 });
 
-Hooks.on('preCreateChatMessage', ChatResolver.resolvePreCreateMessage);
-Hooks.on('renderChatMessage', ChatResolver.resolveRenderMessage);
-ChatResolver.monkeyPatchFoundryMethods();
+Hooks.once('ready', () => {
+	if(!game.modules.get('lib-wrapper')?.active && game.user.isGM)
+		ui.notifications.error("Cautious GameMaster's Pack 2 requires the 'libWrapper' module. Please install and activate it.");
+});
+
