@@ -5,8 +5,7 @@ Offers various simple handy options.
 This version is forked from [ShoyuVanilla's Cautious Gamemaster's Pack](https://github.com/ShoyuVanilla/FoundryVTT-CGMP) and contains a number of enhancements...
 
 1. Added support for FoundryVTT v0.8.x
-2. If the GM types a message while a hidden token is selected, this will be sent as a visible out-of-character message.
-This assumes that the GM wants the message to appear, but forgot to deselect the token.
+2. When "Blind chats out of hidden tokens" is enabled, and the GM types a message while a hidden token is selected, this will be sent as a **visible** out-of-character message.  This assumes that the GM wants the message to appear, but forgot to deselect the token.  All rolls etc done by that token will still be hidden.
 3. Updated to use [libWrapper](https://foundryvtt.com/packages/lib-wrapper/).
 4. Added compatibility with the "[Tabbed Chatlog](https://foundryvtt.com/packages/tabbed-chatlog/)" module.
 
