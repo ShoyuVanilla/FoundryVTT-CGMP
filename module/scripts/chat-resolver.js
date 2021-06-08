@@ -60,8 +60,8 @@ export class ChatResolver {
 			}
 		};
 
-		libWrapper.register('CautiousGamemastersPack', 'ChatLog.parse', _ChatLog_parse, 'MIXED');
-		libWrapper.register('CautiousGamemastersPack', "ChatLog.prototype.processMessage", _ChatLog_prototype_processMessage, 'MIXED');
+		libWrapper.register('CautiousGamemastersPack2', 'ChatLog.parse', _ChatLog_parse, 'MIXED');
+		libWrapper.register('CautiousGamemastersPack2', "ChatLog.prototype.processMessage", _ChatLog_prototype_processMessage, 'MIXED');
 	}
 
 	static _resolveHiddenToken(message) {

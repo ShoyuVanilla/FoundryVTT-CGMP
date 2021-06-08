@@ -7,7 +7,7 @@ export const CGMP_OPTIONS = {
 
 export class CGMPSettings {
 	static registerSettings() {
-		game.settings.register("CautiousGamemastersPack", CGMP_OPTIONS.DISABLE_GM_AS_PC, {
+		game.settings.register("CautiousGamemastersPack2", CGMP_OPTIONS.DISABLE_GM_AS_PC, {
 			name: "cgmp.disable-gm-as-pc-s",
 			hint: "cgmp.disable-gm-as-pc-l",
 			scope: "world",
@@ -17,7 +17,7 @@ export class CGMPSettings {
 			onChange: disableGMAsPC => window.location.reload()
 		});
 		
-		game.settings.register("CautiousGamemastersPack", CGMP_OPTIONS.BLIND_HIDDEN_TOKENS, {
+		game.settings.register("CautiousGamemastersPack2", CGMP_OPTIONS.BLIND_HIDDEN_TOKENS, {
 			name: "cgmp.blind-hidden-tokens-s",
 			hint: "cgmp.blind-hidden-tokens-l",
 			scope: "world",
@@ -27,7 +27,7 @@ export class CGMPSettings {
 			onChange: blindHiddenTokens => window.location.reload()
 		});
 		
-		game.settings.register("CautiousGamemastersPack", CGMP_OPTIONS.DISABLE_CHAT_RECALL, {
+		game.settings.register("CautiousGamemastersPack2", CGMP_OPTIONS.DISABLE_CHAT_RECALL, {
 			name: "cgmp.disable-chat-recall-s",
 			hint: "cgmp.disable-chat-recall-l",
 			scope: "world",
@@ -37,7 +37,7 @@ export class CGMPSettings {
 			onChange: disableChatRecall => window.location.reload()
 		});
 
-		game.settings.register("CautiousGamemastersPack", CGMP_OPTIONS.NOTIFY_TYPING, {
+		game.settings.register("CautiousGamemastersPack2", CGMP_OPTIONS.NOTIFY_TYPING, {
 			name: "cgmp.notify-typing-s",
 			hint: "cgmp.notify-typing-l",
 			scope: "world",
@@ -49,6 +49,6 @@ export class CGMPSettings {
 	}
 
 	static getSetting(option) {
-		return game.settings.get("CautiousGamemastersPack", option);
+		return game.settings.get("CautiousGamemastersPack2", option);
 	}
 }
