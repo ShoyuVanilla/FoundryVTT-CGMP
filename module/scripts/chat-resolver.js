@@ -51,6 +51,7 @@ export class ChatResolver {
 					chatData.type = CONST.CHAT_MESSAGE_TYPES.IC;
 					chatData.speaker = {};
 					chatData.speaker.alias = alias;
+					chatData.speaker.scene = game.user.viewedScene;
 					chatData.content = match[3].replace(/\n/g, "<br>");
 					return cls.create(chatData, {});
 
@@ -86,7 +87,6 @@ export class ChatResolver {
 					speaker: {
 						actor: null,
 						alias: game.users.get(message.data.user).name,
-						scene: null,
 						token: null
 					},
 				});
@@ -105,7 +105,6 @@ export class ChatResolver {
 				speaker: {
 					actor: null,
 					alias: game.users.get(message.data.user).name,
-					scene: null,
 					token: null
 				},
 				type: CONST.CHAT_MESSAGE_TYPES.OOC
