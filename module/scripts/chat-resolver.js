@@ -113,17 +113,19 @@ export class ChatResolver {
 		if (!speaker) return;
 		const token = canvas.tokens.get(speaker.token);
 		if (token?.data?.hidden) {
-			if (message.data.roll)
+			if (CONST.CHAT_MESSAGE_TYPES.IC !== message.data.type)
 			{
-				// Whisper any rolls
+				// Whisper any non in-character messages.
 				message.data.update({
 					whisper : ChatMessage.getWhisperRecipients("GM")
 				});
 			}
 			else
 			{
-				// Don't whisper non-rolls, but talk OOC.
+				// Convert in-character messages to out-of-character.
+				// We're assuming that the GM wanted to type something to the chat but forgot to deselect a token.
 				message.data.update({
+					type: CONST.CHAT_MESSAGE_TYPES.OOC,
 					speaker: {
 						actor: null,
 						alias: game.users.get(message.data.user).name,
