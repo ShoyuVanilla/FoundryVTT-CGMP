@@ -1,45 +1,66 @@
 {
-	"name": "CautiousGamemastersPack2",
-	"title": "Cautious Gamemaster's Pack 2",
-	"description": "Offers various simple handy options.",
-	"version": "0.1.6",
-	"minimumCoreVersion" : "0.8.6",
-	"compatibleCoreVersion": "0.8.6",
-	"author": "Shoyu Vanilla",
-
-	"esmodules": ["scripts/main.js"],
-	"styles": ["style.css"],
-	"socket": true,
-
-	"languages": [
-		{
-			"lang": "en",
-			"name": "English",
-			"path": "lang/en.json"
-		},
-		{
-			"lang": "ko",
-			"name": "한국어 (Korean)",
-			"path": "lang/ko.json"
-		},
-		{
-			"lang": "ja",
-			"name": "日本語",
-			"path": "lang/ja.json"
-		},
-		{
-			"lang": "pt-BR",
-			"name": "Português (Brasil)",
-			"path": "lang/pt-BR.json"
-		},
-		{
-			"lang": "es",
-			"name": "Castellano",
-			"path": "lang/es-ES.json"
-		}
-	],
-
-	"url": "https://github.com/ShoyuVanilla/FoundryVTT-CGMP",
-	"manifest": "https://raw.githubusercontent.com/ShoyuVanilla/FoundryVTT-CGMP/master/module/module.json",
-	"download": "https://github.com/ShoyuVanilla/FoundryVTT-CGMP/releases/download/v0.1.6/release.zip"
+  "name": "CautiousGamemastersPack2",
+  "title": "Cautious Gamemaster's Pack 2",
+  "description": "Offers various simple handy options.",
+  "version": "This is auto replaced",
+  "library": false,
+  "manifestPlusVersion": "1.0.0",
+  "minimumCoreVersion" : "0.8.6",
+  "compatibleCoreVersion": "0.8.6",
+  "authors": [
+    {
+      "name": "Shoyu Vanilla"
+    },
+    {
+      "name": "Alan Davies"
+    }
+  ],
+  "dependencies": [
+    {
+      "name": "lib-wrapper"
+    }
+  ],
+  "conflicts": [
+    {
+      "name": "CautiousGamemastersPack"
+    }
+  ],
+  "esmodules": [
+    "scripts/main.js"
+  ],
+  "scripts": [],
+  "styles": [
+    "styles/style.css"
+  ],
+  "socket": true,
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    },
+    {
+      "lang": "ko",
+      "name": "한국어 (Korean)",
+      "path": "lang/ko.json"
+    },
+    {
+      "lang": "ja",
+      "name": "日本語",
+      "path": "lang/ja.json"
+    },
+    {
+      "lang": "pt-BR",
+      "name": "Português (Brasil)",
+      "path": "lang/pt-BR.json"
+    },
+    {
+      "lang": "es",
+      "name": "Castellano",
+      "path": "lang/es-ES.json"
+    }
+  ],
+	"url": "This is auto replaced",
+	"manifest": "This is auto replaced",
+	"download": "This is auto replaced"
 }
