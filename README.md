@@ -8,7 +8,7 @@ This version is forked from [ShoyuVanilla's Cautious Gamemaster's Pack](https://
 2. If the GM types a message while a hidden token is selected, this will be sent as a visible out-of-character message.
 This assumes that the GM wants the message to appear, but forgot to deselect the token.
 3. Updated to use [libWrapper](https://foundryvtt.com/packages/lib-wrapper/).
-4. Added compatibility with the "Tabbed Chatlog" module.
+4. Added compatibility with the "[Tabbed Chatlog](https://foundryvtt.com/packages/tabbed-chatlog/)" module.
 
 ![](settings.png)
 
