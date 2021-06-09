@@ -1,6 +1,6 @@
 {
-  "name": "CautiousGamemastersPack2",
-  "title": "Cautious Gamemaster's Pack 2",
+  "name": "CautiousGamemastersPack",
+  "title": "Cautious Gamemaster's Pack",
   "description": "Offers various simple handy options.",
   "version": "This is auto replaced",
   "library": false,
@@ -60,7 +60,7 @@
       "path": "lang/es-ES.json"
     }
   ],
-	"url": "This is auto replaced",
-	"manifest": "This is auto replaced",
-	"download": "This is auto replaced"
+  "url": "This is auto replaced",
+  "manifest": "This is auto replaced",
+  "download": "This is auto replaced"
 }

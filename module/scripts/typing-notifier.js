@@ -16,7 +16,7 @@ export class TypingNotifier {
 		this._isNoticeVisible = false;
 		this._lastPacketSent = null;
 		this._render();
-		game.socket.on('module.CautiousGamemastersPack2', data => this._onRemotePacket(data));
+		game.socket.on('module.CautiousGamemastersPack', data => this._onRemotePacket(data));
 	}
 
 	_render() {
@@ -34,7 +34,7 @@ export class TypingNotifier {
 	}
 
 	_emitTypingEnd() {
-		game.socket.emit('module.CautiousGamemastersPack2', {
+		game.socket.emit('module.CautiousGamemastersPack', {
 			header: PACKET_HEADER.TYPING_END,
 			user: game.user.id
 		});
@@ -43,7 +43,7 @@ export class TypingNotifier {
 
 	_emitTyping() {
 		if (this._lastPacketSent && new Date().getTime - this._lastPacketSent < TYPING_EMIT_INTERVAL) return;
-		game.socket.emit('module.CautiousGamemastersPack2', {
+		game.socket.emit('module.CautiousGamemastersPack', {
 			header: PACKET_HEADER.TYPING_MESSAGE,
 			user: game.user.id
 		});
