@@ -30,7 +30,7 @@ Hooks.once('init', () => {
 			wrapped(event);
 		};
 
-		libWrapper.register('cautious-gamemasters-pack-2', 'ChatLog.prototype._onChatKeyDown', _ChatLog_prototype_onChatKeyDown, 'MIXED');
+		libWrapper.register('CautiousGamemastersPack2', 'ChatLog.prototype._onChatKeyDown', _ChatLog_prototype_onChatKeyDown, 'MIXED');
 	}
 
 	Hooks.on('preCreateChatMessage', ChatResolver.resolvePreCreateMessage);
