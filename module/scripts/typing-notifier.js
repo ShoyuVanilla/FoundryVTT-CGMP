@@ -62,10 +62,41 @@ export class TypingNotifier {
 		this.updateNotice();
 	}
 
+	_willDeleteLastChar(code, textArea) {
+		if (0 === (textArea.selectionEnd - textArea.selectionStart)) {
+			// Nothing selected.  Is there a single char left that will be deleted?
+			if (1 === textArea.value.length) {
+				switch (code) {
+					case "Backspace":
+						return (0 !== textArea.selectionStart);
+
+					case "Delete":
+						return (textArea.selectionStart !== textArea.value.length);
+
+					default:
+						return false;
+				}
+			} else {
+				return false;
+			}
+		} else {
+			// text range selected.  Will all of it be deleted?
+			switch (code) {
+				case "Backspace":
+				case "Delete":
+					return ((textArea.selectionEnd - textArea.selectionStart) >= textArea.value.length);
+
+				default:
+					return false;
+			}
+		}
+	}
+
 	onChatKeyDown(event) {
-		if (!event.currentTarget.value) return;
 		const code = game.keyboard.getKey(event);
 		if ((code === "Enter") && !event.shiftKey) {
+			this._emitTypingEnd();
+		} else if (this._willDeleteLastChar(code, event.currentTarget)) {
 			this._emitTypingEnd();
 		} else {
 			this._emitTyping();
