@@ -1,0 +1,13 @@
+{
+	"cgmp.disable-gm-as-pc-s": "Désactiver 'GM parle pour Joueur'",
+	"cgmp.disable-gm-as-pc-l": "Rendre tous les messages 'GM parle pour Joueur' à un message hors jeu, excepté les jets de dés",
+	"cgmp.blind-hidden-tokens-s": "Aveugler les messages fait pas les personnages camouflés",
+	"cgmp.blind-hidden-tokens-l": "Aveugler les messages fait par des personnages camouflés, incluant les jets de dés. Seul le GM pourra les voir",
+	"cgmp.disable-chat-recall-s": "Désactiver le rappele des messages",
+	"cgmp.disable-chat-recall-l": "Désactiver l'utilisation des flêches haut et bas pour rappeler les messages, pour qu'ils puissent être utilisé pour bouger le curseur de texte",
+	"cgmp.notify-typing-s": "Notifié lorsqu'on écrit",
+	"cgmp.notify-typing-l": "Notifié si les autres joueurs sont en train d'écrire des messages",
+	"cgmp.typing-one": "{user} est en train d'écrire...",
+	"cgmp.typing-two": "{user1} et {user2} sont en train d'écrire...",
+	"cgmp.typing-many": "{user1}, {user2} et les autres {others} joueurs sont en train d'écrire..."
+}

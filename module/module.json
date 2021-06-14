@@ -58,6 +58,11 @@
       "lang": "es",
       "name": "Castellano",
       "path": "lang/es-ES.json"
+    },
+    {
+      "lang": "fr-CA",
+      "name": "Francais (Canada)",
+      "path": "lang/fr-CA.json"
     }
   ],
   "url": "This is auto replaced",
