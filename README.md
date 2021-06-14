@@ -24,6 +24,8 @@ Please note that v0.2.0 was called "Cautious Gamemaster's Pack 2", but since own
 
 * Additional chat commands - `/desc` for description and `/as` for in-charactor without tokens
 
+---
+
 Version 2 is forked from [ShoyuVanilla's Cautious Gamemaster's Pack](https://github.com/ShoyuVanilla/FoundryVTT-CGMP) and contains a number of enhancements...
 
 1. Added support for FoundryVTT v0.8.x
