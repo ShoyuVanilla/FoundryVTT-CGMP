@@ -11,7 +11,7 @@ export class TypingNotifier {
 
 	constructor() {
 		this._notifyWrapperElement = null;
-		this._notifyDiv = null;
+		this._notifySpan = null;
 		this._typingUsers = new Map();
 		this._isNoticeVisible = false;
 		this._lastPacketSent = null;
@@ -20,16 +20,17 @@ export class TypingNotifier {
 	}
 
 	_render() {
+		this._notifySpan = document.createElement("span");
+		this._notifySpan.className = "notify-text";
+
 		this._notifyWrapperElement = document.createElement("div");
 		this._notifyWrapperElement.className = "typing-notify hidden";
-		let element = document.getElementById("chat-controls");
+		this._notifyWrapperElement.innerHTML = '<span class="dots-cont"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span></span>';
+		this._notifyWrapperElement.appendChild(this._notifySpan);
+
+		let element = document.getElementById("chat-form");
 		element.appendChild(this._notifyWrapperElement);
-		let innerWrapper = document.createElement("div");
-		innerWrapper.innerHTML = '<span class="dots-cont"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span></span>';
-		this._notifyWrapperElement.appendChild(innerWrapper);
-		this._notifyDiv = document.createElement("div");
-		this._notifyDiv.className = "notify-text";
-		innerWrapper.appendChild(this._notifyDiv);
+
 		this._isNoticeVisible = false;
 	}
 
@@ -115,7 +116,7 @@ export class TypingNotifier {
 		} else {
 			text = game.i18n.format("cgmp.typing-many", { user1: users[0], user2: users[1], others: cnt - 2 });
 		}
-		this._notifyDiv.innerHTML = text;
+		this._notifySpan.innerHTML = text;
 
 		this._setVisible(true);
 	}

@@ -10,68 +10,66 @@
 	color: gray;
 	font-style: italic;
 }
+#chat-form {
+	display: inline-flex;
+	flex-direction: column;
+	justify-content: flex-end;
+}
 
 .typing-notify {
 	overflow-wrap: break-word;
 	max-height: 60px;
-	background: #4B878BFF;
-	color: #D01C1FFF;
-	border-radius: 3px;
+	background: transparent;
+	border-radius: 0px;
 	-webkit-transition: max-height .3s ease-out;
 	-moz-transition: max-height .3s ease-out;
 	-ms-transition: max-height .3s ease-out;
 	-o-transition: max-height .3s ease-out;
 	transition: max-height .3s ease-out;
-	position: absolute;
+	position: relative;
 	width: 100%;
+	top: 2px;
 	bottom: 0px;
-	display: block;
 	left: 0px;
 	right: 0px;
-	z-index: 1000;
 }
 .typing-notify.hidden {
 	max-height: 0px;
 	color: transparent;
 }
-.typing-notify div {
-	margin: 6px;
-}
 .typing-notify .notify-text {
-	display: inline-block;
-	width: 240px;
-	margin: 0 0 0 6px;
+	margin: 0 0 0 4px;
 }
 
 .dot {
-	width: 6px;
-	height: 6px;
-	background: #D01C1FFF;
-	display: inline-block;
+	width: 5px;
+	height: 5px;
+	background: currentColor;
+    display: inline-block;
 	border-radius: 50%;
-	right: 0px;
-	bottom: 0px;
-	margin: 0px 1.25px;
-	position: relative;
-	animation: jump 1s infinite;
+    right: 0px;
+    bottom: 0px;
+    margin: 0px 1.25px;
+    position: relative;
+    animation: jump 1s infinite;
 }
 .dots-cont .dot-1 {
-	-webkit-animation-delay: 100ms;
-	animation-delay: 100ms;
+    -webkit-animation-delay: 100ms;
+    animation-delay: 100ms;
 }
 .dots-cont .dot-2 {
-	-webkit-animation-delay: 200ms;
-	animation-delay: 200ms;
+    -webkit-animation-delay: 200ms;
+    animation-delay: 200ms;
 }
 .dots-cont .dot-3 {
-	-webkit-animation-delay: 300ms;
-	animation-delay: 300ms;
+    -webkit-animation-delay: 300ms;
+    animation-delay: 300ms;
 }
 .hidden .dots-cont {
-	display: none;
+    display: none;
 }
 @keyframes jump {
-	0%   {bottom: 0px;}
-	20%  {bottom: 5px;}
-	40%  {bottom: 0px;}
+    0%   {bottom: 0px;}
+    20%  {bottom: 5px;}
+    40%  {bottom: 0px;}
 }
