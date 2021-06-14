@@ -11,6 +11,10 @@ export class ChatResolver {
 
 	static DESCRIPTION_SPEAKER_ALIAS = '#CGMP_DESCRIPTION';
 
+	static isV0_8() {
+		return isNewerVersion(game.data.version, "0.7.9999");
+	}
+
 	static wrapFoundryMethods() {
 		const _ChatLog_parse = function(wrapped, message) {
 			if (game.user.isGM)
@@ -26,7 +30,7 @@ export class ChatResolver {
 		};
 
 		const _ChatLog_prototype_processMessage = async function(wrapped, message) {
-			const cls = ChatMessage.implementation;
+			const cls = ChatResolver.isV0_8() ? ChatMessage.implementation : CONFIG.ChatMessage.entityClass;
 
 			// Set up basic chat data
 			const chatData = {
@@ -64,32 +68,48 @@ export class ChatResolver {
 		libWrapper.register('CautiousGamemastersPack', "ChatLog.prototype.processMessage", _ChatLog_prototype_processMessage, 'MIXED');
 	}
 
+	static _convertToOoc(messageData) {
+		if (ChatResolver.isV0_8()) {
+			messageData.update({
+				type: CONST.CHAT_MESSAGE_TYPES.OOC,
+				speaker: {
+					actor: null,
+					alias: game.users.get(messageData.user).name,
+					token: null
+				}
+			});
+		} else {
+			messageData.type = CONST.CHAT_MESSAGE_TYPES.OOC;
+			messageData.speaker.actor = null;
+			messageData.speaker.alias = game.users.get(messageData.user).name;
+			messageData.speaker.token = null;
+		}
+	}
+
 	static _resolveHiddenToken(message) {
 		if (!game.user.isGM) return;
 		if (!CGMPSettings.getSetting(CGMP_OPTIONS.BLIND_HIDDEN_TOKENS)) return;
-		const speaker = message.data.speaker;
+		const messageData = ChatResolver.isV0_8() ? message.data : message;
+		const speaker = messageData.speaker;
 		if (!speaker) return;
 		const token = canvas.tokens.get(speaker.token);
 		if (token?.data?.hidden) {
-			if (CONST.CHAT_MESSAGE_TYPES.IC !== message.data.type)
+			if (CONST.CHAT_MESSAGE_TYPES.IC !== messageData.type)
 			{
 				// Whisper any non in-character messages.
-				message.data.update({
-					whisper : ChatMessage.getWhisperRecipients("GM")
-				});
+				if (ChatResolver.isV0_8()) {
+					messageData.update({
+						whisper: ChatMessage.getWhisperRecipients("GM")
+					});
+				} else {
+					messageData.whisper = ChatMessage.getWhisperRecipients("GM");
+				}
 			}
 			else
 			{
 				// Convert in-character messages to out-of-character.
 				// We're assuming that the GM wanted to type something to the chat but forgot to deselect a token.
-				message.data.update({
-					type: CONST.CHAT_MESSAGE_TYPES.OOC,
-					speaker: {
-						actor: null,
-						alias: game.users.get(message.data.user).name,
-						token: null
-					},
-				});
+				this._convertToOoc(messageData);
 			}
 		}
 	}
@@ -97,18 +117,12 @@ export class ChatResolver {
 	static _resolvePCToken(message) {
 		if (!game.user.isGM) return;
 		if (!CGMPSettings.getSetting(CGMP_OPTIONS.DISABLE_GM_AS_PC)) return;
-		const speaker = message.data.speaker;
+		const messageData = ChatResolver.isV0_8() ? message.data : message;
+		const speaker = messageData.speaker;
 		if (!speaker) return;
 		const token = canvas.tokens.get(speaker.token);
-		if (!message.data.roll && token?.actor?.hasPlayerOwner) {
-			message.data.update({
-				speaker: {
-					actor: null,
-					alias: game.users.get(message.data.user).name,
-					token: null
-				},
-				type: CONST.CHAT_MESSAGE_TYPES.OOC
-			});
+		if (!messageData.roll && token?.actor?.hasPlayerOwner) {
+			this._convertToOoc(messageData);
 		}
 	}
 
