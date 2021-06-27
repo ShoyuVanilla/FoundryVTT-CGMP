@@ -68,21 +68,26 @@ export class ChatResolver {
 		libWrapper.register('CautiousGamemastersPack', "ChatLog.prototype.processMessage", _ChatLog_prototype_processMessage, 'MIXED');
 	}
 
-	static _convertToOoc(messageData) {
+	static _convertToGmSpeaker(messageData) {
+		// For all types of messages, change the speaker to the GM.
+		// Convert in-character message to out-of-character, and remove the actor and token.
+		const newType = (CONST.CHAT_MESSAGE_TYPES.IC === messageData.type ? CONST.CHAT_MESSAGE_TYPES.OOC : messageData.type);
+		const newActor = (CONST.CHAT_MESSAGE_TYPES.IC === messageData.type ? null : messageData.speaker.actor);
+		const newToken = (CONST.CHAT_MESSAGE_TYPES.IC === messageData.type ? null : messageData.speaker.token);
 		if (ChatResolver.isV0_8()) {
 			messageData.update({
-				type: CONST.CHAT_MESSAGE_TYPES.OOC,
+				type: newType,
 				speaker: {
-					actor: null,
+					actor: newActor,
 					alias: game.users.get(messageData.user).name,
-					token: null
+					token: newToken
 				}
 			});
 		} else {
-			messageData.type = CONST.CHAT_MESSAGE_TYPES.OOC;
-			messageData.speaker.actor = null;
+			messageData.type = newType;
+			messageData.speaker.actor = newActor;
 			messageData.speaker.alias = game.users.get(messageData.user).name;
-			messageData.speaker.token = null;
+			messageData.speaker.token = newToken;
 		}
 	}
 
@@ -109,7 +114,7 @@ export class ChatResolver {
 			{
 				// Convert in-character messages to out-of-character.
 				// We're assuming that the GM wanted to type something to the chat but forgot to deselect a token.
-				this._convertToOoc(messageData);
+				this._convertToGmSpeaker(messageData);
 			}
 		}
 	}
@@ -122,7 +127,7 @@ export class ChatResolver {
 		if (!speaker) return;
 		const token = canvas.tokens.get(speaker.token);
 		if (!messageData.roll && token?.actor?.hasPlayerOwner) {
-			this._convertToOoc(messageData);
+			this._convertToGmSpeaker(messageData);
 		}
 	}
 
