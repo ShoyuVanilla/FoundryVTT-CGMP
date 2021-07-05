@@ -1,5 +1,9 @@
 # Cautious Gamemaster's Pack
 
+![GitHub Latest Release](https://img.shields.io/github/release/cs96and/FoundryVTT-CGMP?style=for-the-badge)
+![Downloads](https://img.shields.io/github/downloads/cs96and/FoundryVTT-CGMP/total?style=for-the-badge)
+![Forge Installs](https://img.shields.io/badge/dynamic/json?label=Forge%20Installs&query=package.installs&suffix=%25&url=https%3A%2F%2Fforge-vtt.com%2Fapi%2Fbazaar%2Fpackage%2FCautiousGamemastersPack&colorB=4aa94a&style=for-the-badge)
+
 Offers various simple handy options.
 
 Please note that v0.2.0 was called "Cautious Gamemaster's Pack 2", but since ownership of the original Foundry package has been transferred to me this has now been renamed back to "Cautious Gamemaster's Pack".  ***If you installed v0.2.0 and then upgrade to v0.2.1 you will find you have both "Cautious Gamemaster's Pack" and "Cautious Gamemaster's Pack 2" installed.  You will have to manually remove "Cautious Gamemaster's Pack 2".***
