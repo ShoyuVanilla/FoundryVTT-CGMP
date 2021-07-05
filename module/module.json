@@ -4,15 +4,18 @@
   "description": "Offers various simple handy options.",
   "version": "This is auto replaced",
   "library": false,
-  "manifestPlusVersion": "1.0.0",
+  "manifestPlusVersion": "1.2.0",
   "minimumCoreVersion" : "0.7.9",
   "compatibleCoreVersion": "0.8.8",
+  "author": "Alan Davies",
   "authors": [
     {
-      "name": "Shoyu Vanilla"
+      "name": "Alan Davies",
+      "discord": "cs96and#3764",
+      "ko-fi": "cs96and",
     },
     {
-      "name": "Alan Davies"
+      "name": "Shoyu Vanilla"
     }
   ],
   "dependencies": [
@@ -22,7 +25,8 @@
   ],
   "conflicts": [
     {
-      "name": "cautious-gamemasters-pack-2"
+      "name": "cautious-gamemasters-pack-2",
+      "type": "module"
     }
   ],
   "esmodules": [
