@@ -1,7 +1,7 @@
 # Cautious Gamemaster's Pack
 
 ![GitHub Latest Release](https://img.shields.io/github/release/cs96and/FoundryVTT-CGMP?style=for-the-badge)
-![Downloads](https://img.shields.io/github/downloads/cs96and/FoundryVTT-CGMP/total?style=for-the-badge)
+![Latest Release Downloads](https://img.shields.io/github/downloads/cs96and/FoundryVTT-CGMP/0.2.5/total?style=for-the-badge)
 ![Forge Installs](https://img.shields.io/badge/dynamic/json?label=Forge%20Installs&query=package.installs&suffix=%25&url=https%3A%2F%2Fforge-vtt.com%2Fapi%2Fbazaar%2Fpackage%2FCautiousGamemastersPack&colorB=4aa94a&style=for-the-badge)
 
 Offers various simple handy options.
