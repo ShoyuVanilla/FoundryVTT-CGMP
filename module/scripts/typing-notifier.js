@@ -18,21 +18,14 @@ const PACKET_HEADER = {
 }
 
 const REMOTE_TYPING_TIMEOUT = 5000;
-const TYPING_EMIT_INTERVAL = 200;
+const TYPING_EMIT_INTERVAL = 250;
 
 export class TypingNotifier {
 
 	constructor() {
-		this._notifyWrapperElement = null;
-		this._notifySpan = null;
 		this._typingUsers = new Map();
-		this._isNoticeVisible = false;
 		this._lastPacketSent = null;
-		this._render();
-		game.socket.on('module.CautiousGamemastersPack', data => this._onRemotePacket(data));
-	}
 
-	_render() {
 		this._notifySpan = document.createElement("span");
 		this._notifySpan.className = "notify-text";
 
@@ -41,10 +34,78 @@ export class TypingNotifier {
 		this._notifyWrapperElement.innerHTML = '<span class="dots-cont"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span></span>';
 		this._notifyWrapperElement.appendChild(this._notifySpan);
 
-		let element = document.getElementById("chat-form");
-		element.appendChild(this._notifyWrapperElement);
+		const chatFormElement = document.getElementById("chat-form");
+		chatFormElement.appendChild(this._notifyWrapperElement);
 
 		this._isNoticeVisible = false;
+
+		this._chatBox = document.getElementById("chat-message");
+		this.charsPerLine = this._calcCharsPerLine();
+
+		this._chatBoxResizeObserver = new ResizeObserver(this._onChatBoxResize.bind(this));
+		this._chatBoxResizeObserver.observe(this._chatBox);
+
+		game.socket.on('module.CautiousGamemastersPack', this._onRemotePacket.bind(this));
+	}
+
+	static _calcCharacterWidth(chatBoxStyle)
+	{
+		// Calculate the width of a single character in the chat box.  This assumes that a monospace font is being used.
+		const text = document.createElement("span");
+
+		text.style.font = chatBoxStyle.font;
+		text.style.fontFamily = chatBoxStyle.fontFamily;
+		text.style.fontSize = chatBoxStyle.fontSize;
+		text.style.fontSizeAdjust = chatBoxStyle.fontSizeAdjust;
+		text.style.fontStretch = chatBoxStyle.fontStretch;
+		text.style.fontStyle = chatBoxStyle.fontStyle;
+		text.style.fontWeight = chatBoxStyle.fontWeight;
+		text.style.height = 'auto';
+		text.style.width = 'auto';
+		text.style.position = 'absolute';
+		text.style.whiteSpace = 'no-wrap';
+		text.innerHTML = 'A';
+
+		document.body.appendChild(text);
+		const charWidth = Math.ceil(text.clientWidth);
+		document.body.removeChild(text);
+
+		return charWidth;
+	}
+
+	_calcCharsPerLine() {
+		// Calculate the number of monospace chars that will fit on a line of the chat box.
+		const chatBoxStyle = getComputedStyle(this._chatBox);
+		const characterWidth = TypingNotifier._calcCharacterWidth(chatBoxStyle);
+
+		// Force the scroll-bar to appear before we get the client width of the chat box.
+		const oldOverflow = this._chatBox.style.overflow;
+		this._chatBox.style.overflow = "scroll";
+		const chatBoxWidth = this._chatBox.clientWidth - parseInt(chatBoxStyle.paddingLeft) - parseInt(chatBoxStyle.paddingRight);
+		this._chatBox.style.overflow = oldOverflow;
+
+		return Math.floor(chatBoxWidth / characterWidth);
+	}
+
+	_onChatBoxResize() {
+		// When the chat box gets resized due to the typing notification and the cursor is on the bottom line, the bottom of the
+		// chat box will resize upwards and cover it (however it will automatically scroll down again when something is typed).
+		// We can try and mitigate against this by monitoring for resize events on the chat box.
+		// 1. If the cursor is at the end of the chat box, then scroll down to the bottom.
+		// 2. Otherwise, if there are no line endings between the cursor and the end of the text, then work out if the cursor
+		//	is on the last line by checking against the number of chars that fit on a line.
+		if (this._chatBox.selectionEnd === this._chatBox.selectionStart) {
+			if ((this._chatBox.selectionEnd === this._chatBox.value.length) || this._isCursorOnLastLine()) {
+				this._chatBox.scrollTop = this._chatBox.scrollHeight;
+			}
+		}
+	}
+
+	_isCursorOnLastLine() {
+		// Cursor is on the last line if there are no line breaks between it and the end of the text
+		// and we are within the number of chars that can fit on a line.  This is not exact, but it's good enough.
+		return ((!this._chatBox.value.includes("\n", this._chatBox.selectionEnd)) &&
+				((this._chatBox.value.length - this._chatBox.selectionEnd) <= this.charsPerLine));
 	}
 
 	_emitTypingEnd() {
@@ -117,7 +178,7 @@ export class TypingNotifier {
 	}
 
 	_onRemotePacket(data) {
-		let id = data.user;
+		const id = data.user;
 		if (id === game.user.id) return;
 		switch (data.header) {
 			case PACKET_HEADER.TYPING_MESSAGE:
