@@ -46,9 +46,9 @@ Hooks.once('init', () => {
 		libWrapper.register('CautiousGamemastersPack', 'ChatLog.prototype._onChatKeyDown', _ChatLog_prototype_onChatKeyDown, 'MIXED');
 	}
 
-	Hooks.on('preCreateChatMessage', ChatResolver.resolvePreCreateMessage);
-	Hooks.on('renderChatMessage', ChatResolver.resolveRenderMessage);
-	ChatResolver.wrapFoundryMethods();
+	Hooks.on('chatMessage', ChatResolver.onChatMessage);
+	Hooks.on('preCreateChatMessage', ChatResolver.onPreCreateChatMessage);
+	Hooks.on('renderChatMessage', ChatResolver.onRenderChatMessage);
 });
 
 Hooks.once('ready', () => {
