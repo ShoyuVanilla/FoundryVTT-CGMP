@@ -1,0 +1,105 @@
+/*
+ * Cautious Gamemasters Pack
+ * https://github.com/cs96and/FoundryVTT-CGMP
+ *
+ * Copyright (c) 2020 Shoyu Vanilla - All Rights Reserved.
+ * Copyright (c) 2021 Alan Davies - All Rights Reserved.
+ *
+ * You may use, distribute and modify this code under the terms of the MIT license.
+ *
+ * You should have received a copy of the MIT license with this file. If not, please visit:
+ * https://mit-license.org/
+ */
+
+/* Styling for /desc messages */
+#chat-log .message.desc {
+	background: #ececec;
+	border-color: gray !important;
+}
+#chat-log .message.desc .message-content {
+	text-align: center;
+	color: gray;
+	font-style: italic;
+}
+
+/* Hide chat portrait for /as and /desc messages */
+#chat-log .message.as .message-header .message-portrait,
+#chat-log .message.desc .message-header .message-portrait
+{
+	display: none !important;
+}
+
+/* Hide sender for /desc messages */
+#chat-log .message.desc .message-header .message-sender {
+	display: none !important;
+}
+
+/* Ensure metatdata is right aligned when both chat portrait and sender are hidden. */
+#chat-log .message.desc .message-header .message-metadata {
+	margin-left: auto;			
+}
+
+/* Make the chat-form (parent of the text box) flex, so we can pop the typing notification in and out */
+#chat-form {
+	display: inline-flex;
+	flex-direction: column;
+	justify-content: flex-end;
+}
+
+.typing-notify {
+	overflow-wrap: break-word;
+	max-height: 60px;
+	background: transparent;
+	border-radius: 0px;
+	-webkit-transition: max-height .3s ease-out;
+	-moz-transition: max-height .3s ease-out;
+	-ms-transition: max-height .3s ease-out;
+	-o-transition: max-height .3s ease-out;
+	transition: max-height .3s ease-out;
+	position: relative;
+	width: 100%;
+	top: 2px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+}
+.typing-notify.hidden {
+	max-height: 0px;
+	color: transparent;
+}
+.typing-notify .notify-text {
+	margin: 0 0 0 4px;
+}
+
+.dot {
+	width: 5px;
+	height: 5px;
+	background: currentColor;
+    display: inline-block;
+	border-radius: 50%;
+    right: 0px;
+    bottom: 0px;
+    margin: 0px 1.25px;
+    position: relative;
+    animation: jump 1s infinite;
+}
+.dots-cont .dot-1 {
+    -webkit-animation-delay: 100ms;
+    animation-delay: 100ms;
+}
+.dots-cont .dot-2 {
+    -webkit-animation-delay: 200ms;
+    animation-delay: 200ms;
+}
+.dots-cont .dot-3 {
+    -webkit-animation-delay: 300ms;
+    animation-delay: 300ms;
+}
+.hidden .dots-cont {
+    display: none;
+}
+@keyframes jump {
+    0%   {bottom: 0px;}
+    20%  {bottom: 5px;}
+    40%  {bottom: 0px;}
+}
