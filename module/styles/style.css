@@ -11,21 +11,35 @@
  * https://mit-license.org/
  */
 
+/* Styling for /desc messages */
 #chat-log .message.desc {
 	background: #ececec;
 	border-color: gray !important;
-}
-#chat-log .message.desc .message-header .message-sender {
-	display: none !important; 
-}
-#chat-log .message.desc .message-header .message-portrait {
-	display: none !important; 
 }
 #chat-log .message.desc .message-content {
 	text-align: center;
 	color: gray;
 	font-style: italic;
 }
+
+/* Hide chat portrait for /as and /desc messages */
+#chat-log .message.as .message-header .message-portrait,
+#chat-log .message.desc .message-header .message-portrait
+{
+	display: none !important;
+}
+
+/* Hide sender for /desc messages */
+#chat-log .message.desc .message-header .message-sender {
+	display: none !important;
+}
+
+/* Ensure metatdata is right aligned when both chat portrait and sender are hidden. */
+#chat-log .message.desc .message-header .message-metadata {
+	margin-left: auto;			
+}
+
+/* Make the chat-form (parent of the text box) flex, so we can pop the typing notification in and out */
 #chat-form {
 	display: inline-flex;
 	flex-direction: column;

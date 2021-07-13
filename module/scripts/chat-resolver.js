@@ -24,6 +24,12 @@ export class ChatResolver {
 
 	static DESCRIPTION_SPEAKER_ALIAS = '#CGMP_DESCRIPTION';
 
+	static CHAT_MESSAGE_SUB_TYPES = {
+		NONE: 0,
+		DESC: 1,
+		AS: 2
+	};
+
 	static isV0_8() {
 		return isNewerVersion(game.data.version, "0.7.9999");
 	}
@@ -61,14 +67,18 @@ export class ChatResolver {
 			switch (command) {
 				case "desc":
 					match[2] = ChatResolver.DESCRIPTION_SPEAKER_ALIAS;
+					chatData.flags ??= {};
+					chatData.flags.cgmp = { subType: ChatResolver.CHAT_MESSAGE_SUB_TYPES.DESC };
 					// Fall through...
 
 				case "as":
+					// Remove quotes or brackets around the speaker's name.
 					const alias = match[2].replace(/^["'\(\[](.*?)["'\)\]]$/, '$1');
+
+					chatData.flags ??= {};
+					chatData.flags.cgmp ??= { subType: ChatResolver.CHAT_MESSAGE_SUB_TYPES.AS };
 					chatData.type = CONST.CHAT_MESSAGE_TYPES.IC;
-					chatData.speaker = {};
-					chatData.speaker.alias = alias;
-					chatData.speaker.scene = game.user.viewedScene;
+					chatData.speaker = { alias: alias, scene: game.user.viewedScene };
 					chatData.content = match[3].replace(/\n/g, "<br>");
 					return cls.create(chatData, {});
 
@@ -150,8 +160,21 @@ export class ChatResolver {
 	}
 
 	static resolveRenderMessage(chatMessage, html, messageData) {
-		if (messageData.message.speaker.alias === ChatResolver.DESCRIPTION_SPEAKER_ALIAS) {
-			html[0].classList.add('desc');
+		switch (messageData.message.flags?.cgmp?.subType)
+		{
+			case ChatResolver.CHAT_MESSAGE_SUB_TYPES.AS:
+				html[0].classList.add('as');
+				return;
+
+			case ChatResolver.CHAT_MESSAGE_SUB_TYPES.DESC:
+				html[0].classList.add('desc');
+				return;
+
+			default:
+				// Still handle the old way we identifed /desc messages, for older messages in the log.
+				if (ChatResolver.DESCRIPTION_SPEAKER_ALIAS === messageData.message.speaker.alias)
+					html[0].classList.add('desc');
+				break;
 		}
 	}
 }
