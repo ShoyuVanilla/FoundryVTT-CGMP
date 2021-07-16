@@ -47,6 +47,7 @@ Hooks.once('init', () => {
 	}
 
 	Hooks.on('chatMessage', ChatResolver.onChatMessage);
+	Hooks.on('messageBetterRolls', ChatResolver.onMessageBetterRolls);
 	Hooks.on('preCreateChatMessage', ChatResolver.onPreCreateChatMessage);
 	Hooks.on('renderChatMessage', ChatResolver.onRenderChatMessage);
 });

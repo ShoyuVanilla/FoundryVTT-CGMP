@@ -62,6 +62,16 @@ export class ChatResolver {
 		}
 	}
 
+	static onMessageBetterRolls(itemRoll, messageData) {
+		if (!game.user.isGM) return;
+
+		const token = (messageData.speaker.token instanceof (ChatResolver._isV0_8() ? TokenDocument : Token)) ?
+			messageData.speaker.token : canvas.tokens.get(messageData.speaker.token);
+
+		if (token?.data?.hidden && (CONST.CHAT_MESSAGE_TYPES.ROLL === messageData.type))
+			messageData.whisper ??= ChatMessage.getWhisperRecipients("GM").map((user) => user.id);
+	}
+
 	static onPreCreateChatMessage(message) {
 		ChatResolver._resolveHiddenToken(message);
 		ChatResolver._resolvePCToken(message); 
@@ -138,10 +148,10 @@ export class ChatResolver {
 				// Whisper any non in-character messages.
 				if (ChatResolver._isV0_8()) {
 					messageData.update({
-						whisper: ChatMessage.getWhisperRecipients("GM")
+						whisper: ChatMessage.getWhisperRecipients("GM").map((user) => user.id)
 					});
 				} else {
-					messageData.whisper = ChatMessage.getWhisperRecipients("GM");
+					messageData.whisper = ChatMessage.getWhisperRecipients("GM").map((user) => user.id);
 				}
 			}
 			else
