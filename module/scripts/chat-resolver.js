@@ -166,12 +166,14 @@ export class ChatResolver {
 	static _resolvePCToken(message) {
 		if (!game.user.isGM) return;
 		if (!CGMPSettings.getSetting(CGMP_OPTIONS.DISABLE_GM_AS_PC)) return;
+
 		const messageData = ChatResolver._isV0_8() ? message.data : message;
-		const speaker = messageData.speaker;
-		if (!speaker) return;
-		const token = canvas.tokens.get(speaker.token);
-		if (!messageData.roll && token?.actor?.hasPlayerOwner) {
+
+		if (messageData.roll || messageData.flags?.damageLog || !messageData.speaker)
+			return;
+
+		const token = canvas.tokens.get(messageData.speaker.token);
+		if (token?.actor?.hasPlayerOwner)
 			this._convertToGmSpeaker(messageData);
-		}
 	}
 }
