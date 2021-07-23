@@ -169,7 +169,7 @@ export class ChatResolver {
 
 		const messageData = ChatResolver._isV0_8() ? message.data : message;
 
-		if (messageData.roll || messageData.flags?.damageLog || !messageData.speaker)
+		if (messageData.roll || (messageData.flags && (messageData.flags.damageLog || messageData.flags["damage-log"])) || !messageData.speaker)
 			return;
 
 		const token = canvas.tokens.get(messageData.speaker.token);
