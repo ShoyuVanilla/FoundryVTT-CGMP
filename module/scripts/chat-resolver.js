@@ -73,8 +73,11 @@ export class ChatResolver {
 	}
 
 	static onPreCreateChatMessage(message) {
-		ChatResolver._resolveHiddenToken(message);
-		ChatResolver._resolvePCToken(message); 
+		const messageData = ChatResolver._isV0_8() ? message.data : message;
+		if (messageData.flags?.cgmp?.subType !== ChatResolver.CHAT_MESSAGE_SUB_TYPES.AS) {
+			ChatResolver._resolveHiddenToken(message);
+			ChatResolver._resolvePCToken(message); 
+		}
 	}
 
 	static onRenderChatMessage(chatMessage, html, messageData) {
@@ -135,6 +138,25 @@ export class ChatResolver {
 		}
 	}
 
+	static _convertToInCharacter(messageData) {
+		// Convert out-of-character message to in-character
+		const newType = CONST.CHAT_MESSAGE_TYPES.IC;
+		const charname = game.users.get(messageData.user).charname;
+		if (ChatResolver._isV0_8()) {
+			messageData.update({
+				type: newType,
+				speaker: {
+					actor: null,
+					alias: charname ? charname : game.users.get(messageData.user).name,
+					token: null,
+				}
+			});
+		} else {
+			messageData.type = newType;
+			messageData.speaker.alias = charname ? charname : game.users.get(messageData.user).name;
+		}
+	}
+
 	static _resolveHiddenToken(message) {
 		if (!game.user.isGM) return;
 		if (!CGMPSettings.getSetting(CGMP_OPTIONS.BLIND_HIDDEN_TOKENS)) return;
@@ -164,16 +186,20 @@ export class ChatResolver {
 	}
 
 	static _resolvePCToken(message) {
-		if (!game.user.isGM) return;
-		if (!CGMPSettings.getSetting(CGMP_OPTIONS.DISABLE_GM_AS_PC)) return;
-
 		const messageData = ChatResolver._isV0_8() ? message.data : message;
 
 		if (messageData.roll || (messageData.flags && (messageData.flags.damageLog || messageData.flags["damage-log"])) || !messageData.speaker)
 			return;
 
-		const token = canvas.tokens.get(messageData.speaker.token);
-		if (token?.actor?.hasPlayerOwner)
-			this._convertToGmSpeaker(messageData);
+		if (CGMPSettings.getSetting(CGMP_OPTIONS.FORCE_IN_CHARACTER_ASSIGNED)) {
+			this._convertToInCharacter(messageData);
+		} else if (CGMPSettings.getSetting(CGMP_OPTIONS.DISABLE_GM_AS_PC)) {
+			const token = canvas.tokens.get(messageData.speaker.token);
+			if (token?.actor?.hasPlayerOwner) {
+				this._convertToGmSpeaker(messageData);
+			}				
+		}
+
+		return;
 	}
 }
