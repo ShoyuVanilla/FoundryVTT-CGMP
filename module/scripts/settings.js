@@ -12,9 +12,10 @@
  */
 
 export const CGMP_OPTIONS = {
-	DISABLE_GM_AS_PC: "disableGMAsPC",
 	BLIND_HIDDEN_TOKENS: "blindHiddenTokens",
 	DISABLE_CHAT_RECALL: "disableChatRecall",
+	DISABLE_GM_AS_PC: "disableGMAsPC",
+	FORCE_IN_CHARACTER_ASSIGNED: "forceInCharacterAssigned",
 	NOTIFY_TYPING: "notifyTyping"
 }
 
@@ -58,6 +59,16 @@ export class CGMPSettings {
 			default: false,
 			type: Boolean,
 			onChange: notifyTyping => window.location.reload()
+		});
+
+		game.settings.register("CautiousGamemastersPack", CGMP_OPTIONS.FORCE_IN_CHARACTER_ASSIGNED, {
+			name: "cgmp.force-in-character-assigned-s",
+			hint: "cgmp.force-in-character-assigned-l",
+			scope: "world",
+			config: true,
+			default: false,
+			type: Boolean,
+			onChange: forceInCharacterAssigned => window.location.reload()
 		});
 	}
 

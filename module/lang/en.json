@@ -5,6 +5,8 @@
 	"cgmp.blind-hidden-tokens-l": "Blind all rolls made by hidden tokens, only the GM can see them (chats are converted into visible Out of Character chats)",
 	"cgmp.disable-chat-recall-s": "Disable chat recalls",
 	"cgmp.disable-chat-recall-l": "Disable using up and down arrow keys to recall chats, so that they can be used to move the text cursor",
+	"cgmp.force-in-character-assigned-s": "Force all chat as assigned character",
+	"cgmp.force-in-character-assigned-l": "Chat messages will come from assigned character regardless of if that token is in the scene or if ooc chat is specified",
 	"cgmp.notify-typing-s": "Notify typing",
 	"cgmp.notify-typing-l": "Notify when other players are typing chat messages",
 	"cgmp.typing-one": "{user} is typing...", 
