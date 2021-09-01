@@ -141,19 +141,18 @@ export class ChatResolver {
 	static _convertToInCharacter(messageData) {
 		// Convert out-of-character message to in-character
 		const newType = CONST.CHAT_MESSAGE_TYPES.IC;
-		const charname = game.users.get(messageData.user).charname;
+		const user = game.users.get(messageData.user);
+		const actor = user.character;
+
+		const speaker = actor ? ChatMessage.getSpeaker({ actor }) : { actor: null, alias: user.name, token: null };
+
 		if (ChatResolver._isV0_8()) {
-			messageData.update({
-				type: newType,
-				speaker: {
-					actor: null,
-					alias: charname ? charname : game.users.get(messageData.user).name,
-					token: null,
-				}
-			});
+			messageData.update({ type: newType, speaker });
 		} else {
 			messageData.type = newType;
-			messageData.speaker.alias = charname ? charname : game.users.get(messageData.user).name;
+			messageData.speaker.actor = speaker.actor;
+			messageData.speaker.alias = speaker.alias;
+			messageData.speaker.token = speaker.token;
 		}
 	}
 
