@@ -82,8 +82,7 @@ export class ChatResolver {
 	}
 
 	static onRenderChatMessage(chatMessage, html, messageData) {
-		switch (messageData.message.flags?.cgmp?.subType)
-		{
+		switch (messageData.message.flags?.cgmp?.subType) {
 			case ChatResolver.CHAT_MESSAGE_SUB_TYPES.AS:
 				html[0].classList.add('as');
 				return;
@@ -105,8 +104,7 @@ export class ChatResolver {
 	}
 
 	static _parseChatMessage(message) {
-		if (game.user.isGM)
-		{
+		if (game.user.isGM) {
 			// Iterate over patterns, finding the first match
 			for ( let [command, rgx] of Object.entries(ChatResolver.PATTERNS) ) {
 				const match = message.match(rgx); 
@@ -160,13 +158,14 @@ export class ChatResolver {
 	static _resolveHiddenToken(message) {
 		if (!game.user.isGM) return;
 		if (!CGMPSettings.getSetting(CGMP_OPTIONS.BLIND_HIDDEN_TOKENS)) return;
+
 		const messageData = ChatResolver._isV0_8() ? message.data : message;
 		const speaker = messageData.speaker;
 		if (!speaker) return;
+
 		const token = canvas.tokens.get(speaker.token);
 		if (token?.data?.hidden) {
-			if (CONST.CHAT_MESSAGE_TYPES.IC !== messageData.type)
-			{
+			if (CONST.CHAT_MESSAGE_TYPES.IC !== messageData.type) {
 				// Whisper any non in-character messages.
 				if (ChatResolver._isV0_8()) {
 					messageData.update({
@@ -175,9 +174,7 @@ export class ChatResolver {
 				} else {
 					messageData.whisper = ChatMessage.getWhisperRecipients("GM").map((user) => user.id);
 				}
-			}
-			else
-			{
+			} else {
 				// Convert in-character messages to out-of-character.
 				// We're assuming that the GM wanted to type something to the chat but forgot to deselect a token.
 				this._convertToGmSpeaker(messageData);
