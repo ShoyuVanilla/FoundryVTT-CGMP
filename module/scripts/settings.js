@@ -52,8 +52,7 @@ export class CGMPSettings {
 			config: true,
 			default: (CGMPSettings.getSetting(CGMP_LEGACY_OPTIONS.DISABLE_GM_AS_PC) ? CGMP_SPEAKER_MODE.DISABLE_GM_AS_PC : CGMP_SPEAKER_MODE.NONE),
 			type: Number,
-			choices: speakerModeChoices,
-			onChange: () => window.location.reload()
+			choices: speakerModeChoices
 		});
 
 		game.settings.register("CautiousGamemastersPack", CGMP_OPTIONS.BLIND_HIDDEN_TOKENS, {
@@ -62,8 +61,7 @@ export class CGMPSettings {
 			scope: "world",
 			config: true,
 			default: false,
-			type: Boolean,
-			onChange: blindHiddenTokens => window.location.reload()
+			type: Boolean
 		});
 		
 		game.settings.register("CautiousGamemastersPack", CGMP_OPTIONS.DISABLE_CHAT_RECALL, {
@@ -73,7 +71,7 @@ export class CGMPSettings {
 			config: true,
 			default: false,
 			type: Boolean,
-			onChange: disableChatRecall => window.location.reload()
+			onChange: () => window.location.reload()
 		});
 
 		game.settings.register("CautiousGamemastersPack", CGMP_OPTIONS.NOTIFY_TYPING, {
@@ -83,7 +81,7 @@ export class CGMPSettings {
 			config: true,
 			default: false,
 			type: Boolean,
-			onChange: notifyTyping => window.location.reload()
+			onChange: () => window.location.reload()
 		});
 	}
 
