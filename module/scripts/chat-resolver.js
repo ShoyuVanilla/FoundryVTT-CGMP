@@ -11,7 +11,7 @@
  * https://mit-license.org/
  */
 
-import { CGMPSettings, CGMP_OPTIONS } from "./settings.js";
+import { CGMPSettings, CGMP_OPTIONS, CGMP_SPEAKER_MODE } from "./settings.js";
 
 export class ChatResolver {
 
@@ -190,13 +190,19 @@ export class ChatResolver {
 		if (messageData.roll || (messageData.flags && (messageData.flags.damageLog || messageData.flags["damage-log"])) || !messageData.speaker)
 			return;
 
-		if (CGMPSettings.getSetting(CGMP_OPTIONS.FORCE_IN_CHARACTER_ASSIGNED)) {
-			this._convertToInCharacter(messageData);
-		} else if (CGMPSettings.getSetting(CGMP_OPTIONS.DISABLE_GM_AS_PC)) {
-			const token = canvas.tokens.get(messageData.speaker.token);
-			if (token?.actor?.hasPlayerOwner) {
-				this._convertToGmSpeaker(messageData);
-			}				
+		switch (CGMPSettings.getSetting(CGMP_OPTIONS.SPEAKER_MODE)) {
+			case CGMP_SPEAKER_MODE.DISABLE_GM_AS_PC:
+				if (game.user.isGM) {
+					const token = canvas.tokens.get(messageData.speaker.token);
+					if (token?.actor?.hasPlayerOwner) {
+						this._convertToGmSpeaker(messageData);
+					}
+				}
+				break;
+
+			case CGMP_SPEAKER_MODE.FORCE_IN_CHARACTER_ASSIGNED:
+				this._convertToInCharacter(messageData);
+				break;
 		}
 
 		return;

@@ -1,6 +1,4 @@
 {
-	"cgmp.disable-gm-as-pc-s": "GMのプレイヤーコマ発言禁止",
-	"cgmp.disable-gm-as-pc-l": "GMがプレイヤーのコマを選択している状態でチャットに発言をした場合、そのコマの名前ではなくGMの名前を出力するようになります。",
 	"cgmp.blind-hidden-tokens-s": "不可視のコマはブラインドロールを使用する",
 	"cgmp.blind-hidden-tokens-l": "不可視のコマが行うすべてのロールはブラインドロールに変換され、プレイヤーに情報がもれないように処理します。",
 	"cgmp.disable-chat-recall-s": "チャットの上下キーの動作変更",

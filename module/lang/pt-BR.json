@@ -1,6 +1,4 @@
 {
-	"cgmp.disable-gm-as-pc-s": "Desativar GM falando como tokens de PC",
-	"cgmp.disable-gm-as-pc-l": "Transforme todas as conversas que a GM diz como PC em conversas Fora de Personagem, exceto as rolagens",
 	"cgmp.blind-hidden-tokens-s": "Bate-papo oculto feito por tokens ocultos",
 	"cgmp.blind-hidden-tokens-l": "Oculta todas as conversas feitas por fichas ocultas, incluindo jogadas. Somente o GM pode vê-las",
 	"cgmp.disable-chat-recall-s": "Desativar recuperações de bate-papo",

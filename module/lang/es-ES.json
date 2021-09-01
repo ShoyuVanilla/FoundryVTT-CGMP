@@ -1,6 +1,4 @@
 {
-	"cgmp.disable-gm-as-pc-s": "Disactivar que el DM hable como tokens de los PJs",
-	"cgmp.disable-gm-as-pc-l": "Hacer que todo lo que el DM diga como un PJ sea chat fuera del personaje (OOC), exceptuando las tiradas",
 	"cgmp.blind-hidden-tokens-s": "Ocultar los mensajes de chat hechos por tokens ocultos",
 	"cgmp.blind-hidden-tokens-l": "Ocultar todos los mensajes de chat hechos por tokens ocultos, incluyendo tiradas, solo los DM pueden verlos",
 	"cgmp.disable-chat-recall-s": "Desactivar el registro de chat",

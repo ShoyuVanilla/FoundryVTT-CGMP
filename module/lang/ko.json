@@ -1,6 +1,4 @@
 {
-	"cgmp.disable-gm-as-pc-s": "GM이 PC 토큰으로 말하기 비활성화",
-	"cgmp.disable-gm-as-pc-l": "GM이 PC 토큰을 선택한 상태로 입력한 채팅을 GM의 일반 채팅으로 변환합니다. 주사위 굴림은 예외입니다.",
 	"cgmp.blind-hidden-tokens-s": "숨겨진 토큰 채팅 비공개",
 	"cgmp.blind-hidden-tokens-l": "숨겨진 토큰으로 말한 채팅 및 주사위 굴림이 GM에게만 보이도록 합니다.",
 	"cgmp.disable-chat-recall-s": "지난 채팅 불러오기 비활성화",

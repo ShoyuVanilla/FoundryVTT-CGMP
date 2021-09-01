@@ -1,6 +1,4 @@
 {
-	"cgmp.disable-gm-as-pc-s": "Désactiver 'GM parle pour Joueur'",
-	"cgmp.disable-gm-as-pc-l": "Rendre tous les messages 'GM parle pour Joueur' à un message hors jeu, excepté les jets de dés",
 	"cgmp.blind-hidden-tokens-s": "Aveugler les messages fait pas les personnages camouflés",
 	"cgmp.blind-hidden-tokens-l": "Aveugler les messages fait par des personnages camouflés, incluant les jets de dés. Seul le GM pourra les voir",
 	"cgmp.disable-chat-recall-s": "Désactiver le rappele des messages",

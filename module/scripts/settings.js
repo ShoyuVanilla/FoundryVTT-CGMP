@@ -14,23 +14,48 @@
 export const CGMP_OPTIONS = {
 	BLIND_HIDDEN_TOKENS: "blindHiddenTokens",
 	DISABLE_CHAT_RECALL: "disableChatRecall",
-	DISABLE_GM_AS_PC: "disableGMAsPC",
-	FORCE_IN_CHARACTER_ASSIGNED: "forceInCharacterAssigned",
-	NOTIFY_TYPING: "notifyTyping"
-}
+	NOTIFY_TYPING: "notifyTyping",
+	SPEAKER_MODE: "speakerMode"
+};
+
+const CGMP_LEGACY_OPTIONS = {
+	DISABLE_GM_AS_PC: "disableGMAsPC"
+};
+
+export const CGMP_SPEAKER_MODE = {
+	NONE: 0,
+	DISABLE_GM_AS_PC: 1,
+	FORCE_IN_CHARACTER_ASSIGNED: 2
+};
 
 export class CGMPSettings {
 	static registerSettings() {
-		game.settings.register("CautiousGamemastersPack", CGMP_OPTIONS.DISABLE_GM_AS_PC, {
-			name: "cgmp.disable-gm-as-pc-s",
-			hint: "cgmp.disable-gm-as-pc-l",
+
+		// Legacy setting, no longer accessible via UI.
+		// Left here so it can be read and converted to the new Speaker Mode on startup.
+		game.settings.register("CautiousGamemastersPack", CGMP_LEGACY_OPTIONS.DISABLE_GM_AS_PC, {
+			scope: "world",
+			config: false,
+			default: false,
+			type: Boolean
+		});
+
+		const speakerModeChoices = {};
+		speakerModeChoices[CGMP_SPEAKER_MODE.NONE] = game.i18n.localize("cgmp.speaker-mode.none-s");
+		speakerModeChoices[CGMP_SPEAKER_MODE.DISABLE_GM_AS_PC] = game.i18n.localize("cgmp.speaker-mode.disable-gm-as-pc-s");
+		speakerModeChoices[CGMP_SPEAKER_MODE.FORCE_IN_CHARACTER_ASSIGNED] = game.i18n.localize("cgmp.speaker-mode.force-in-character-assigned-s");
+
+		game.settings.register("CautiousGamemastersPack", CGMP_OPTIONS.SPEAKER_MODE, {
+			name: "cgmp.speaker-mode-s",
+			hint: "cgmp.speaker-mode-l",
 			scope: "world",
 			config: true,
-			default: false,
-			type: Boolean,
-			onChange: disableGMAsPC => window.location.reload()
+			default: (CGMPSettings.getSetting(CGMP_LEGACY_OPTIONS.DISABLE_GM_AS_PC) ? CGMP_SPEAKER_MODE.DISABLE_GM_AS_PC : CGMP_SPEAKER_MODE.NONE),
+			type: Number,
+			choices: speakerModeChoices,
+			onChange: () => window.location.reload()
 		});
-		
+
 		game.settings.register("CautiousGamemastersPack", CGMP_OPTIONS.BLIND_HIDDEN_TOKENS, {
 			name: "cgmp.blind-hidden-tokens-s",
 			hint: "cgmp.blind-hidden-tokens-l",
@@ -59,16 +84,6 @@ export class CGMPSettings {
 			default: false,
 			type: Boolean,
 			onChange: notifyTyping => window.location.reload()
-		});
-
-		game.settings.register("CautiousGamemastersPack", CGMP_OPTIONS.FORCE_IN_CHARACTER_ASSIGNED, {
-			name: "cgmp.force-in-character-assigned-s",
-			hint: "cgmp.force-in-character-assigned-l",
-			scope: "world",
-			config: true,
-			default: false,
-			type: Boolean,
-			onChange: forceInCharacterAssigned => window.location.reload()
 		});
 	}
 
