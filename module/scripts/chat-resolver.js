@@ -64,6 +64,7 @@ export class ChatResolver {
 
 	static onMessageBetterRolls(itemRoll, messageData) {
 		if (!game.user.isGM) return;
+		if (!CGMPSettings.getSetting(CGMP_OPTIONS.BLIND_HIDDEN_TOKENS)) return;
 
 		const token = (messageData.speaker.token instanceof (ChatResolver._isV0_8() ? TokenDocument : Token)) ?
 			messageData.speaker.token : canvas.tokens.get(messageData.speaker.token);
