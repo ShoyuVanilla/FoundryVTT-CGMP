@@ -12,31 +12,38 @@
  */
 
 /* Styling for /desc messages */
-#chat-log .message.desc {
+#chat-log .message.cgmp-desc {
 	background: #ececec;
 	border-color: gray !important;
 }
-#chat-log .message.desc .message-content {
+#chat-log .message.cgmp-desc .message-content {
 	text-align: center;
 	color: gray;
 	font-style: italic;
 }
 
 /* Hide chat portrait for /as and /desc messages */
-#chat-log .message.as .message-header .message-portrait,
-#chat-log .message.desc .message-header .message-portrait
+#chat-log .message.cgmp-as .message-header .message-portrait,
+#chat-log .message.cgmp-desc .message-header .message-portrait
 {
 	display: none !important;
 }
 
 /* Hide sender for /desc messages */
-#chat-log .message.desc .message-header .message-sender {
+#chat-log .message.cgmp-desc .message-header .message-sender {
 	display: none !important;
 }
 
 /* Ensure metatdata is right aligned when both chat portrait and sender are hidden. */
-#chat-log .message.desc .message-header .message-metadata {
+#chat-log .message.cgmp-desc .message-header .message-metadata {
 	margin-left: auto;			
+}
+
+/* Styling for emotes */
+#chat-log .message.emote .message-content {
+	text-align: center;
+	color: #323232;
+	font-style: italic;
 }
 
 /* Make the chat-form (parent of the text box) flex, so we can pop the typing notification in and out */

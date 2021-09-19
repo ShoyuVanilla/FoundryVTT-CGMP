@@ -75,7 +75,7 @@ export class ChatResolver {
 
 	static onPreCreateChatMessage(message) {
 		const messageData = ChatResolver._isV0_8() ? message.data : message;
-		if (messageData.flags?.cgmp?.subType !== ChatResolver.CHAT_MESSAGE_SUB_TYPES.AS) {
+		if (ChatResolver.CHAT_MESSAGE_SUB_TYPES.AS !== messageData.flags?.cgmp?.subType) {
 			ChatResolver._resolveHiddenToken(message);
 			ChatResolver._resolvePCToken(message); 
 		}
@@ -84,17 +84,17 @@ export class ChatResolver {
 	static onRenderChatMessage(chatMessage, html, messageData) {
 		switch (messageData.message.flags?.cgmp?.subType) {
 			case ChatResolver.CHAT_MESSAGE_SUB_TYPES.AS:
-				html[0].classList.add('as');
+				html.addClass('cgmp-as');
 				return;
 
 			case ChatResolver.CHAT_MESSAGE_SUB_TYPES.DESC:
-				html[0].classList.add('desc');
+				html.addClass('cgmp-desc');
 				return;
 
 			default:
 				// Still handle the old way we identifed /desc messages, for older messages in the log.
 				if (ChatResolver.DESCRIPTION_SPEAKER_ALIAS === messageData.message.speaker.alias)
-					html[0].classList.add('desc');
+					html.addClass('cgmp-desc');
 				break;
 		}
 	}
