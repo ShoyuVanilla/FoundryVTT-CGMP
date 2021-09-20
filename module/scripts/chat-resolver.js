@@ -138,12 +138,23 @@ export class ChatResolver {
 	}
 
 	static _convertToInCharacter(messageData) {
-		// Convert out-of-character message to in-character
-		const newType = CONST.CHAT_MESSAGE_TYPES.IC;
 		const user = game.users.get(messageData.user);
 		const actor = user.character;
-
 		const speaker = actor ? ChatMessage.getSpeaker({ actor }) : { actor: null, alias: user.name, token: null };
+
+		// Convert out-of-character message to in-character (leave emotes and whispers as-is).
+		let newType = messageData.type;
+		switch (messageData.type) {
+			case CONST.CHAT_MESSAGE_TYPES.EMOTE:
+			case CONST.CHAT_MESSAGE_TYPES.WHISPER:
+				break;
+
+			default:
+				// If no actor was found for the user, then leave type unchanged.
+				if (actor)
+					newType = CONST.CHAT_MESSAGE_TYPES.IC;
+				break;
+		}
 
 		if (ChatResolver._isV0_8()) {
 			messageData.update({ type: newType, speaker });
