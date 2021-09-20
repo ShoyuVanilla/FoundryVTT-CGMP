@@ -25,7 +25,8 @@ const CGMP_LEGACY_OPTIONS = {
 export const CGMP_SPEAKER_MODE = {
 	NONE: 0,
 	DISABLE_GM_AS_PC: 1,
-	FORCE_IN_CHARACTER_ASSIGNED: 2
+	FORCE_IN_CHARACTER_ASSIGNED: 2,
+	GM_ALWAYS_OOC: 3
 };
 
 export class CGMPSettings {
@@ -44,6 +45,7 @@ export class CGMPSettings {
 		speakerModeChoices[CGMP_SPEAKER_MODE.NONE] = game.i18n.localize("cgmp.speaker-mode.none-s");
 		speakerModeChoices[CGMP_SPEAKER_MODE.DISABLE_GM_AS_PC] = game.i18n.localize("cgmp.speaker-mode.disable-gm-as-pc-s");
 		speakerModeChoices[CGMP_SPEAKER_MODE.FORCE_IN_CHARACTER_ASSIGNED] = game.i18n.localize("cgmp.speaker-mode.force-in-character-assigned-s");
+		speakerModeChoices[CGMP_SPEAKER_MODE.GM_ALWAYS_OOC] = game.i18n.localize("cgmp.speaker-mode.gm-always-ooc-s");
 
 		game.settings.register("CautiousGamemastersPack", CGMP_OPTIONS.SPEAKER_MODE, {
 			name: "cgmp.speaker-mode-s",

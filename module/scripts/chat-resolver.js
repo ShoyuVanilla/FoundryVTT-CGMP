@@ -209,6 +209,11 @@ export class ChatResolver {
 				}
 				break;
 
+			case CGMP_SPEAKER_MODE.GM_ALWAYS_OOC:
+				if (game.user.isGM)
+					this._convertToGmSpeaker(messageData);
+				break;
+
 			case CGMP_SPEAKER_MODE.FORCE_IN_CHARACTER_ASSIGNED:
 				this._convertToInCharacter(messageData);
 				break;
