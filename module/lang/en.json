@@ -5,6 +5,8 @@
 	"cgmp.speaker-mode.disable-gm-as-pc-s": "Disable GM speaking as PC",
 	"cgmp.speaker-mode.force-in-character-assigned-s": "Force in-character",
 	"cgmp.speaker-mode.gm-always-ooc-s": "GM always out-of-character",
+	"cgmp.allow-players-to-use-desc-s": "Allow players to use /desc",
+	"cgmp.allow-players-to-use-desc-l": "Allow players to use the /desc chat command",
 	"cgmp.blind-hidden-tokens-s": "Blind rolls made by hidden tokens",
 	"cgmp.blind-hidden-tokens-l": "Blind all rolls made by hidden tokens, only the GM can see them (chats are converted into visible Out of Character chats)",
 	"cgmp.disable-chat-recall-s": "Disable chat recalls",

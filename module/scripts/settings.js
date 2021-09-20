@@ -12,6 +12,7 @@
  */
 
 export const CGMP_OPTIONS = {
+	ALLOW_PLAYERS_TO_USE_DESC: "allowPlayersToUseDesc",
 	BLIND_HIDDEN_TOKENS: "blindHiddenTokens",
 	DISABLE_CHAT_RECALL: "disableChatRecall",
 	NOTIFY_TYPING: "notifyTyping",
@@ -55,6 +56,15 @@ export class CGMPSettings {
 			default: (CGMPSettings.getSetting(CGMP_LEGACY_OPTIONS.DISABLE_GM_AS_PC) ? CGMP_SPEAKER_MODE.DISABLE_GM_AS_PC : CGMP_SPEAKER_MODE.NONE),
 			type: Number,
 			choices: speakerModeChoices
+		});
+
+		game.settings.register("CautiousGamemastersPack", CGMP_OPTIONS.ALLOW_PLAYERS_TO_USE_DESC, {
+			name: "cgmp.allow-players-to-use-desc-s",
+			hint: "cgmp.allow-players-to-use-desc-l",
+			scope: "world",
+			config: true,
+			default: false,
+			type: Boolean
 		});
 
 		game.settings.register("CautiousGamemastersPack", CGMP_OPTIONS.BLIND_HIDDEN_TOKENS, {

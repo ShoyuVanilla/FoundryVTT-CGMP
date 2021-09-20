@@ -32,17 +32,21 @@ export class ChatResolver {
 
 	static onChatMessage(chatLog, message, chatData) {
 		// Parse the message to determine the matching handler
-		let [command, match] = ChatResolver._parseChatMessage(message);
+		const [command, match] = ChatResolver._parseChatMessage(message);
 	
 		// Process message data based on the identified command type
 		switch (command) {
 			case "desc":
+				if (!game.user.isGM && !CGMPSettings.getSetting(CGMP_OPTIONS.ALLOW_PLAYERS_TO_USE_DESC)) return true;
+
 				match[2] = ChatResolver.DESCRIPTION_SPEAKER_ALIAS;
 				chatData.flags ??= {};
 				chatData.flags.cgmp = { subType: ChatResolver.CHAT_MESSAGE_SUB_TYPES.DESC };
 				// Fall through...
 
 			case "as":
+				if (!chatData.flags?.cgmp && !game.user.isGM) return true;
+
 				// Remove quotes or brackets around the speaker's name.
 				const alias = match[2].replace(/^["'\(\[](.*?)["'\)\]]$/, '$1');
 
@@ -104,12 +108,10 @@ export class ChatResolver {
 	}
 
 	static _parseChatMessage(message) {
-		if (game.user.isGM) {
-			// Iterate over patterns, finding the first match
-			for ( let [command, rgx] of Object.entries(ChatResolver.PATTERNS) ) {
-				const match = message.match(rgx); 
-				if (match) return [command, match];
-			}
+		// Iterate over patterns, finding the first match
+		for ( let [command, rgx] of Object.entries(ChatResolver.PATTERNS) ) {
+			const match = message.match(rgx); 
+			if (match) return [command, match];
 		}
 		return [ undefined, undefined ];
 	}
