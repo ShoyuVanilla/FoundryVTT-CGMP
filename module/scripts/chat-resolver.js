@@ -196,7 +196,7 @@ export class ChatResolver {
 	static _resolvePCToken(message) {
 		const messageData = ChatResolver._isV0_8() ? message.data : message;
 
-		if (messageData.roll || (messageData.flags && (messageData.flags.damageLog || messageData.flags["damage-log"])) || !messageData.speaker)
+		if (messageData.roll || messageData.flags?.damageLog || messageData.flags?.["damage-log"] || !messageData.speaker)
 			return;
 
 		switch (CGMPSettings.getSetting(CGMP_OPTIONS.SPEAKER_MODE)) {
