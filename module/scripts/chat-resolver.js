@@ -79,9 +79,15 @@ export class ChatResolver {
 
 	static onPreCreateChatMessage(message) {
 		const messageData = ChatResolver._isV0_8() ? message.data : message;
-		if (ChatResolver.CHAT_MESSAGE_SUB_TYPES.AS !== messageData.flags?.cgmp?.subType) {
-			ChatResolver._resolveHiddenToken(message);
-			ChatResolver._resolvePCToken(message); 
+		switch (messageData.flags?.cgmp?.subType) {
+			case ChatResolver.CHAT_MESSAGE_SUB_TYPES.AS:
+			case ChatResolver.CHAT_MESSAGE_SUB_TYPES.DESC:
+				break;
+
+			default:
+				ChatResolver._resolveHiddenToken(message);
+				ChatResolver._resolvePCToken(message); 
+				break;
 		}
 	}
 
