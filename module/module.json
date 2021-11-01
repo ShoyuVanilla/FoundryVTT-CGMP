@@ -34,7 +34,7 @@
   ],
   "scripts": [],
   "styles": [
-    "styles/style.css"
+    "styles/cgmp.css"
   ],
   "socket": true,
   "languages": [
