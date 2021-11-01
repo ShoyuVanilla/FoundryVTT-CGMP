@@ -71,8 +71,8 @@
 	right: 0px;
 }
 .typing-notify.hidden {
-	max-height: 0px;
-	color: transparent;
+	max-height: 0px !important;
+	color: transparent !important;
 }
 .typing-notify .notify-text {
 	margin: 0 0 0 4px;
