@@ -110,7 +110,7 @@ export class ChatResolver {
 	}
 
 	static _isV0_8() {
-		return !isNewerVersion("0.8.0", game.data.version);
+		return !isNewerVersion("0.8.0", game.version ?? game.data.version);
 	}
 
 	static _parseChatMessage(message) {

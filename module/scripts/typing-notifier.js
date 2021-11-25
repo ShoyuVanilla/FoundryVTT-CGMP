@@ -76,6 +76,15 @@ export class TypingNotifier {
 		return charWidth;
 	}
 
+	static _isV9() {
+		return !isNewerVersion("9", game.version ?? game.data.version);
+	}
+
+	static _getKey(event) {
+		const key = TypingNotifier._isV9() ? KeyboardManager.getKeyboardEventContext(event, false).key : game.keyboard.getKey(event);
+		return key.toUpperCase();
+	}
+
 	_calcCharsPerLine() {
 		// Calculate the number of monospace chars that will fit on a line of the chat box.
 		const chatBoxStyle = getComputedStyle(this._chatBox);
@@ -139,15 +148,15 @@ export class TypingNotifier {
 		this.updateNotice();
 	}
 
-	_willDeleteLastChar(code, textArea) {
+	_willDeleteLastChar(key, textArea) {
 		if (0 === (textArea.selectionEnd - textArea.selectionStart)) {
 			// Nothing selected.  Is there a single char left that will be deleted?
 			if (1 === textArea.value.length) {
-				switch (code) {
-					case "Backspace":
+				switch (key) {
+					case "BACKSPACE":
 						return (0 !== textArea.selectionStart);
 
-					case "Delete":
+					case "DELETE":
 						return (textArea.selectionStart !== textArea.value.length);
 
 					default:
@@ -158,9 +167,9 @@ export class TypingNotifier {
 			}
 		} else {
 			// text range selected.  Will all of it be deleted?
-			switch (code) {
-				case "Backspace":
-				case "Delete":
+			switch (key) {
+				case "BACKSPACE":
+				case "DELETE":
 					return ((textArea.selectionEnd - textArea.selectionStart) >= textArea.value.length);
 
 				default:
@@ -170,10 +179,10 @@ export class TypingNotifier {
 	}
 
 	_onChatKeyDown(wrapped, event) {
-		const code = game.keyboard.getKey(event);
-		if ((code === "Enter") && !event.shiftKey) {
+		const key = TypingNotifier._getKey(event);
+		if (((key === "ENTER") || (key === "NUMPADENTER")) && !event.shiftKey) {
 			this._emitTypingEnd();
-		} else if (this._willDeleteLastChar(code, event.currentTarget)) {
+		} else if (this._willDeleteLastChar(key, event.currentTarget)) {
 			this._emitTypingEnd();
 		} else {
 			this._emitTyping();
