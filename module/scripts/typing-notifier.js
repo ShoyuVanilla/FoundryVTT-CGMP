@@ -151,13 +151,13 @@ export class TypingNotifier {
 	_willDeleteLastChar(key, textArea) {
 		if (0 === (textArea.selectionEnd - textArea.selectionStart)) {
 			// Nothing selected.  Is there a single char left that will be deleted?
-			if (1 === textArea.value.length) {
+			if (textArea.value.length <= 1) {
 				switch (key) {
 					case "BACKSPACE":
-						return (0 !== textArea.selectionStart);
+						return ((0 === textArea.value.length) || (0 !== textArea.selectionStart));
 
 					case "DELETE":
-						return (textArea.selectionStart !== textArea.value.length);
+						return ((0 === textArea.value.length) || (textArea.selectionStart !== textArea.value.length));
 
 					default:
 						return false;
