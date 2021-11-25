@@ -14,7 +14,6 @@
 export const CGMP_OPTIONS = {
 	ALLOW_PLAYERS_TO_USE_DESC: "allowPlayersToUseDesc",
 	BLIND_HIDDEN_TOKENS: "blindHiddenTokens",
-	DISABLE_CHAT_RECALL: "disableChatRecall",
 	NOTIFY_TYPING: "notifyTyping",
 	SPEAKER_MODE: "speakerMode"
 };
@@ -76,16 +75,6 @@ export class CGMPSettings {
 			type: Boolean
 		});
 		
-		game.settings.register("CautiousGamemastersPack", CGMP_OPTIONS.DISABLE_CHAT_RECALL, {
-			name: "cgmp.disable-chat-recall-s",
-			hint: "cgmp.disable-chat-recall-l",
-			scope: "world",
-			config: true,
-			default: false,
-			type: Boolean,
-			onChange: () => window.location.reload()
-		});
-
 		game.settings.register("CautiousGamemastersPack", CGMP_OPTIONS.NOTIFY_TYPING, {
 			name: "cgmp.notify-typing-s",
 			hint: "cgmp.notify-typing-l",

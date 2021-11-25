@@ -34,18 +34,21 @@ export class TypingNotifier {
 		this._notifyWrapperElement.innerHTML = '<span class="dots-cont"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span></span>';
 		this._notifyWrapperElement.appendChild(this._notifySpan);
 
-		const chatFormElement = document.getElementById("chat-form");
-		chatFormElement.appendChild(this._notifyWrapperElement);
-
 		this._isNoticeVisible = false;
 
-		this._chatBox = document.getElementById("chat-message");
-		this.charsPerLine = this._calcCharsPerLine();
-
-		this._chatBoxResizeObserver = new ResizeObserver(this._onChatBoxResize.bind(this));
-		this._chatBoxResizeObserver.observe(this._chatBox);
-
 		game.socket.on('module.CautiousGamemastersPack', this._onRemotePacket.bind(this));
+		libWrapper.register('CautiousGamemastersPack', 'ChatLog.prototype._onChatKeyDown', this._onChatKeyDown.bind(this), 'WRAPPER');
+
+		Hooks.once('renderChatLog', function() {
+			const chatFormElement = document.getElementById("chat-form");
+			chatFormElement.appendChild(this._notifyWrapperElement);
+
+			this._chatBox = document.getElementById("chat-message");
+			this._charsPerLine = this._calcCharsPerLine();
+
+			this._chatBoxResizeObserver = new ResizeObserver(this._onChatBoxResize.bind(this));
+			this._chatBoxResizeObserver.observe(this._chatBox);
+		}.bind(this));
 	}
 
 	static _calcCharacterWidth(chatBoxStyle)
@@ -105,7 +108,7 @@ export class TypingNotifier {
 		// Cursor is on the last line if there are no line breaks between it and the end of the text
 		// and we are within the number of chars that can fit on a line.  This is not exact, but it's good enough.
 		return ((!this._chatBox.value.includes("\n", this._chatBox.selectionEnd)) &&
-				((this._chatBox.value.length - this._chatBox.selectionEnd) <= this.charsPerLine));
+				((this._chatBox.value.length - this._chatBox.selectionEnd) <= this._charsPerLine));
 	}
 
 	_emitTypingEnd() {
@@ -166,7 +169,7 @@ export class TypingNotifier {
 		}
 	}
 
-	onChatKeyDown(event) {
+	_onChatKeyDown(wrapped, event) {
 		const code = game.keyboard.getKey(event);
 		if ((code === "Enter") && !event.shiftKey) {
 			this._emitTypingEnd();
@@ -175,6 +178,8 @@ export class TypingNotifier {
 		} else {
 			this._emitTyping();
 		}
+
+		wrapped(event);
 	}
 
 	_onRemotePacket(data) {

@@ -9,8 +9,6 @@
 	"cgmp.allow-players-to-use-desc-l": "Allow players to use the /desc chat command",
 	"cgmp.blind-hidden-tokens-s": "Blind rolls made by hidden tokens",
 	"cgmp.blind-hidden-tokens-l": "Blind all rolls made by hidden tokens, only the GM can see them (chats are converted into visible Out of Character chats)",
-	"cgmp.disable-chat-recall-s": "Disable chat recalls",
-	"cgmp.disable-chat-recall-l": "Disable using up and down arrow keys to recall chats, so that they can be used to move the text cursor",
 	"cgmp.notify-typing-s": "Notify typing",
 	"cgmp.notify-typing-l": "Notify when other players are typing chat messages",
 	"cgmp.typing-one": "{user} is typing...", 
