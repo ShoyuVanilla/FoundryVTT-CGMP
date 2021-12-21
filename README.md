@@ -21,15 +21,12 @@ Please note that v0.2.0 was called "Cautious Gamemaster's Pack 2", but since own
   * **Force in-character**: Chat messages will come from assigned character regardless of whether that token is in the scene, or if `/ooc` chat is specified.
   * **GM always out-of-character**: Chat messages made by the GM will always be sent as out-of-character messages.
 * **Allow players to use /desc** - Usually only the GM can use the `/desc` command.  This settings also allows the players to use it.
-* **Blind rolls made by hidden tokens** - This makes all rolls made by hidden tokens into blind rolls.
-* **Disable Chat Recalls** - Disable using up/down arrow keys to recall previous chats so that they can be used to move the text cursor.
-* **Notify typing** - Notify whether the other players are typing chat messages.<br>![](notify_typing.gif)
+* **Blind rolls made by hidden tokens** - This turns all rolls made by hidden tokens into blind rolls.
+* **Notify typing** - Notify whether the other players are typing chat messages...<p>![](notify_typing.gif)</p>
 
 ## Additional Chat Commands
 
-![](additional_chat_commands.png)
-
-* Additional chat commands - `/desc` for description and `/as` for in-charactor without tokens
+* Additional chat commands - `/desc` for description and `/as` for in-charactor without tokens...<p>![](additional_chat_commands.png)</p>
 
 ---
 
