@@ -34,8 +34,6 @@ export class TypingNotifier {
 		this._notifyWrapperElement.innerHTML = '<span class="dots-cont"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span></span>';
 		this._notifyWrapperElement.appendChild(this._notifySpan);
 
-		this._isNoticeVisible = false;
-
 		game.socket.on('module.CautiousGamemastersPack', this._onRemotePacket.bind(this));
 		libWrapper.register('CautiousGamemastersPack', 'ChatLog.prototype._onChatKeyDown', this._onChatKeyDown.bind(this), 'WRAPPER');
 
@@ -133,9 +131,7 @@ export class TypingNotifier {
 	}
 
 	_setVisible(visible) {
-		if (!this._notifyWrapperElement || visible === this._isNoticeVisible) return;
-		this._isNoticeVisible = visible;
-		this._notifyWrapperElement.classList.toggle('hidden');
+		this._notifyWrapperElement?.classList.toggle('hidden', !visible);
 	}
 
 	_onRemoteTypingEnded(id) {
