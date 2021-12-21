@@ -80,11 +80,6 @@ export class TypingNotifier {
 		return !isNewerVersion("9", game.version ?? game.data.version);
 	}
 
-	static _getKey(event) {
-		const key = TypingNotifier._isV9() ? KeyboardManager.getKeyboardEventContext(event, false).key : game.keyboard.getKey(event);
-		return key.toUpperCase();
-	}
-
 	_calcCharsPerLine() {
 		// Calculate the number of monospace chars that will fit on a line of the chat box.
 		const chatBoxStyle = getComputedStyle(this._chatBox);
@@ -179,7 +174,7 @@ export class TypingNotifier {
 	}
 
 	_onChatKeyDown(wrapped, event) {
-		const key = TypingNotifier._getKey(event);
+		const key = event.key.toUpperCase();
 		if (((key === "ENTER") || (key === "NUMPADENTER")) && !event.shiftKey) {
 			this._emitTypingEnd();
 		} else if (this._willDeleteLastChar(key, event.currentTarget)) {
