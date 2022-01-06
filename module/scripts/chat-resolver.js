@@ -56,8 +56,7 @@ export class ChatResolver {
 				chatData.speaker = { alias: alias, scene: game.user.viewedScene };
 				chatData.content = match[3].replace(/\n/g, "<br>");
 
-				const cls = ChatResolver._isV0_8() ? ChatMessage.implementation : CONFIG.ChatMessage.entityClass;
-				cls.create(chatData, {});
+				ChatMessage.implementation.create(chatData, {});
 
 				return false;
 
@@ -70,7 +69,7 @@ export class ChatResolver {
 		if (!game.user.isGM) return;
 		if (!CGMPSettings.getSetting(CGMP_OPTIONS.BLIND_HIDDEN_TOKENS)) return;
 
-		const token = (messageData.speaker.token instanceof (ChatResolver._isV0_8() ? TokenDocument : Token)) ?
+		const token = (messageData.speaker.token instanceof TokenDocument) ?
 			messageData.speaker.token : canvas.tokens.get(messageData.speaker.token);
 
 		if (token?.data?.hidden && (CONST.CHAT_MESSAGE_TYPES.ROLL === messageData.type))
@@ -78,15 +77,14 @@ export class ChatResolver {
 	}
 
 	static onPreCreateChatMessage(message) {
-		const messageData = ChatResolver._isV0_8() ? message.data : message;
-		switch (messageData.flags?.cgmp?.subType) {
+		switch (message.data.flags?.cgmp?.subType) {
 			case ChatResolver.CHAT_MESSAGE_SUB_TYPES.AS:
 			case ChatResolver.CHAT_MESSAGE_SUB_TYPES.DESC:
 				break;
 
 			default:
-				ChatResolver._resolveHiddenToken(message);
-				ChatResolver._resolvePCToken(message); 
+				ChatResolver._resolveHiddenToken(message.data);
+				ChatResolver._resolvePCToken(message.data);
 				break;
 		}
 	}
@@ -109,10 +107,6 @@ export class ChatResolver {
 		}
 	}
 
-	static _isV0_8() {
-		return !isNewerVersion("0.8.0", game.version ?? game.data.version);
-	}
-
 	static _parseChatMessage(message) {
 		// Iterate over patterns, finding the first match
 		for ( let [command, rgx] of Object.entries(ChatResolver.PATTERNS) ) {
@@ -128,21 +122,15 @@ export class ChatResolver {
 		const newType = (CONST.CHAT_MESSAGE_TYPES.IC === messageData.type ? CONST.CHAT_MESSAGE_TYPES.OOC : messageData.type);
 		const newActor = (CONST.CHAT_MESSAGE_TYPES.IC === messageData.type ? null : messageData.speaker.actor);
 		const newToken = (CONST.CHAT_MESSAGE_TYPES.IC === messageData.type ? null : messageData.speaker.token);
-		if (ChatResolver._isV0_8()) {
-			messageData.update({
-				type: newType,
-				speaker: {
-					actor: newActor,
-					alias: game.users.get(messageData.user).name,
-					token: newToken
-				}
-			});
-		} else {
-			messageData.type = newType;
-			messageData.speaker.actor = newActor;
-			messageData.speaker.alias = game.users.get(messageData.user).name;
-			messageData.speaker.token = newToken;
-		}
+
+		messageData.update({
+			type: newType,
+			speaker: {
+				actor: newActor,
+				alias: game.users.get(messageData.user).name,
+				token: newToken
+			}
+		});
 	}
 
 	static _convertToInCharacter(messageData) {
@@ -164,21 +152,13 @@ export class ChatResolver {
 				break;
 		}
 
-		if (ChatResolver._isV0_8()) {
-			messageData.update({ type: newType, speaker });
-		} else {
-			messageData.type = newType;
-			messageData.speaker.actor = speaker.actor;
-			messageData.speaker.alias = speaker.alias;
-			messageData.speaker.token = speaker.token;
-		}
+		messageData.update({ type: newType, speaker });
 	}
 
-	static _resolveHiddenToken(message) {
+	static _resolveHiddenToken(messageData) {
 		if (!game.user.isGM) return;
 		if (!CGMPSettings.getSetting(CGMP_OPTIONS.BLIND_HIDDEN_TOKENS)) return;
 
-		const messageData = ChatResolver._isV0_8() ? message.data : message;
 		const speaker = messageData.speaker;
 		if (!speaker) return;
 
@@ -186,13 +166,9 @@ export class ChatResolver {
 		if (token?.data?.hidden) {
 			if (CONST.CHAT_MESSAGE_TYPES.IC !== messageData.type) {
 				// Whisper any non in-character messages.
-				if (ChatResolver._isV0_8()) {
-					messageData.update({
-						whisper: ChatMessage.getWhisperRecipients("GM").map((user) => user.id)
-					});
-				} else {
-					messageData.whisper = ChatMessage.getWhisperRecipients("GM").map((user) => user.id);
-				}
+				messageData.update({
+					whisper: ChatMessage.getWhisperRecipients("GM").map((user) => user.id)
+				});
 			} else {
 				// Convert in-character messages to out-of-character.
 				// We're assuming that the GM wanted to type something to the chat but forgot to deselect a token.
@@ -201,9 +177,7 @@ export class ChatResolver {
 		}
 	}
 
-	static _resolvePCToken(message) {
-		const messageData = ChatResolver._isV0_8() ? message.data : message;
-
+	static _resolvePCToken(messageData) {
 		if (messageData.roll || messageData.flags?.damageLog || messageData.flags?.["damage-log"] || !messageData.speaker)
 			return;
 
