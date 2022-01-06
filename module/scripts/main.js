@@ -15,7 +15,7 @@ import { CGMPSettings, CGMP_OPTIONS } from "./settings.js";
 import { TypingNotifier } from "./typing-notifier.js";
 import { ChatResolver } from "./chat-resolver.js";
 
-Hooks.once('init', () => {
+Hooks.once('setup', () => {
 	CGMPSettings.registerSettings();
 	game.cgmp = {};
 

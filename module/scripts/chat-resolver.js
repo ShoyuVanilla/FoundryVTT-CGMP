@@ -116,12 +116,12 @@ export class ChatResolver {
 		return [ undefined, undefined ];
 	}
 
-	static _convertToGmSpeaker(messageData) {
+	static _convertToOoc(messageData) {
 		// For all types of messages, change the speaker to the GM.
 		// Convert in-character message to out-of-character, and remove the actor and token.
-		const newType = (CONST.CHAT_MESSAGE_TYPES.IC === messageData.type ? CONST.CHAT_MESSAGE_TYPES.OOC : messageData.type);
-		const newActor = (CONST.CHAT_MESSAGE_TYPES.IC === messageData.type ? null : messageData.speaker.actor);
-		const newToken = (CONST.CHAT_MESSAGE_TYPES.IC === messageData.type ? null : messageData.speaker.token);
+		const newType = ((CONST.CHAT_MESSAGE_TYPES.IC === messageData.type) ? CONST.CHAT_MESSAGE_TYPES.OOC : messageData.type);
+		const newActor = ((CONST.CHAT_MESSAGE_TYPES.IC === messageData.type) ? null : messageData.speaker.actor);
+		const newToken = ((CONST.CHAT_MESSAGE_TYPES.IC === messageData.type) ? null : messageData.speaker.token);
 
 		messageData.update({
 			type: newType,
@@ -172,7 +172,7 @@ export class ChatResolver {
 			} else {
 				// Convert in-character messages to out-of-character.
 				// We're assuming that the GM wanted to type something to the chat but forgot to deselect a token.
-				this._convertToGmSpeaker(messageData);
+				this._convertToOoc(messageData);
 			}
 		}
 	}
@@ -181,23 +181,24 @@ export class ChatResolver {
 		if (messageData.roll || messageData.flags?.damageLog || messageData.flags?.["damage-log"] || !messageData.speaker)
 			return;
 
-		switch (CGMPSettings.getSetting(CGMP_OPTIONS.SPEAKER_MODE)) {
+		const speakerMode = CGMPSettings.getSetting(game.user.isGM ? CGMP_OPTIONS.GM_SPEAKER_MODE : CGMP_OPTIONS.PLAYER_SPEAKER_MODE);
+
+		switch (speakerMode) {
 			case CGMP_SPEAKER_MODE.DISABLE_GM_AS_PC:
 				if (game.user.isGM) {
 					const token = canvas.tokens.get(messageData.speaker.token);
 					if (token?.actor?.hasPlayerOwner) {
-						this._convertToGmSpeaker(messageData);
+						this._convertToOoc(messageData);
 					}
 				}
 				break;
 
-			case CGMP_SPEAKER_MODE.GM_ALWAYS_OOC:
-				if (game.user.isGM)
-					this._convertToGmSpeaker(messageData);
+			case CGMP_SPEAKER_MODE.FORCE_IN_CHARACTER:
+				this._convertToInCharacter(messageData);
 				break;
 
-			case CGMP_SPEAKER_MODE.FORCE_IN_CHARACTER_ASSIGNED:
-				this._convertToInCharacter(messageData);
+			case CGMP_SPEAKER_MODE.ALWAYS_OOC:
+				this._convertToOoc(messageData);
 				break;
 		}
 
