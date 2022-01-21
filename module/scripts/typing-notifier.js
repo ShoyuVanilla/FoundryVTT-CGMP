@@ -170,7 +170,7 @@ export class TypingNotifier {
 	}
 
 	_onChatKeyDown(wrapped, event) {
-		const key = event.key.toUpperCase();
+		const key = (event.key ?? event.code).toUpperCase();
 		if (((key === "ENTER") || (key === "NUMPADENTER")) && !event.shiftKey) {
 			this._emitTypingEnd();
 		} else if (this._willDeleteLastChar(key, event.currentTarget)) {
