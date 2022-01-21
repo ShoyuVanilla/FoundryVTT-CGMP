@@ -36,18 +36,26 @@ export class TypingNotifier {
 		this._notifyWrapperElement.appendChild(this._notifySpan);
 
 		game.socket.on('module.CautiousGamemastersPack', this._onRemotePacket.bind(this));
-		libWrapper.register('CautiousGamemastersPack', 'ChatLog.prototype._onChatKeyDown', this._onChatKeyDown.bind(this), 'WRAPPER');
 
-		Hooks.once('renderChatLog', function() {
+		// If Mobile Improvements is enabled, then we need to use a wrapper for ChatLog._onChatKeyDown(),
+		// as clicking the send button does not generate a keydown event.
+		if (game.modules.get("mobile-improvements")?.active)
+			libWrapper.register('CautiousGamemastersPack', 'ChatLog.prototype._onChatKeyDown', this._onChatKeyDownWrapper.bind(this), 'WRAPPER');
+
+		Hooks.once('renderChatLog', () => {
 			const chatFormElement = document.getElementById("chat-form");
 			chatFormElement.appendChild(this._notifyWrapperElement);
 
 			this._chatBox = document.getElementById("chat-message");
+
+			if (!game.modules.get("mobile-improvements")?.active)
+				this._chatBox.addEventListener("keydown", this._onChatKeyDown.bind(this));
+			
 			this._charsPerLine = this._calcCharsPerLine();
 
 			this._chatBoxResizeObserver = new ResizeObserver(this._onChatBoxResize.bind(this));
 			this._chatBoxResizeObserver.observe(this._chatBox);
-		}.bind(this));
+		});
 	}
 
 	static _calcCharacterWidth(chatBoxStyle)
@@ -170,7 +178,7 @@ export class TypingNotifier {
 		}
 	}
 
-	_onChatKeyDown(wrapped, event) {
+	_onChatKeyDown(event) {
 		const key = (event.key ?? event.code).toUpperCase();
 		if (((key === "ENTER") || (key === "NUMPADENTER")) && !event.shiftKey) {
 			this._emitTypingEnd();
@@ -179,8 +187,11 @@ export class TypingNotifier {
 		} else {
 			this._emitTyping();
 		}
+	}
 
-		wrapped(event);
+	_onChatKeyDownWrapper(wrapper, event) {
+		this._onChatKeyDown(event);
+		wrapper(event);
 	}
 
 	_onRemotePacket(data) {
