@@ -30,7 +30,8 @@ export class TypingNotifier {
 		this._notifySpan.className = "notify-text";
 
 		this._notifyWrapperElement = document.createElement("div");
-		this._notifyWrapperElement.className = "typing-notify hidden";
+		this._notifyWrapperElement.id = "cgmp-typing-notify";
+		this._notifyWrapperElement.className = "hidden";
 		this._notifyWrapperElement.innerHTML = '<span class="dots-cont"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span></span>';
 		this._notifyWrapperElement.appendChild(this._notifySpan);
 

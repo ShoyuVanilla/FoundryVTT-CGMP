@@ -53,16 +53,12 @@
 	justify-content: flex-end;
 }
 
-.typing-notify {
+#cgmp-typing-notify {
 	overflow-wrap: break-word;
 	max-height: 60px;
 	background: transparent;
 	border-radius: 0px;
-	-webkit-transition: max-height .3s ease-out;
-	-moz-transition: max-height .3s ease-out;
-	-ms-transition: max-height .3s ease-out;
-	-o-transition: max-height .3s ease-out;
-	transition: max-height .3s ease-out;
+	transition: max-height .5s ease-in-out;
 	position: relative;
 	width: 100%;
 	top: 2px;
@@ -70,15 +66,15 @@
 	left: 0px;
 	right: 0px;
 }
-.typing-notify.hidden {
+#cgmp-typing-notify.hidden {
 	max-height: 0px !important;
 	color: transparent !important;
 }
-.typing-notify .notify-text {
+#cgmp-typing-notify .notify-text {
 	margin: 0 0 0 4px;
 }
 
-.dot {
+#cgmp-typing-notify .dot {
 	width: 5px;
 	height: 5px;
 	background: currentColor;
@@ -88,25 +84,22 @@
     bottom: 0px;
     margin: 0px 1.25px;
     position: relative;
-    animation: jump 1s infinite;
+    animation: cgmp-jump 1s infinite;
 }
-.dots-cont .dot-1 {
-    -webkit-animation-delay: 100ms;
+#cgmp-typing-notify .dots-cont .dot-1 {
     animation-delay: 100ms;
 }
-.dots-cont .dot-2 {
-    -webkit-animation-delay: 200ms;
+#cgmp-typing-notify .dots-cont .dot-2 {
     animation-delay: 200ms;
 }
-.dots-cont .dot-3 {
-    -webkit-animation-delay: 300ms;
+#cgmp-typing-notify .dots-cont .dot-3 {
     animation-delay: 300ms;
 }
-.hidden .dots-cont {
+#cgmp-typing-notify .dots-cont .hidden {
     display: none;
 }
-@keyframes jump {
+@keyframes cgmp-jump {
     0%   {bottom: 0px;}
-    20%  {bottom: 5px;}
-    40%  {bottom: 0px;}
+	25%  {bottom: 5px;}
+    50%  {bottom: 0px;}
 }
