@@ -14,8 +14,10 @@
 export const CGMP_OPTIONS = {
 	ALLOW_PLAYERS_TO_USE_DESC: "allowPlayersToUseDesc",
 	BLIND_HIDDEN_TOKENS: "blindHiddenTokens",
-	NOTIFY_TYPING: "notifyTyping",
 	GM_SPEAKER_MODE: "gmSpeakerMode",
+	HIDE_NPC_DAMAGE_TEXT: "hideNpcDamageText",
+	HIDE_NPC_HEALING_TEXT: "hideNpcHealingText",
+	NOTIFY_TYPING: "notifyTyping",
 	PLAYER_SPEAKER_MODE: "playerSpeakerMode"
 };
 
@@ -42,6 +44,8 @@ export class CGMPSettings {
 
 		const playerSpeakerModeChoices = deepClone(gmSpeakerModeChoices);
 		delete playerSpeakerModeChoices[CGMP_SPEAKER_MODE.DISABLE_GM_AS_PC];
+
+		const debouncedReload = debounce(() => window.location.reload(), 500);
 
 		// Legacy settings, no longer accessible via UI.
 		// Left here so they can be read and converted to the new Speaker Modes on startup.
@@ -106,7 +110,25 @@ export class CGMPSettings {
 			config: true,
 			default: false,
 			type: Boolean,
-			onChange: () => window.location.reload()
+			onChange: () => debouncedReload()
+		});
+
+		game.settings.register("CautiousGamemastersPack", CGMP_OPTIONS.HIDE_NPC_DAMAGE_TEXT, {
+			name: "cgmp.hide-npc-damage-text-s",
+			scope: "world",
+			config: true,
+			default: false,
+			type: Boolean,
+			onChange: () => debouncedReload()
+		});
+
+		game.settings.register("CautiousGamemastersPack", CGMP_OPTIONS.HIDE_NPC_HEALING_TEXT, {
+			name: "cgmp.hide-npc-healing-text-s",
+			scope: "world",
+			config: true,
+			default: false,
+			type: Boolean,
+			onChange: () => debouncedReload()
 		});
 	}
 
