@@ -178,7 +178,12 @@ export class ChatResolver {
 	}
 
 	static _resolvePCToken(messageData) {
+		// Don't modify rolls or damage-log messages
 		if (messageData.roll || messageData.flags?.damageLog || messageData.flags?.["damage-log"] || !messageData.speaker)
+			return;
+
+		// Pathfinder 1 attack rolls are hidden away in the flags for some reason.
+		if (!isObjectEmpty(messageData.flags?.pf1?.metadata?.rolls ?? {}))
 			return;
 
 		const speakerMode = CGMPSettings.getSetting(game.user.isGM ? CGMP_OPTIONS.GM_SPEAKER_MODE : CGMP_OPTIONS.PLAYER_SPEAKER_MODE);
