@@ -23,6 +23,9 @@ Please note that v0.2.0 was called "Cautious Gamemaster's Pack 2", but since own
 * **Allow players to use /desc** - Usually only the GM can use the `/desc` command.  This settings also allows the players to use it.
 * **Blind rolls made by hidden tokens** - This turns all rolls made by hidden tokens into blind rolls.
 * **Notify typing** - Notify whether the other players are typing chat messages...<p>![](notify_typing.gif)</p>
+* **Allow players to see typing notification**: when typing notification is enabled, this settings allows players to see the notifications.  If disabled, only the GM can see the typing notifications.
+* **Hide scrolling damage text on NPC tokens**: Hides the scrolling text above a token when it takes damage.
+* * **Hide scrolling healing text on NPC tokens**: Hides the scrolling text above a token when it receives healing.
 
 ## Additional Chat Commands
 
