@@ -200,18 +200,24 @@ export class TypingNotifier {
 
 		const id = data.user;
 		if (id === game.user.id) return;
+
+		let debouncedOnRemoteTypingEnded = this._typingUsers.get(id);
+
 		switch (data.header) {
 			case PACKET_HEADER.TYPING_MESSAGE:
-				let pushed = true;
-				if (this._typingUsers.has(id)) { pushed = false; clearTimeout(this._typingUsers.get(id)); }
-				this._typingUsers.set(id,
-					setTimeout(() => this._onRemoteTypingEnded(id), REMOTE_TYPING_TIMEOUT));
-				if (pushed) this.updateNotice();
+				if (!debouncedOnRemoteTypingEnded) {
+					debouncedOnRemoteTypingEnded = debounce(() => this._onRemoteTypingEnded(id), REMOTE_TYPING_TIMEOUT);
+					this._typingUsers.set(id, debouncedOnRemoteTypingEnded);
+					this.updateNotice();
+				}
+
+				debouncedOnRemoteTypingEnded();
 				break;
+
 			case PACKET_HEADER.TYPING_END:
-				if (this._typingUsers.has(id)) clearTimeout(this._typingUsers.get(id));
 				this._onRemoteTypingEnded(id);
 				break;
+
 			default:
 				return;
 		}
