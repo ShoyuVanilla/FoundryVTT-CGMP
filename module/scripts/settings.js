@@ -18,6 +18,7 @@ export const CGMP_OPTIONS = {
 	HIDE_NPC_DAMAGE_TEXT: "hideNpcDamageText",
 	HIDE_NPC_HEALING_TEXT: "hideNpcHealingText",
 	NOTIFY_TYPING: "notifyTyping",
+	ALLOW_PLAYERS_TO_SEE_TYPING_NOTIFICATION: "allowPlayersToSeeTypingNotification",
 	PLAYER_SPEAKER_MODE: "playerSpeakerMode"
 };
 
@@ -35,6 +36,9 @@ export const CGMP_SPEAKER_MODE = {
 
 export class CGMPSettings {
 	static registerSettings() {
+
+		Hooks.on("renderSettingsConfig", CGMPSettings._onRenderSettingsConfig.bind(this));
+
 		const gmSpeakerModeChoices = {
 			[CGMP_SPEAKER_MODE.DEFAULT]: game.i18n.localize("cgmp.speaker-mode.default-s"),
 			[CGMP_SPEAKER_MODE.DISABLE_GM_AS_PC]: game.i18n.localize("cgmp.speaker-mode.disable-gm-as-pc-s"),
@@ -113,6 +117,16 @@ export class CGMPSettings {
 			onChange: () => debouncedReload()
 		});
 
+		game.settings.register("CautiousGamemastersPack", CGMP_OPTIONS.ALLOW_PLAYERS_TO_SEE_TYPING_NOTIFICATION, {
+			name: "cgmp.allow-players-to-see-typing-notification-s",
+			hint: "cgmp.allow-players-to-see-typing-notification-l",
+			scope: "world",
+			config: true,
+			default: true,
+			type: Boolean,
+			onChange: () => debouncedReload()
+		});
+
 		game.settings.register("CautiousGamemastersPack", CGMP_OPTIONS.HIDE_NPC_DAMAGE_TEXT, {
 			name: "cgmp.hide-npc-damage-text-s",
 			scope: "world",
@@ -144,5 +158,39 @@ export class CGMPSettings {
 
 	static getSetting(option) {
 		return game.settings.get("CautiousGamemastersPack", option);
+	}
+
+	/**
+	 * Handle the "renderSettingsConfig" hook.
+	 * This is fired when Foundry's settings window is opened.
+	 * Enable / disable interaction with various settings, depending on whether "Notify Typing" is enabled.
+	 */
+	 static _onRenderSettingsConfig(settingsConfig, html, user) {
+		const formGroups = html[0].querySelectorAll('div.form-group');
+
+		// Disable "Allow players to see typing notification" if typing notification is disabled.
+		const playerSpecificDivs = [...formGroups].filter(fg => {
+			return !!fg.querySelector(`input[name="CautiousGamemastersPack.${CGMP_OPTIONS.ALLOW_PLAYERS_TO_SEE_TYPING_NOTIFICATION}"]`);
+		});
+		CGMPSettings._toggleDivs(playerSpecificDivs, CGMPSettings.getSetting(CGMP_OPTIONS.NOTIFY_TYPING));
+
+		const typingNotificationCheckbox = html[0].querySelector(`input[name="CautiousGamemastersPack.${CGMP_OPTIONS.NOTIFY_TYPING}"]`);
+
+		// Handle the allowPlayerView checkbox being toggled.
+		typingNotificationCheckbox.addEventListener("change", (event) => {
+			CGMPSettings._toggleDivs(playerSpecificDivs, event.target.checked);
+		});
+	}
+
+	/**
+	 * Enable / disable inputs in a set of divs.
+	 */
+	static _toggleDivs(divs, enabled) {
+		for (const div of divs) {
+			// Disable all inputs in the divs (checkboxes and dropdowns)
+			div.querySelectorAll("input,select").forEach(i => i.disabled = !enabled);
+			// Disable TidyUI's on click events for the labels.
+			div.querySelectorAll("label>span").forEach(l => l.style.pointerEvents = (enabled ? "auto" : "none"));
+		}
 	}
 }

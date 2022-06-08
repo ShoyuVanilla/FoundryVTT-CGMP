@@ -20,7 +20,7 @@ Hooks.once('setup', () => {
 	game.cgmp = {};
 
 	if (CGMPSettings.getSetting(CGMP_OPTIONS.NOTIFY_TYPING))
-		game.cgmp.typingNotifier = new TypingNotifier();
+		game.cgmp.typingNotifier = new TypingNotifier(CGMPSettings.getSetting(CGMP_OPTIONS.ALLOW_PLAYERS_TO_SEE_TYPING_NOTIFICATION));
 
 	Hooks.on('chatMessage', ChatResolver.onChatMessage);
 	Hooks.on('messageBetterRolls', ChatResolver.onMessageBetterRolls);

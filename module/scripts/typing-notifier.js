@@ -22,9 +22,10 @@ const TYPING_EMIT_INTERVAL = 250;
 
 export class TypingNotifier {
 
-	constructor() {
+	constructor(allowPlayersToSeeTypingNotification) {
 		this._typingUsers = new Map();
 		this._lastPacketSent = null;
+		this._allowPlayersToSeeTypingNotification = allowPlayersToSeeTypingNotification;
 
 		this._notifySpan = document.createElement("span");
 		this._notifySpan.className = "notify-text";
@@ -195,6 +196,8 @@ export class TypingNotifier {
 	}
 
 	_onRemotePacket(data) {
+		if (!this._allowPlayersToSeeTypingNotification && !game.user.isGM) return;
+
 		const id = data.user;
 		if (id === game.user.id) return;
 		switch (data.header) {
