@@ -25,7 +25,7 @@ Please note that v0.2.0 was called "Cautious Gamemaster's Pack 2", but since own
 * **Notify typing** - Notify whether the other players are typing chat messages...<p>![](notify_typing.gif)</p>
 * **Allow players to see typing notification**: when typing notification is enabled, this settings allows players to see the notifications.  If disabled, only the GM can see the typing notifications.
 * **Hide scrolling damage text on NPC tokens**: Hides the scrolling text above a token when it takes damage.
-* * **Hide scrolling healing text on NPC tokens**: Hides the scrolling text above a token when it receives healing.
+* **Hide scrolling healing text on NPC tokens**: Hides the scrolling text above a token when it receives healing.
 
 ## Additional Chat Commands
 
