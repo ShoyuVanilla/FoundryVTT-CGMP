@@ -12,6 +12,7 @@
  */
 
 import { CGMPSettings, CGMP_OPTIONS, CGMP_SPEAKER_MODE } from "./settings.js";
+import { Util } from "./util.js";
 
 export class ChatResolver {
 
@@ -67,24 +68,26 @@ export class ChatResolver {
 
 	static onMessageBetterRolls(itemRoll, messageData) {
 		if (!game.user.isGM) return;
+		if (CONST.CHAT_MESSAGE_TYPES.ROLL !== messageData.type) return;
 		if (!CGMPSettings.getSetting(CGMP_OPTIONS.BLIND_HIDDEN_TOKENS)) return;
 
 		const token = (messageData.speaker.token instanceof TokenDocument) ?
 			messageData.speaker.token : canvas.tokens.get(messageData.speaker.token);
 
-		if (token?.data?.hidden && (CONST.CHAT_MESSAGE_TYPES.ROLL === messageData.type))
+		if (Util.isTokenHidden(token))
 			messageData.whisper ??= ChatMessage.getWhisperRecipients("GM").map((user) => user.id);
 	}
 
 	static onPreCreateChatMessage(message) {
-		switch (message.data.flags?.cgmp?.subType) {
+		const messageData = Util.getMessageData(message);
+		switch (messageData.flags?.cgmp?.subType) {
 			case ChatResolver.CHAT_MESSAGE_SUB_TYPES.AS:
 			case ChatResolver.CHAT_MESSAGE_SUB_TYPES.DESC:
 				break;
 
 			default:
-				ChatResolver._resolveHiddenToken(message.data);
-				ChatResolver._resolvePCToken(message.data);
+				ChatResolver._resolveHiddenToken(messageData);
+				ChatResolver._resolvePCToken(messageData);
 				break;
 		}
 	}
@@ -123,18 +126,20 @@ export class ChatResolver {
 		const newActor = ((CONST.CHAT_MESSAGE_TYPES.IC === messageData.type) ? null : messageData.speaker.actor);
 		const newToken = ((CONST.CHAT_MESSAGE_TYPES.IC === messageData.type) ? null : messageData.speaker.token);
 
-		messageData.update({
+		const user = (messageData.user instanceof User ? messageData.user : game.users.get(messageData.user));
+
+		Util.updateMessageData(messageData, {
 			type: newType,
 			speaker: {
 				actor: newActor,
-				alias: game.users.get(messageData.user).name,
+				alias: user.name,
 				token: newToken
 			}
 		});
 	}
 
 	static _convertToInCharacter(messageData) {
-		const user = game.users.get(messageData.user);
+		const user = (messageData.user instanceof User ? messageData.user : game.users.get(messageData.user));
 		const actor = user.character;
 		const speaker = actor ? ChatMessage.getSpeaker({ actor }) : { actor: null, alias: user.name, token: null };
 
@@ -152,7 +157,7 @@ export class ChatResolver {
 				break;
 		}
 
-		messageData.update({ type: newType, speaker });
+		Util.updateMessageData(messageData, { type: newType, speaker });
 	}
 
 	static _resolveHiddenToken(messageData) {
@@ -163,10 +168,11 @@ export class ChatResolver {
 		if (!speaker) return;
 
 		const token = canvas.tokens.get(speaker.token);
-		if (token?.data?.hidden) {
+
+		if (Util.isTokenHidden(token)) {
 			if (CONST.CHAT_MESSAGE_TYPES.IC !== messageData.type) {
 				// Whisper any non in-character messages.
-				messageData.update({
+				Util.updateMessageData(messageData, {
 					whisper: ChatMessage.getWhisperRecipients("GM").map((user) => user.id)
 				});
 			} else {
@@ -179,11 +185,11 @@ export class ChatResolver {
 
 	static _resolvePCToken(messageData) {
 		// Don't modify rolls or damage-log messages
-		if (messageData.roll || messageData.flags?.damageLog || messageData.flags?.["damage-log"] || !messageData.speaker)
+		if (Util.isRoll(messageData) || messageData.flags?.damageLog || messageData.flags?.["damage-log"] || !messageData.speaker)
 			return;
 
 		// Pathfinder 1 attack rolls are hidden away in the flags for some reason.
-		if (!isObjectEmpty(messageData.flags?.pf1?.metadata?.rolls ?? {}))
+		if (!Util.isEmpty(messageData.flags?.pf1?.metadata?.rolls ?? {}))
 			return;
 
 		const speakerMode = CGMPSettings.getSetting(game.user.isGM ? CGMP_OPTIONS.GM_SPEAKER_MODE : CGMP_OPTIONS.PLAYER_SPEAKER_MODE);

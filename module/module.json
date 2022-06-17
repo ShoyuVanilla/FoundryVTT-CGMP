@@ -1,75 +1,83 @@
 {
-  "name": "CautiousGamemastersPack",
-  "title": "Cautious Gamemaster's Pack",
-  "description": "Offers various simple handy options.",
-  "version": "This is auto replaced",
-  "library": false,
-  "manifestPlusVersion": "1.2.0",
-  "minimumCoreVersion" : "0.8.6",
-  "compatibleCoreVersion": "9",
-  "author": "Alan Davies",
-  "authors": [
-    {
-      "name": "Alan Davies",
-      "discord": "cs96and#3764",
-      "ko-fi": "cs96and"
-    },
-    {
-      "name": "Shoyu Vanilla"
-    }
-  ],
-  "dependencies": [
-    {
-      "name": "lib-wrapper"
-    }
-  ],
-  "conflicts": [
-    {
-      "name": "cautious-gamemasters-pack-2",
-      "type": "module"
-    }
-  ],
-  "esmodules": [
-    "scripts/main.js"
-  ],
-  "scripts": [],
-  "styles": [
-    "styles/cgmp.css"
-  ],
-  "socket": true,
-  "languages": [
-    {
-      "lang": "en",
-      "name": "English",
-      "path": "lang/en.json"
-    },
-    {
-      "lang": "ko",
-      "name": "한국어 (Korean)",
-      "path": "lang/ko.json"
-    },
-    {
-      "lang": "ja",
-      "name": "日本語",
-      "path": "lang/ja.json"
-    },
-    {
-      "lang": "pt-BR",
-      "name": "Português (Brasil)",
-      "path": "lang/pt-BR.json"
-    },
-    {
-      "lang": "es",
-      "name": "Castellano",
-      "path": "lang/es-ES.json"
-    },
-    {
-      "lang": "fr-CA",
-      "name": "Francais (Canada)",
-      "path": "lang/fr-CA.json"
-    }
-  ],
-  "url": "This is auto replaced",
-  "manifest": "This is auto replaced",
-  "download": "This is auto replaced"
+	"id": "CautiousGamemastersPack",
+	"name": "CautiousGamemastersPack",
+	"type": "module",
+	"title": "Cautious Gamemaster's Pack",
+	"description": "Offers various simple handy options.",
+	"version": "This is auto replaced",
+	"library": false,
+	"manifestPlusVersion": "1.2.0",
+	"compatibility": {
+		"minimum": "0.8.6",
+		"verified": "10"
+	},
+	"minimumCoreVersion" : "0.8.6",
+	"compatibleCoreVersion": "10",
+	"authors": [
+		{
+			"name": "Alan Davies",
+			"discord": "cs96and#3764",
+			"ko-fi": "cs96and"
+		},
+		{
+			"name": "Shoyu Vanilla"
+		}
+	],
+	"author": "Alan Davies",
+	"dependencies": [
+		{
+			"id": "lib-wrapper",
+			"name": "lib-wrapper",
+			"type": "module"
+		}
+	],
+	"conflicts": [
+		{
+			"name": "cautious-gamemasters-pack-2",
+			"type": "module"
+		}
+	],
+	"esmodules": [
+		"scripts/main.js"
+	],
+	"scripts": [],
+	"styles": [
+		"styles/cgmp.css"
+	],
+	"socket": true,
+	"languages": [
+		{
+			"lang": "en",
+			"name": "English",
+			"path": "lang/en.json"
+		},
+		{
+			"lang": "ko",
+			"name": "한국어 (Korean)",
+			"path": "lang/ko.json"
+		},
+		{
+			"lang": "ja",
+			"name": "日本語",
+			"path": "lang/ja.json"
+		},
+		{
+			"lang": "pt-BR",
+			"name": "Português (Brasil)",
+			"path": "lang/pt-BR.json"
+		},
+		{
+			"lang": "es",
+			"name": "Castellano",
+			"path": "lang/es-ES.json"
+		},
+		{
+			"lang": "fr-CA",
+			"name": "Francais (Canada)",
+			"path": "lang/fr-CA.json"
+		}
+	],
+	"url": "This is auto replaced",
+	"manifest": "This is auto replaced",
+	"download": "This is auto replaced"
 }
