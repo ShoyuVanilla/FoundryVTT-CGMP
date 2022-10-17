@@ -12,40 +12,62 @@
  */
 
 import { CGMPSettings, CGMP_OPTIONS } from "./settings.js";
-import { TypingNotifier } from "./typing-notifier.js";
 import { ChatResolver } from "./chat-resolver.js";
+import { TypingNotifier } from "./typing-notifier.js";
+import { Util } from "./util.js"
 
-Hooks.once('setup', () => {
-	CGMPSettings.registerSettings();
-	game.cgmp = {};
+class CautiousGamemastersPack {
 
-	if (CGMPSettings.getSetting(CGMP_OPTIONS.NOTIFY_TYPING))
-		game.cgmp.typingNotifier = new TypingNotifier(CGMPSettings.getSetting(CGMP_OPTIONS.ALLOW_PLAYERS_TO_SEE_TYPING_NOTIFICATION));
+	_scrollingTextRegex = null;
 
-	Hooks.on('chatMessage', ChatResolver.onChatMessage);
-	Hooks.on('messageBetterRolls', ChatResolver.onMessageBetterRolls);
-	Hooks.on('preCreateChatMessage', ChatResolver.onPreCreateChatMessage);
-	Hooks.on('renderChatMessage', ChatResolver.onRenderChatMessage);
-
-	const hideNpcDamage = CGMPSettings.getSetting(CGMP_OPTIONS.HIDE_NPC_DAMAGE_TEXT);
-	const hideNpcHealing = CGMPSettings.getSetting(CGMP_OPTIONS.HIDE_NPC_HEALING_TEXT);
-
-	if (game.modules.get('lib-wrapper')?.active && (hideNpcDamage || hideNpcHealing)) {
-		const regex = new RegExp(`^[${hideNpcDamage ? "-" : ""}${hideNpcHealing ? "+" : ""}]\\d+$`);
-
-		libWrapper.register('CautiousGamemastersPack', 'ObjectHUD.prototype.createScrollingText',
-			async function(wrapper, content, ...args) {
-				// "this" is an ObjectHUD here...
-				if (!this.object instanceof Token || this.object.actor.hasPlayerOwner || !regex.test(content))
-					wrapper(content, ...args);
-			},
-			'MIXED'
-		);
+	static async _onScrollingTextV9(wrapper, content, ...args) {
+		// "this" is an ObjectHUD here...
+		if (!this.object instanceof Token || this.object.actor.hasPlayerOwner || !CautiousGamemastersPack._scrollingTextRegex.test(content))
+			wrapper(content, ...args);
 	}
-});
 
-Hooks.once('ready', () => {
-	if(!game.modules.get('lib-wrapper')?.active && game.user.isGM)
-		ui.notifications.error("Cautious GameMaster's Pack requires the 'libWrapper' module. Please install and activate it.", { permanent: true });
-});
+	static async _onScrollingTextV10(wrapper, point, content, ...args) {
+		// "this" is an InterfaceCanvasGroup here...
 
+		// Find all tokens that have "point" at their centre.
+		const tokens = this.tokens.objects.children.filter((tkn) => {
+			return ((point.x === tkn.center.x) && (point.y === tkn.center.y));
+		});
+
+		// If any of the tokens are NPCs, then don't display the scrolling text if the relevant option is set.
+		if (tokens.every(tkn => tkn.document.hasPlayerOwner) || !CautiousGamemastersPack._scrollingTextRegex.test(content))
+			wrapper(point, content, ...args);
+	}
+
+	static {
+		Hooks.once('setup', () => {
+			CGMPSettings.registerSettings();
+			game.cgmp = {};
+
+			if (CGMPSettings.getSetting(CGMP_OPTIONS.NOTIFY_TYPING))
+				game.cgmp.typingNotifier = new TypingNotifier(CGMPSettings.getSetting(CGMP_OPTIONS.ALLOW_PLAYERS_TO_SEE_TYPING_NOTIFICATION));
+
+			Hooks.on('chatMessage', ChatResolver.onChatMessage);
+			Hooks.on('messageBetterRolls', ChatResolver.onMessageBetterRolls);
+			Hooks.on('preCreateChatMessage', ChatResolver.onPreCreateChatMessage);
+			Hooks.on('renderChatMessage', ChatResolver.onRenderChatMessage);
+
+			const hideNpcDamage = CGMPSettings.getSetting(CGMP_OPTIONS.HIDE_NPC_DAMAGE_TEXT);
+			const hideNpcHealing = CGMPSettings.getSetting(CGMP_OPTIONS.HIDE_NPC_HEALING_TEXT);
+
+			if (game.modules.get('lib-wrapper')?.active && (hideNpcDamage || hideNpcHealing)) {
+				const hudClass = Util.isV10() ? "InterfaceCanvasGroup" : "ObjectHUD";
+				CautiousGamemastersPack._scrollingTextRegex = new RegExp(`^[${hideNpcDamage ? "-" : ""}${hideNpcHealing ? "+" : ""}]\\d+$`);
+
+				libWrapper.register('CautiousGamemastersPack', `${hudClass}.prototype.createScrollingText`,
+					(Util.isV10() ? CautiousGamemastersPack._onScrollingTextV10 : CautiousGamemastersPack._onScrollingTextV9),
+					"MIXED");
+			}
+		});
+
+		Hooks.once('ready', () => {
+			if(!game.modules.get('lib-wrapper')?.active && game.user.isGM)
+				ui.notifications.error("Cautious GameMaster's Pack requires the 'libWrapper' module. Please install and activate it.", { permanent: true });
+		});
+	}
+}
