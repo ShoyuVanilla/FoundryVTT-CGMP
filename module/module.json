@@ -37,6 +37,20 @@
 			"type": "module"
 		}
 	],
+	"relationships": {
+		"requires": [
+			{
+				"id": "lib-wrapper",
+				"type": "module"
+			}
+		],
+		"conflicts": [
+			{
+				"id": "cautious-gamemasters-pack-2",
+				"type": "module"
+			}
+		]
+	},
 	"esmodules": [
 		"scripts/main.js"
 	],
