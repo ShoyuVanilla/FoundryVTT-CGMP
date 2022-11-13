@@ -22,8 +22,9 @@ const TYPING_EMIT_INTERVAL = 250;
 
 export class TypingNotifier {
 
-	constructor(allowPlayersToSeeTypingNotification) {
-		this._typingUsers = new Map();
+	static typingUsers = new Map();
+
+	constructor(chatLogElement, allowPlayersToSeeTypingNotification) {
 		this._lastPacketSent = null;
 		this._allowPlayersToSeeTypingNotification = allowPlayersToSeeTypingNotification;
 
@@ -36,27 +37,25 @@ export class TypingNotifier {
 		this._notifyWrapperElement.innerHTML = '<span class="dots-cont"><span class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span></span>';
 		this._notifyWrapperElement.appendChild(this._notifySpan);
 
-		game.socket.on('module.CautiousGamemastersPack', this._onRemotePacket.bind(this));
-
 		// If Mobile Improvements is enabled, then we need to use a wrapper for ChatLog._onChatKeyDown(),
 		// as clicking the send button does not generate a keydown event.
 		if (game.modules.get("mobile-improvements")?.active)
 			libWrapper.register('CautiousGamemastersPack', 'ChatLog.prototype._onChatKeyDown', this._onChatKeyDownWrapper.bind(this), 'WRAPPER');
 
-		Hooks.once('renderChatLog', () => {
-			const chatFormElement = document.getElementById("chat-form");
-			chatFormElement.appendChild(this._notifyWrapperElement);
+		const chatFormElement = chatLogElement.querySelector("#chat-form");
+		chatFormElement.appendChild(this._notifyWrapperElement);
 
-			this._chatBox = document.getElementById("chat-message");
+		this._chatBox = chatLogElement.querySelector("#chat-message");
 
-			if (!game.modules.get("mobile-improvements")?.active)
-				this._chatBox.addEventListener("keydown", this._onChatKeyDown.bind(this));
-			
-			this._charsPerLine = this._calcCharsPerLine();
+		if (!game.modules.get("mobile-improvements")?.active)
+			 this._chatBox.addEventListener("keydown", this._onChatKeyDown.bind(this));
 
-			this._chatBoxResizeObserver = new ResizeObserver(this._onChatBoxResize.bind(this));
-			this._chatBoxResizeObserver.observe(this._chatBox);
-		});
+		this._charsPerLine = this._calcCharsPerLine();
+
+		this._chatBoxResizeObserver = new ResizeObserver(this._onChatBoxResize.bind(this));
+		this._chatBoxResizeObserver.observe(this._chatBox);
+
+		this.updateNotice();
 	}
 
 	static _calcCharacterWidth(chatBoxStyle)
@@ -145,7 +144,7 @@ export class TypingNotifier {
 	}
 
 	_onRemoteTypingEnded(id) {
-		this._typingUsers.delete(id);
+		TypingNotifier.typingUsers.delete(id);
 		this.updateNotice();
 	}
 
@@ -195,37 +194,9 @@ export class TypingNotifier {
 		wrapper(event);
 	}
 
-	_onRemotePacket(data) {
-		if (!this._allowPlayersToSeeTypingNotification && !game.user.isGM) return;
-
-		const id = data.user;
-		if (id === game.user.id) return;
-
-		let debouncedOnRemoteTypingEnded = this._typingUsers.get(id);
-
-		switch (data.header) {
-			case PACKET_HEADER.TYPING_MESSAGE:
-				if (!debouncedOnRemoteTypingEnded) {
-					debouncedOnRemoteTypingEnded = debounce(() => this._onRemoteTypingEnded(id), REMOTE_TYPING_TIMEOUT);
-					this._typingUsers.set(id, debouncedOnRemoteTypingEnded);
-					this.updateNotice();
-				}
-
-				debouncedOnRemoteTypingEnded();
-				break;
-
-			case PACKET_HEADER.TYPING_END:
-				this._onRemoteTypingEnded(id);
-				break;
-
-			default:
-				return;
-		}
-	}
-
 	updateNotice() {
 		if (!this._notifyWrapperElement) return;
-		const mapSize = this._typingUsers.size;
+		const mapSize = TypingNotifier.typingUsers.size;
 		if (mapSize === 0) {
 			this._setVisible(false);
 			return;
@@ -235,7 +206,7 @@ export class TypingNotifier {
 		let cnt = 0;
 		let users = [];
 
-		this._typingUsers.forEach((value, key) => {
+		TypingNotifier.typingUsers.forEach((value, key) => {
 			users.push(game.users.get(key).name);
 			cnt++;
 		});
@@ -252,4 +223,61 @@ export class TypingNotifier {
 		this._setVisible(true);
 	}
 
+}
+
+export class TypingNotifierManager {
+	constructor(allowPlayersToSeeTypingNotification) {
+		this._allowPlayersToSeeTypingNotification = allowPlayersToSeeTypingNotification;
+		this._notifiers = new Map();
+
+		Hooks.on('renderChatLog', (chatLog, html, data) => {
+			this._notifiers[html[0]] = new TypingNotifier(html[0], this._allowPlayersToSeeTypingNotification);
+		});
+
+		Hooks.on('closeChatLog', (chatLog, html, data) => {
+			delete this._notifiers[html[0]];
+		});
+
+		game.socket.on('module.CautiousGamemastersPack', this._onRemotePacket.bind(this));
+	}
+
+	_onRemoteTypingEnded(id) {
+		for (const notifier of Object.values(this._notifiers)) {
+			notifier._onRemoteTypingEnded(id);
+		}
+	}
+
+	updateNotice() {
+		for (const notifier of Object.values(this._notifiers)) {
+			notifier.updateNotice();
+		}
+	}
+
+	_onRemotePacket(data) {
+		if (!this._allowPlayersToSeeTypingNotification && !game.user.isGM) return;
+
+		const id = data.user;
+		if (id === game.user.id) return;
+
+		let debouncedOnRemoteTypingEnded = TypingNotifier.typingUsers.get(id);
+
+		switch (data.header) {
+			case PACKET_HEADER.TYPING_MESSAGE:
+				if (!debouncedOnRemoteTypingEnded) {
+					debouncedOnRemoteTypingEnded = debounce(() => this._onRemoteTypingEnded(id), REMOTE_TYPING_TIMEOUT);
+					TypingNotifier.typingUsers.set(id, debouncedOnRemoteTypingEnded);
+					this.updateNotice();
+				}
+
+				debouncedOnRemoteTypingEnded();
+				break;
+
+			case PACKET_HEADER.TYPING_END:
+				this._onRemoteTypingEnded(id);
+				break;
+
+			default:
+				return;
+		}
+	}
 }
