@@ -143,11 +143,6 @@ export class TypingNotifier {
 		this._notifyWrapperElement?.classList.toggle('hidden', !visible);
 	}
 
-	_onRemoteTypingEnded(id) {
-		TypingNotifier.typingUsers.delete(id);
-		this.updateNotice();
-	}
-
 	_willDeleteLastChar(key, textArea) {
 		if (0 === (textArea.selectionEnd - textArea.selectionStart)) {
 			// Nothing selected.  Is there a single char left that will be deleted?
@@ -242,9 +237,8 @@ export class TypingNotifierManager {
 	}
 
 	_onRemoteTypingEnded(id) {
-		for (const notifier of Object.values(this._notifiers)) {
-			notifier._onRemoteTypingEnded(id);
-		}
+		TypingNotifier.typingUsers.delete(id);
+		this.updateNotice();
 	}
 
 	updateNotice() {
