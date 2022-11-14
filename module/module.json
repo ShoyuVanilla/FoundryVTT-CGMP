@@ -4,7 +4,7 @@
 	"type": "module",
 	"title": "Cautious Gamemaster's Pack",
 	"description": "Offers various simple handy options.",
-	"version": "This is auto replaced",
+	"version": "#{VERSION}#",
 	"library": false,
 	"manifestPlusVersion": "1.2.0",
 	"compatibility": {
@@ -91,7 +91,7 @@
 			"path": "lang/fr-CA.json"
 		}
 	],
-	"url": "This is auto replaced",
-	"manifest": "This is auto replaced",
-	"download": "This is auto replaced"
+	"url": "#{URL}#",
+	"manifest": "#{MANIFEST}#",
+	"download": "#{DOWNLOAD}#"
 }
