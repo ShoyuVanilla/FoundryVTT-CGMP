@@ -13,7 +13,7 @@
 
 import { CGMPSettings, CGMP_OPTIONS } from "./settings.js";
 import { ChatResolver } from "./chat-resolver.js";
-import { TypingNotifier } from "./typing-notifier.js";
+import { TypingNotifierManager } from "./typing-notifier.js";
 import { Util } from "./util.js"
 
 class CautiousGamemastersPack {
@@ -45,7 +45,7 @@ class CautiousGamemastersPack {
 			game.cgmp = {};
 
 			if (CGMPSettings.getSetting(CGMP_OPTIONS.NOTIFY_TYPING))
-				game.cgmp.typingNotifier = new TypingNotifier(CGMPSettings.getSetting(CGMP_OPTIONS.ALLOW_PLAYERS_TO_SEE_TYPING_NOTIFICATION));
+				game.cgmp.typingNotifier = new TypingNotifierManager(CGMPSettings.getSetting(CGMP_OPTIONS.ALLOW_PLAYERS_TO_SEE_TYPING_NOTIFICATION));
 
 			Hooks.on('chatMessage', ChatResolver.onChatMessage);
 			Hooks.on('messageBetterRolls', ChatResolver.onMessageBetterRolls);
