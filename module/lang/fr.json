@@ -1,0 +1,22 @@
+{
+	"cgmp.player-speaker-mode-s": "Mode Joueur orateur",
+	"cgmp.speaker-mode.default-s": "Par défaut",
+	"cgmp.speaker-mode.disable-gm-as-pc-s": "Désactiver MJ parlant comme PJ",
+	"cgmp.speaker-mode.force-in-character-s": "Forcer le personnage",
+	"cgmp.speaker-mode.always-ooc-s": "Toujours hors du personnage",
+	"cgmp.allow-players-to-use-desc-s": "Permet aux joueur d'utiliser /desc",
+	"cgmp.allow-players-to-use-desc-l": "Permet aux joueur d'utiliser la commande de conversation /desc",
+	"cgmp.blind-hidden-tokens-s": "Les jets secrets faits par les jetons cachés",
+	"cgmp.blind-hidden-tokens-l": "Fait que tous les jets lancés par des jeton sont secrets, seul le MJ peut les voir (les conversations sont converties en conversation visibles hors des personnages)",
+	"cgmp.typing-one": "{user} est en train d'écrire...",
+	"cgmp.allow-players-to-see-typing-notification-l": "Si désactivé, seul le MJ voit les notifications que quelqu'un écrit",
+	"cgmp.allow-players-to-see-typing-notification-s": "Permet aux joueurs de voir la notification que quelqu'un écrit un message",
+	"cgmp.notify-typing-l": "Notifier lorsqu'un autre joueur est en train d'écrire un message",
+	"cgmp.notify-typing-s": "Notifier l'écriture d'un message",
+	"cgmp.typing-two": "{user1} et {user2} sont en train d'écrire...",
+	"cgmp.typing-many": "{user1}, {user2} et d'autres joueur sont en train d'écrire...",
+	"cgmp.hide-npc-damage-text-s": "Cacher le texte défilant des dégâts sur les jetons des PNJ",
+	"cgmp.hide-npc-healing-text-s": "Cacher le texte des soins défilant sur le jeton des PNJ",
+	"cgmp.gm-speaker-mode-s": "Mode GM orateur",
+	"cgmp.gm-speaker-mode-l": "\"Défaut\" : les orateurs ne sont pas modifiés. \"Désactiver le MJ parlant en tant que PJ\" : Toutes les discussions que le MJ prononce en tant que PJ sont des discussions hrp, à l'exception des jets. \"Forcer le personnage\" : Les messages de la conversation viendront du personnage assigné, que ce jeton soit dans la scène ou si conversation/ooc soit précisé. \"Toujours hors du personnage\" : Tous les messages sont hors du personnage "
+}

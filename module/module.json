@@ -11,7 +11,7 @@
 		"minimum": "0.8.6",
 		"verified": "10"
 	},
-	"minimumCoreVersion" : "0.8.6",
+	"minimumCoreVersion": "0.8.6",
 	"compatibleCoreVersion": "10",
 	"authors": [
 		{
@@ -89,6 +89,11 @@
 			"lang": "fr-CA",
 			"name": "Francais (Canada)",
 			"path": "lang/fr-CA.json"
+		},
+		{
+			"lang": "fr",
+			"name": "Français",
+			"path": "lang/fr.json"
 		}
 	],
 	"url": "#{URL}#",
