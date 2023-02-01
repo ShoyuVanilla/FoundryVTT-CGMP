@@ -138,7 +138,11 @@ export class ChatResolver {
 		});
 	}
 
-	static _convertToInCharacter(messageData) {
+	static _convertToInCharacter(messageData, onlyIfAlreadyInCharacter) {
+		if (onlyIfAlreadyInCharacter && messageData.type != CONST.CHAT_MESSAGE_TYPES.IC) {
+			return;
+		}
+
 		const user = (messageData.user instanceof User ? messageData.user : game.users.get(messageData.user));
 		const actor = user.character;
 		const speaker = actor ? ChatMessage.getSpeaker({ actor }) : { actor: null, alias: user.name, token: null };
@@ -206,6 +210,10 @@ export class ChatResolver {
 
 			case CGMP_SPEAKER_MODE.FORCE_IN_CHARACTER:
 				this._convertToInCharacter(messageData);
+				break;
+
+			case CGMP_SPEAKER_MODE.IN_CHARACTER_ALWAYS_ASSIGNED:
+				this._convertToInCharacter(messageData, true);
 				break;
 
 			case CGMP_SPEAKER_MODE.ALWAYS_OOC:

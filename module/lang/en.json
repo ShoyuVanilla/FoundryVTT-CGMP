@@ -1,11 +1,12 @@
 {
 	"cgmp.gm-speaker-mode-s": "GM Speaker mode",
-	"cgmp.gm-speaker-mode-l": "\"Default\": speakers are not altered.  \"Disable GM speaking as PC\": Make all chats GM says as PC into out-of-character chats, except rolls.  \"Force in-character\": Chat messages will come from assigned character regardless of whether that token is in the scene or if /ooc chat is specified.  \"Always out-of-character\": Make all messages out-of-character ",
+	"cgmp.gm-speaker-mode-l": "\"Default\": speakers are not altered.  \"Disable GM speaking as PC\": Make all chats GM says as PC into out-of-character chats, except rolls.  \"Force in-character\": Chat messages will come from assigned character regardless of whether that token is in the scene or if /ooc chat is specified.  \"Always out-of-character\": Make all messages out-of-character.  \"Use assigned when in-character\": Same as \"Force in-character\", but leaves out-of-character messages alone.",
 	"cgmp.player-speaker-mode-s": "Player Speaker mode",
 	"cgmp.speaker-mode.default-s": "Default",
 	"cgmp.speaker-mode.disable-gm-as-pc-s": "Disable GM speaking as PC",
 	"cgmp.speaker-mode.force-in-character-s": "Force in-character",
 	"cgmp.speaker-mode.always-ooc-s": "Always out-of-character",
+	"cgmp.speaker-mode.in-character-always-assigned-s": "Use assigned when in-character",
 	"cgmp.allow-players-to-use-desc-s": "Allow players to use /desc",
 	"cgmp.allow-players-to-use-desc-l": "Allow players to use the /desc chat command",
 	"cgmp.blind-hidden-tokens-s": "Blind rolls made by hidden tokens",
