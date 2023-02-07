@@ -138,10 +138,9 @@ export class ChatResolver {
 		});
 	}
 
-	static _convertToInCharacter(messageData, onlyIfAlreadyInCharacter) {
-		if (onlyIfAlreadyInCharacter && messageData.type != CONST.CHAT_MESSAGE_TYPES.IC) {
+	static _convertToInCharacter(messageData, onlyIfAlreadyInCharacter = false) {
+		if (onlyIfAlreadyInCharacter && (CONST.CHAT_MESSAGE_TYPES.IC !== messageData.type))
 			return;
-		}
 
 		const user = (messageData.user instanceof User ? messageData.user : game.users.get(messageData.user));
 		const actor = user.character;
