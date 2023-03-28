@@ -184,7 +184,9 @@ export class TypingNotifier {
 	}
 
 	_onChatKeyDownWrapper(wrapper, event) {
-		this._onChatKeyDown(event);
+		if (event.code === "Enter" && !event.shiftKey) {
+			this._emitTypingEnd();
+		}
 		wrapper(event);
 	}
 
