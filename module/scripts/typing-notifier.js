@@ -24,7 +24,7 @@ export class TypingNotifier {
 
 	static typingUsers = new Map();
 
-	constructor(chatLogElement, allowPlayersToSeeTypingNotification) {
+	constructor(chatLogApp, chatLogElement, allowPlayersToSeeTypingNotification) {
 		this._lastPacketSent = null;
 		this._allowPlayersToSeeTypingNotification = allowPlayersToSeeTypingNotification;
 
@@ -39,7 +39,7 @@ export class TypingNotifier {
 
 		// If Mobile Improvements is enabled, then we need to use a wrapper for ChatLog._onChatKeyDown(),
 		// as clicking the send button does not generate a keydown event.
-		if (game.modules.get("mobile-improvements")?.active)
+		if (game.modules.get("mobile-improvements")?.active && !chatLogApp._original)
 			libWrapper.register('CautiousGamemastersPack', 'ChatLog.prototype._onChatKeyDown', this._onChatKeyDownWrapper.bind(this), 'WRAPPER');
 
 		const chatFormElement = chatLogElement.querySelector("#chat-form");
@@ -47,8 +47,7 @@ export class TypingNotifier {
 
 		this._chatBox = chatLogElement.querySelector("#chat-message");
 
-		if (!game.modules.get("mobile-improvements")?.active)
-			 this._chatBox.addEventListener("keydown", this._onChatKeyDown.bind(this));
+		this._chatBox.addEventListener("keydown", this._onChatKeyDown.bind(this));
 
 		this._charsPerLine = this._calcCharsPerLine();
 
@@ -226,7 +225,7 @@ export class TypingNotifierManager {
 		this._notifiers = new Map();
 
 		Hooks.on('renderChatLog', (chatLog, html, data) => {
-			this._notifiers[html[0]] = new TypingNotifier(html[0], this._allowPlayersToSeeTypingNotification);
+			this._notifiers[html[0]] = new TypingNotifier(chatLog, html[0], this._allowPlayersToSeeTypingNotification);
 		});
 
 		Hooks.on('closeChatLog', (chatLog, html, data) => {
