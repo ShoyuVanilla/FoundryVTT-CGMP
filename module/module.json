@@ -4,14 +4,14 @@
 	"type": "module",
 	"title": "Cautious Gamemaster's Pack",
 	"description": "Offers various simple handy options.",
-	"version": "This is auto replaced",
+	"version": "#{VERSION}#",
 	"library": false,
 	"manifestPlusVersion": "1.2.0",
 	"compatibility": {
 		"minimum": "0.8.6",
 		"verified": "10"
 	},
-	"minimumCoreVersion" : "0.8.6",
+	"minimumCoreVersion": "0.8.6",
 	"compatibleCoreVersion": "10",
 	"authors": [
 		{
@@ -89,9 +89,15 @@
 			"lang": "fr-CA",
 			"name": "Francais (Canada)",
 			"path": "lang/fr-CA.json"
+		},
+		{
+			"lang": "fr",
+			"name": "Français",
+			"path": "lang/fr.json"
 		}
 	],
-	"url": "This is auto replaced",
-	"manifest": "This is auto replaced",
-	"download": "This is auto replaced"
+	"url": "#{URL}#",
+	"manifest": "#{MANIFEST}#",
+	"download": "#{DOWNLOAD}#",
+	"changelog": "#{CHANGELOG}#"
 }
