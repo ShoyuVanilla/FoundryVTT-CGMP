@@ -96,9 +96,9 @@
 			"path": "lang/fr.json"
 		},
 		{
-			"lang": "zh-Hans",
+			"lang": "cn",
 			"name": "中文（简体）",
-			"path": "lang/zh_Hans.json"
+			"path": "lang/cn.json"
 		}
 	],
 	"url": "#{URL}#",
