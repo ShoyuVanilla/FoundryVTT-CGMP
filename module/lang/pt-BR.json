@@ -3,7 +3,21 @@
 	"cgmp.blind-hidden-tokens-l": "Oculta todas as conversas feitas por fichas ocultas, incluindo jogadas. Somente o GM pode vê-las",
 	"cgmp.notify-typing-s": "Notificar digitações",
 	"cgmp.notify-typing-l": "Notifique se os outros jogadores estão digitando mensagens de bate-papo",
-	"cgmp.typing-one": "{user} está digitando ...", 
+	"cgmp.typing-one": "{user} está digitando ...",
 	"cgmp.typing-two": "{user1} e {user2} estão digitando ...",
-	"cgmp.typing-many": "{user1}, {user2} e outros {others} jogadores estão digitando ..."
+	"cgmp.typing-many": "{user1}, {user2} e outros {others} jogadores estão digitando ...",
+	"cgmp.gm-speaker-mode-s": "Modo de Fala do MJ",
+	"cgmp.player-speaker-mode-s": "Modo de Fala do PJ",
+	"cgmp.speaker-mode.default-s": "Padrão",
+	"cgmp.speaker-mode.disable-gm-as-pc-s": "Desabilitar MJ falando como PJ",
+	"cgmp.speaker-mode.force-in-character-s": "Forçar dentro do Personagem",
+	"cgmp.speaker-mode.always-ooc-s": "Sempre fora do personagem",
+	"cgmp.allow-players-to-see-typing-notification-s": "Permitir que jogadores vejam a notificação de digitação",
+	"cgmp.speaker-mode.in-character-always-assigned-s": "Usar personagem associado quando dentro do personagem",
+	"cgmp.allow-players-to-use-desc-s": "Permitir que jogadores usem /desc",
+	"cgmp.allow-players-to-use-desc-l": "Permite que jogadores usem o comando de chat /desc",
+	"cgmp.allow-players-to-see-typing-notification-l": "Se desabilitado, apenas o MJ poderá ver notificações de digitação",
+	"cgmp.hide-npc-healing-text-s": "Esconder texto de cura de tokens NPC",
+	"cgmp.hide-npc-damage-text-s": "Esconder texto de dano de tokens NPC",
+	"cgmp.gm-speaker-mode-l": "\"Desabilitar MJ falando como PJ\": Torna todas mensagens do MJ como fora do personagem, exceto rolagens.  \"Forçar dentro do Personagem\": Torna todas mensagens como dentro do personagem associado, independente do token estar na cena ou se /ooc foi especificado.  \"Sempre fora do personagem\": Todas as mensagens são fora do personagem.  \"Usar personagem associado quando dentro do personagem\": Igual a \"Forçar dentro do personagem\", mas ignora mensagems /ooc."
 }
