@@ -1,1 +1,23 @@
-{}
+{
+	"cgmp.player-speaker-mode-s": "Pelaajien puhujatila",
+	"cgmp.speaker-mode.default-s": "Oletus",
+	"cgmp.speaker-mode.force-in-character-s": "Pakota hahmona puhuminen",
+	"cgmp.speaker-mode.always-ooc-s": "Aina pelin-ulkopuolinen-puhe",
+	"cgmp.allow-players-to-use-desc-s": "Salli pelaajien käyttää /desc",
+	"cgmp.speaker-mode.in-character-always-assigned-s": "Käytä määritettyä, kun olet hahmossa",
+	"cgmp.blind-hidden-tokens-s": "Sokeuta piilotettujen pelinappuloiden heitot",
+	"cgmp.allow-players-to-see-typing-notification-s": "Salli pelaajien nähdä kirjoittamisilmoitus",
+	"cgmp.typing-one": "{user} kirjoittaa…",
+	"cgmp.typing-two": "{user1} ja {user2} kirjoittavat…",
+	"cgmp.typing-many": "{user1}, {user2} ja {others} muuta pelaajaa kirjoittavat…",
+	"cgmp.hide-npc-damage-text-s": "Piilota EPH-pelinappuloiden vierivä vahinkoteksti",
+	"cgmp.hide-npc-healing-text-s": "Piilota EPH-pelinappuloiden vierivä parannusteksti",
+	"cgmp.gm-speaker-mode-s": "PJ:n puhujatila",
+	"cgmp.speaker-mode.disable-gm-as-pc-s": "PJ ei voi puhua pelaajana",
+	"cgmp.allow-players-to-use-desc-l": "Salli pelaajien käyttää /desc-komentoa keskustelussa",
+	"cgmp.blind-hidden-tokens-l": "Kaikki piilotetut pelinappulat tekevät sokeita heittoja, jolloin vain PJ näkee ne (keskustelut muunnetaan näkyviksi pelin-ulkopuolinen-puhe-viesteiksi)",
+	"cgmp.notify-typing-s": "Ilmoita kirjoittamisesta",
+	"cgmp.notify-typing-l": "Ilmoita, kun muut pelaajat kirjoittavat keskusteluviestejä",
+	"cgmp.allow-players-to-see-typing-notification-l": "Jos pois päältä, vain PJ näkee kirjoittamisilmoitukset",
+	"cgmp.gm-speaker-mode-l": "\"Oletus\": puhujia ei muuteta. \"PJ ei voi puhua pelaajana\": \"Pakota hahmona puhuminen\": Tee kaikista keskusteluviesteistä (paitsi heitoista), joissa PJ puhuu pelaajana, pelin ulkopuolisia keskusteluviestejä. \"Pakota hahmona puhuminen\": Keskusteluviestit tulevat osoitetulta hahmolta riippumatta siitä, onko kyseinen pelinappula kohtauksessa tai onko /ooc-viesti määritetty. \"Aina pelin-ulkopuolinen-puhe\": Kaikki viestit ovat pelin ulkopuolisia viestejä. \"Käytä määritettyä, kun olet hahmossa\": Sama kuin \"Pakota hahmona puhuminen\", mutta jättää pelin ulkopuoliset viestit rauhaan."
+}
