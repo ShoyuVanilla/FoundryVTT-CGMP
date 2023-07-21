@@ -99,6 +99,11 @@
 			"lang": "cn",
 			"name": "中文（简体）",
 			"path": "lang/cn.json"
+		},
+		{
+			"lang": "fi",
+			"name": "Suomi",
+			"path": "lang/fi.json"
 		}
 	],
 	"url": "#{URL}#",
