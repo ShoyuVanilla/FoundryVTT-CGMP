@@ -19,8 +19,9 @@ export class ChatResolver {
 	static PATTERNS = {
 		// extended commands
 		"as": /^(\/as\s+)(\([^\)]+\)|\[[^\]]+\]|"[^"]+"|'[^']+'|[^\s]+)\s+([^]*)/i,
-		// desc regex contains an empty group so that the match layout is the same as "as"
-		"desc": /^(\/desc\s+)()([^]*)/i
+		// desc and ooc regexes contains an empty group so that the match layout is the same as "as"
+		"desc": /^(\/desc\s+)()([^]*)/i,
+		"ooc": /^(\/ooc\s+)()([^]*)/i
 	};
 
 	static DESCRIPTION_SPEAKER_ALIAS = '#CGMP_DESCRIPTION';
@@ -28,7 +29,8 @@ export class ChatResolver {
 	static CHAT_MESSAGE_SUB_TYPES = {
 		NONE: 0,
 		DESC: 1,
-		AS: 2
+		AS: 2,
+		FORCED_OOC: 3
 	};
 
 	static onChatMessage(chatLog, message, chatData) {
@@ -60,6 +62,11 @@ export class ChatResolver {
 				ChatMessage.implementation.create(chatData, {});
 
 				return false;
+
+			case "ooc":
+				chatData.flags ??= {};
+				chatData.flags.cgmp ??= { subType: ChatResolver.CHAT_MESSAGE_SUB_TYPES.FORCED_OOC };
+				return true;
 
 			default:
 				return true;
@@ -139,7 +146,7 @@ export class ChatResolver {
 	}
 
 	static _convertToInCharacter(messageData, onlyIfAlreadyInCharacter = false) {
-		if (onlyIfAlreadyInCharacter && (CONST.CHAT_MESSAGE_TYPES.IC !== messageData.type))
+		if (onlyIfAlreadyInCharacter && (ChatResolver.CHAT_MESSAGE_SUB_TYPES.FORCED_OOC === messageData.flags?.cgmp?.subType))
 			return;
 
 		const user = (messageData.user instanceof User ? messageData.user : game.users.get(messageData.user));
