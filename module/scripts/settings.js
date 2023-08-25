@@ -179,10 +179,12 @@ export class CGMPSettings {
 
 		const typingNotificationCheckbox = html[0].querySelector(`input[name="CautiousGamemastersPack.${CGMP_OPTIONS.NOTIFY_TYPING}"]`);
 
-		// Handle the allowPlayerView checkbox being toggled.
-		typingNotificationCheckbox.addEventListener("change", (event) => {
-			CGMPSettings._toggleDivs(playerSpecificDivs, event.target.checked);
-		});
+		if (typingNotificationCheckbox) {
+			// Handle the allowPlayerView checkbox being toggled.
+			typingNotificationCheckbox.addEventListener("change", (event) => {
+				CGMPSettings._toggleDivs(playerSpecificDivs, event.target.checked);
+			});
+		}
 	}
 
 	/**
