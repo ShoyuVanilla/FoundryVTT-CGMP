@@ -40,23 +40,30 @@ export class ChatResolver {
 		// Process message data based on the identified command type
 		switch (command) {
 			case "desc":
-				if (!game.user.isGM && !CGMPSettings.getSetting(CGMP_OPTIONS.ALLOW_PLAYERS_TO_USE_DESC)) return true;
+				if (!game.user.isGM && !CGMPSettings.getSetting(CGMP_OPTIONS.ALLOW_PLAYERS_TO_USE_DESC))
+					return true;
 
-				match[2] = ChatResolver.DESCRIPTION_SPEAKER_ALIAS;
 				chatData.flags ??= {};
 				chatData.flags.cgmp = { subType: ChatResolver.CHAT_MESSAGE_SUB_TYPES.DESC };
-				// Fall through...
+				chatData.type = CONST.CHAT_MESSAGE_TYPES.OTHER;
+				chatData.speaker = { alias: ChatResolver.DESCRIPTION_SPEAKER_ALIAS, scene: game.user.viewedScene };
+				chatData.content = match[3].replace(/\n/g, "<br>");
+				
+				ChatMessage.implementation.create(chatData, {});
+
+				return false;
 
 			case "as":
-				if (!chatData.flags?.cgmp && !game.user.isGM) return true;
+				if (!chatData.flags?.cgmp && !game.user.isGM)
+					return true;
 
 				// Remove quotes or brackets around the speaker's name.
 				const alias = match[2].replace(/^["'\(\[](.*?)["'\)\]]$/, '$1');
 
 				chatData.flags ??= {};
-				chatData.flags.cgmp ??= { subType: ChatResolver.CHAT_MESSAGE_SUB_TYPES.AS };
+				chatData.flags.cgmp = { subType: ChatResolver.CHAT_MESSAGE_SUB_TYPES.AS };
 				chatData.type = CONST.CHAT_MESSAGE_TYPES.IC;
-				chatData.speaker = { alias: alias, scene: game.user.viewedScene };
+				chatData.speaker = { alias, scene: game.user.viewedScene };
 				chatData.content = match[3].replace(/\n/g, "<br>");
 
 				ChatMessage.implementation.create(chatData, {});
@@ -65,7 +72,7 @@ export class ChatResolver {
 
 			case "ooc":
 				chatData.flags ??= {};
-				chatData.flags.cgmp ??= { subType: ChatResolver.CHAT_MESSAGE_SUB_TYPES.FORCED_OOC };
+				chatData.flags.cgmp = { subType: ChatResolver.CHAT_MESSAGE_SUB_TYPES.FORCED_OOC };
 				return true;
 
 			default:
