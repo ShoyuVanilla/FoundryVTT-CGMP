@@ -13,9 +13,9 @@
 	"cgmp.blind-hidden-tokens-l": "不可視のコマが行うすべてのロールは秘匿ロールに変換され、プレイヤーに情報がもれないように処理します。",
 	"cgmp.notify-typing-s": "入力中表示",
 	"cgmp.notify-typing-l": "他のプレイヤーがキーボードで入力しているときにそれを知らせるメッセージを表示します。",
-	"cgmp.typing-one": "{user}が入力中...", 
+	"cgmp.typing-one": "{user}が入力中...",
 	"cgmp.typing-two": "{user1}と{user2}が入力中...",
-	"cgmp.typing-many": "{user1}、{user2}とその他が入力中..."
+	"cgmp.typing-many": "{user1}、{user2}とその他が入力中...",
 	"cgmp.hide-npc-damage-text-s": "NPCコマのスクロール内ダメージテキストを隠す",
 	"cgmp.hide-npc-healing-text-s": "NPCコマのスクロール内回復テキストを隠す"
 }
