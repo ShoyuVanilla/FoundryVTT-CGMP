@@ -80,18 +80,6 @@ export class ChatResolver {
 		}
 	}
 
-	static onMessageBetterRolls(itemRoll, messageData) {
-		if (!game.user.isGM) return;
-		if (CONST.CHAT_MESSAGE_TYPES.ROLL !== messageData.type) return;
-		if (!CGMPSettings.getSetting(CGMP_OPTIONS.BLIND_HIDDEN_TOKENS)) return;
-
-		const token = (messageData.speaker.token instanceof TokenDocument) ?
-			messageData.speaker.token : canvas.tokens.get(messageData.speaker.token);
-
-		if (Util.isTokenHidden(token))
-			messageData.whisper ??= ChatMessage.getWhisperRecipients("GM").map((user) => user.id);
-	}
-
 	static onPreCreateChatMessage(message) {
 		const messageData = Util.getMessageData(message);
 		switch (messageData.flags?.cgmp?.subType) {

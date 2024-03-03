@@ -48,7 +48,6 @@ class CautiousGamemastersPack {
 				game.cgmp.typingNotifier = new TypingNotifierManager(CGMPSettings.getSetting(CGMP_OPTIONS.ALLOW_PLAYERS_TO_SEE_TYPING_NOTIFICATION));
 
 			Hooks.on('chatMessage', ChatResolver.onChatMessage);
-			Hooks.on('messageBetterRolls', ChatResolver.onMessageBetterRolls);
 			Hooks.on('preCreateChatMessage', ChatResolver.onPreCreateChatMessage);
 			Hooks.on('renderChatMessage', ChatResolver.onRenderChatMessage);
 
