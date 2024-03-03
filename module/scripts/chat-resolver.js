@@ -12,6 +12,7 @@
  */
 
 import { CGMPSettings, CGMP_OPTIONS, CGMP_SPEAKER_MODE } from "./settings.js";
+import { Util } from "./util.js"
 
 export class ChatResolver {
 
@@ -44,7 +45,7 @@ export class ChatResolver {
 
 				chatData.flags ??= {};
 				chatData.flags.cgmp = { subType: ChatResolver.CHAT_MESSAGE_SUB_TYPES.DESC };
-				chatData.type = CONST.CHAT_MESSAGE_TYPES.OTHER;
+				chatData[Util.chatStyleKeyName] = Util.CHAT_MESSAGE_STYLES.OTHER;
 				chatData.speaker = { alias: ChatResolver.DESCRIPTION_SPEAKER_ALIAS, scene: game.user.viewedScene };
 				chatData.content = match[3].replace(/\n/g, "<br>");
 				
@@ -61,7 +62,7 @@ export class ChatResolver {
 
 				chatData.flags ??= {};
 				chatData.flags.cgmp = { subType: ChatResolver.CHAT_MESSAGE_SUB_TYPES.AS };
-				chatData.type = CONST.CHAT_MESSAGE_TYPES.IC;
+				chatData[Util.chatStyleKeyName] = Util.CHAT_MESSAGE_STYLES.IC;
 				chatData.speaker = { alias, scene: game.user.viewedScene };
 				chatData.content = match[3].replace(/\n/g, "<br>");
 
@@ -120,16 +121,19 @@ export class ChatResolver {
 	}
 
 	static _convertToOoc(message) {
-		// For all types of messages, change the speaker to the GM.
+		// For all types of messages, change the speaker to the user name.
 		// Convert in-character message to out-of-character, and remove the actor and token.
-		const newType = ((CONST.CHAT_MESSAGE_TYPES.IC === message.type) ? CONST.CHAT_MESSAGE_TYPES.OOC : message.type);
-		const newActor = ((CONST.CHAT_MESSAGE_TYPES.IC === message.type) ? null : message.speaker.actor);
-		const newToken = ((CONST.CHAT_MESSAGE_TYPES.IC === message.type) ? null : message.speaker.token);
+		const messageStyle = Util.getMessageStyle(message);
+		const isInCharacter = (Util.CHAT_MESSAGE_STYLES.IC === messageStyle);
+		const newStyle = (isInCharacter ? Util.CHAT_MESSAGE_STYLES.OOC : messageStyle);
+		const newActor = (isInCharacter ? null : message.speaker.actor);
+		const newToken = (isInCharacter ? null : message.speaker.token);
 
-		const user = (message.user instanceof User ? message.user : game.users.get(message.user));
+		const messageAuthor = Util.getMessageAuthor(message);
+		const user = (messageAuthor instanceof User ? messageAuthor : game.users.get(messageAuthor));
 
 		message.updateSource({
-			type: newType,
+			[Util.chatStyleKeyName]: newStyle,
 			speaker: {
 				actor: newActor,
 				alias: user.name,
@@ -142,25 +146,25 @@ export class ChatResolver {
 		if (onlyIfAlreadyInCharacter && (ChatResolver.CHAT_MESSAGE_SUB_TYPES.FORCED_OOC === message.flags?.cgmp?.subType))
 			return;
 
-		const user = (message.user instanceof User ? message.user : game.users.get(message.user));
+		const messageAuthor = Util.getMessageAuthor(message);
+		const user = (messageAuthor instanceof User ? messageAuthor : game.users.get(messageAuthor));
 		const actor = user.character;
 		const speaker = actor ? ChatMessage.getSpeaker({ actor }) : { actor: null, alias: user.name, token: null };
 
 		// Convert out-of-character message to in-character (leave emotes and whispers as-is).
-		let newType = message.type;
-		switch (message.type) {
-			case CONST.CHAT_MESSAGE_TYPES.EMOTE:
-			case CONST.CHAT_MESSAGE_TYPES.WHISPER:
-				break;
-
-			default:
-				// If no actor was found for the user, then leave type unchanged.
-				if (actor)
-					newType = CONST.CHAT_MESSAGE_TYPES.IC;
-				break;
+		// Whispers are no longer a chat style in v12 though.
+		// If no actor was found for the user, then leave type unchanged.
+		let newStyle = Util.getMessageStyle(message);
+		if (actor) {
+			if ((Util.CHAT_MESSAGE_STYLES.EMOTE != newStyle) && (Util.isV12() || (Util.CHAT_MESSAGE_STYLES.WHISPER != newStyle))) {
+				newStyle = Util.CHAT_MESSAGE_STYLES.IC;
+			}
 		}
 
-		message.updateSource({ type: newType, speaker });
+		message.updateSource({
+			[Util.chatStyleKeyName]: newStyle,
+			speaker
+		});
 	}
 
 	static _resolveHiddenToken(message) {
@@ -173,7 +177,7 @@ export class ChatResolver {
 		const token = canvas.tokens.get(speaker.token);
 
 		if (token?.document?.hidden) {
-			if (CONST.CHAT_MESSAGE_TYPES.IC !== message.type) {
+			if (Util.CHAT_MESSAGE_STYLES.IC !== message.type) {
 				// Whisper any non in-character messages.
 				message.updateSource({
 					whisper: ChatMessage.getWhisperRecipients("GM").map((user) => user.id)
@@ -188,7 +192,7 @@ export class ChatResolver {
 
 	static _resolvePCToken(message) {
 		// Don't modify rolls or damage-log messages
-		if ((message.rolls.length > 0) || message.flags?.damageLog || message.flags?.["damage-log"] || !message.speaker)
+		if ((message.rolls.length > 0) || message.flags?.["damage-log"] || !message.speaker)
 			return;
 
 		// Pathfinder 1 attack rolls are hidden away in the flags for some reason.

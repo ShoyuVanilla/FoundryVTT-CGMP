@@ -259,7 +259,7 @@ export class TypingNotifierManager {
 		switch (data.header) {
 			case PACKET_HEADER.TYPING_MESSAGE:
 				if (!debouncedOnRemoteTypingEnded) {
-					debouncedOnRemoteTypingEnded = debounce(() => this._onRemoteTypingEnded(id), REMOTE_TYPING_TIMEOUT);
+					debouncedOnRemoteTypingEnded = foundry.utils.debounce(() => this._onRemoteTypingEnded(id), REMOTE_TYPING_TIMEOUT);
 					TypingNotifier.typingUsers.set(id, debouncedOnRemoteTypingEnded);
 					this.updateNotice();
 				}

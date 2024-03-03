@@ -12,7 +12,23 @@
  */
 
 export class Util {
-    static isV12() {
+	static isV12() {
 		return !foundry.utils.isNewerVersion("12", game.version);
+	}
+
+	static get CHAT_MESSAGE_STYLES() {
+		return (Util.isV12() ? CONST.CHAT_MESSAGE_STYLES : CONST.CHAT_MESSAGE_TYPES);
+	}
+
+	static get chatStyleKeyName() {
+		return (Util.isV12() ? "style" : "type");
+	}
+
+	static getMessageStyle(message) {
+		return message[Util.chatStyleKeyName];
+	}
+
+	static getMessageAuthor(message) {
+		return (Util.isV12() ? message.author : message.user);
 	}
 }

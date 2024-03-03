@@ -48,9 +48,8 @@ export class CGMPSettings {
 			[CGMP_SPEAKER_MODE.IN_CHARACTER_ALWAYS_ASSIGNED]: game.i18n.localize("cgmp.speaker-mode.in-character-always-assigned-s"),
 		};
 
-		const playerSpeakerModeChoices = deepClone(gmSpeakerModeChoices);
+		const playerSpeakerModeChoices = foundry.utils.deepClone(gmSpeakerModeChoices);
 		delete playerSpeakerModeChoices[CGMP_SPEAKER_MODE.DISABLE_GM_AS_PC];
-		////delete gmSpeakerModeChoices[CGMP_SPEAKER_MODE.IN_CHARACTER_ALWAYS_ASSIGNED]; // it's kinda weird for GMs, but if someone has a use case, more power to them.
 
 		// Legacy settings, no longer accessible via UI.
 		// Left here so they can be read and converted to the new Speaker Modes on startup.
