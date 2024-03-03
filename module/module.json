@@ -8,33 +8,17 @@
 	"library": false,
 	"manifestPlusVersion": "1.2.0",
 	"compatibility": {
-		"minimum": "0.8.6",
+		"minimum": "10",
 		"verified": "11"
 	},
-	"minimumCoreVersion": "0.8.6",
-	"compatibleCoreVersion": "11",
 	"authors": [
 		{
 			"name": "Alan Davies",
-			"discord": "cs96and#3764",
+			"discord": "cs96and",
 			"ko-fi": "cs96and"
 		},
 		{
 			"name": "Shoyu Vanilla"
-		}
-	],
-	"author": "Alan Davies",
-	"dependencies": [
-		{
-			"id": "lib-wrapper",
-			"name": "lib-wrapper",
-			"type": "module"
-		}
-	],
-	"conflicts": [
-		{
-			"name": "cautious-gamemasters-pack-2",
-			"type": "module"
 		}
 	],
 	"relationships": {

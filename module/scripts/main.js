@@ -14,19 +14,12 @@
 import { CGMPSettings, CGMP_OPTIONS } from "./settings.js";
 import { ChatResolver } from "./chat-resolver.js";
 import { TypingNotifierManager } from "./typing-notifier.js";
-import { Util } from "./util.js"
 
 class CautiousGamemastersPack {
 
 	_scrollingTextRegex = null;
 
-	static async _onScrollingTextV9(wrapper, content, ...args) {
-		// "this" is an ObjectHUD here...
-		if (!this.object instanceof Token || this.object.actor.hasPlayerOwner || !CautiousGamemastersPack._scrollingTextRegex.test(content))
-			wrapper(content, ...args);
-	}
-
-	static async _onScrollingTextV10(wrapper, point, content, ...args) {
+	static async _onScrollingText(wrapper, point, content, ...args) {
 		// "this" is an InterfaceCanvasGroup here...
 
 		// Find all tokens that have "point" at their centre.
@@ -55,12 +48,10 @@ class CautiousGamemastersPack {
 			const hideNpcHealing = CGMPSettings.getSetting(CGMP_OPTIONS.HIDE_NPC_HEALING_TEXT);
 
 			if (game.modules.get('lib-wrapper')?.active && (hideNpcDamage || hideNpcHealing)) {
-				const hudClass = Util.isV10() ? "InterfaceCanvasGroup" : "ObjectHUD";
 				CautiousGamemastersPack._scrollingTextRegex = new RegExp(`^[${hideNpcDamage ? "-" : ""}${hideNpcHealing ? "+" : ""}]\\d+$`);
 
-				libWrapper.register('CautiousGamemastersPack', `${hudClass}.prototype.createScrollingText`,
-					(Util.isV10() ? CautiousGamemastersPack._onScrollingTextV10 : CautiousGamemastersPack._onScrollingTextV9),
-					"MIXED");
+				libWrapper.register('CautiousGamemastersPack', 'InterfaceCanvasGroup.prototype.createScrollingText',
+					CautiousGamemastersPack._onScrollingText, "MIXED");
 			}
 		});
 

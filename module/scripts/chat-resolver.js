@@ -12,7 +12,6 @@
  */
 
 import { CGMPSettings, CGMP_OPTIONS, CGMP_SPEAKER_MODE } from "./settings.js";
-import { Util } from "./util.js";
 
 export class ChatResolver {
 
@@ -81,15 +80,14 @@ export class ChatResolver {
 	}
 
 	static onPreCreateChatMessage(message) {
-		const messageData = Util.getMessageData(message);
-		switch (messageData.flags?.cgmp?.subType) {
+		switch (message.flags?.cgmp?.subType) {
 			case ChatResolver.CHAT_MESSAGE_SUB_TYPES.AS:
 			case ChatResolver.CHAT_MESSAGE_SUB_TYPES.DESC:
 				break;
 
 			default:
-				ChatResolver._resolveHiddenToken(messageData);
-				ChatResolver._resolvePCToken(messageData);
+				ChatResolver._resolveHiddenToken(message);
+				ChatResolver._resolvePCToken(message);
 				break;
 		}
 	}
@@ -121,16 +119,16 @@ export class ChatResolver {
 		return [ undefined, undefined ];
 	}
 
-	static _convertToOoc(messageData) {
+	static _convertToOoc(message) {
 		// For all types of messages, change the speaker to the GM.
 		// Convert in-character message to out-of-character, and remove the actor and token.
-		const newType = ((CONST.CHAT_MESSAGE_TYPES.IC === messageData.type) ? CONST.CHAT_MESSAGE_TYPES.OOC : messageData.type);
-		const newActor = ((CONST.CHAT_MESSAGE_TYPES.IC === messageData.type) ? null : messageData.speaker.actor);
-		const newToken = ((CONST.CHAT_MESSAGE_TYPES.IC === messageData.type) ? null : messageData.speaker.token);
+		const newType = ((CONST.CHAT_MESSAGE_TYPES.IC === message.type) ? CONST.CHAT_MESSAGE_TYPES.OOC : message.type);
+		const newActor = ((CONST.CHAT_MESSAGE_TYPES.IC === message.type) ? null : message.speaker.actor);
+		const newToken = ((CONST.CHAT_MESSAGE_TYPES.IC === message.type) ? null : message.speaker.token);
 
-		const user = (messageData.user instanceof User ? messageData.user : game.users.get(messageData.user));
+		const user = (message.user instanceof User ? message.user : game.users.get(message.user));
 
-		Util.updateMessageData(messageData, {
+		message.updateSource({
 			type: newType,
 			speaker: {
 				actor: newActor,
@@ -140,17 +138,17 @@ export class ChatResolver {
 		});
 	}
 
-	static _convertToInCharacter(messageData, onlyIfAlreadyInCharacter = false) {
-		if (onlyIfAlreadyInCharacter && (ChatResolver.CHAT_MESSAGE_SUB_TYPES.FORCED_OOC === messageData.flags?.cgmp?.subType))
+	static _convertToInCharacter(message, onlyIfAlreadyInCharacter = false) {
+		if (onlyIfAlreadyInCharacter && (ChatResolver.CHAT_MESSAGE_SUB_TYPES.FORCED_OOC === message.flags?.cgmp?.subType))
 			return;
 
-		const user = (messageData.user instanceof User ? messageData.user : game.users.get(messageData.user));
+		const user = (message.user instanceof User ? message.user : game.users.get(message.user));
 		const actor = user.character;
 		const speaker = actor ? ChatMessage.getSpeaker({ actor }) : { actor: null, alias: user.name, token: null };
 
 		// Convert out-of-character message to in-character (leave emotes and whispers as-is).
-		let newType = messageData.type;
-		switch (messageData.type) {
+		let newType = message.type;
+		switch (message.type) {
 			case CONST.CHAT_MESSAGE_TYPES.EMOTE:
 			case CONST.CHAT_MESSAGE_TYPES.WHISPER:
 				break;
@@ -162,39 +160,39 @@ export class ChatResolver {
 				break;
 		}
 
-		Util.updateMessageData(messageData, { type: newType, speaker });
+		message.updateSource({ type: newType, speaker });
 	}
 
-	static _resolveHiddenToken(messageData) {
+	static _resolveHiddenToken(message) {
 		if (!game.user.isGM) return;
 		if (!CGMPSettings.getSetting(CGMP_OPTIONS.BLIND_HIDDEN_TOKENS)) return;
 
-		const speaker = messageData.speaker;
+		const speaker = message.speaker;
 		if (!speaker) return;
 
 		const token = canvas.tokens.get(speaker.token);
 
-		if (Util.isTokenHidden(token)) {
-			if (CONST.CHAT_MESSAGE_TYPES.IC !== messageData.type) {
+		if (token?.document?.hidden) {
+			if (CONST.CHAT_MESSAGE_TYPES.IC !== message.type) {
 				// Whisper any non in-character messages.
-				Util.updateMessageData(messageData, {
+				message.updateSource({
 					whisper: ChatMessage.getWhisperRecipients("GM").map((user) => user.id)
 				});
 			} else {
 				// Convert in-character messages to out-of-character.
 				// We're assuming that the GM wanted to type something to the chat but forgot to deselect a token.
-				this._convertToOoc(messageData);
+				this._convertToOoc(message);
 			}
 		}
 	}
 
-	static _resolvePCToken(messageData) {
+	static _resolvePCToken(message) {
 		// Don't modify rolls or damage-log messages
-		if (Util.isRoll(messageData) || messageData.flags?.damageLog || messageData.flags?.["damage-log"] || !messageData.speaker)
+		if ((message.rolls.length > 0) || message.flags?.damageLog || message.flags?.["damage-log"] || !message.speaker)
 			return;
 
 		// Pathfinder 1 attack rolls are hidden away in the flags for some reason.
-		if (!Util.isEmpty(messageData.flags?.pf1?.metadata?.rolls ?? {}))
+		if (!foundry.utils.isEmpty(message.flags?.pf1?.metadata?.rolls ?? {}))
 			return;
 
 		const speakerMode = CGMPSettings.getSetting(game.user.isGM ? CGMP_OPTIONS.GM_SPEAKER_MODE : CGMP_OPTIONS.PLAYER_SPEAKER_MODE);
@@ -202,23 +200,23 @@ export class ChatResolver {
 		switch (speakerMode) {
 			case CGMP_SPEAKER_MODE.DISABLE_GM_AS_PC:
 				if (game.user.isGM) {
-					const token = canvas.tokens.get(messageData.speaker.token);
+					const token = canvas.tokens.get(message.speaker.token);
 					if (token?.actor?.hasPlayerOwner) {
-						this._convertToOoc(messageData);
+						this._convertToOoc(message);
 					}
 				}
 				break;
 
 			case CGMP_SPEAKER_MODE.FORCE_IN_CHARACTER:
-				this._convertToInCharacter(messageData);
+				this._convertToInCharacter(message);
 				break;
 
 			case CGMP_SPEAKER_MODE.IN_CHARACTER_ALWAYS_ASSIGNED:
-				this._convertToInCharacter(messageData, true);
+				this._convertToInCharacter(message, true);
 				break;
 
 			case CGMP_SPEAKER_MODE.ALWAYS_OOC:
-				this._convertToOoc(messageData);
+				this._convertToOoc(message);
 				break;
 		}
 

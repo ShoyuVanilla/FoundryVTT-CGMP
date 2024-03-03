@@ -52,8 +52,6 @@ export class CGMPSettings {
 		delete playerSpeakerModeChoices[CGMP_SPEAKER_MODE.DISABLE_GM_AS_PC];
 		////delete gmSpeakerModeChoices[CGMP_SPEAKER_MODE.IN_CHARACTER_ALWAYS_ASSIGNED]; // it's kinda weird for GMs, but if someone has a use case, more power to them.
 
-		const debouncedReload = debounce(() => window.location.reload(), 500);
-
 		// Legacy settings, no longer accessible via UI.
 		// Left here so they can be read and converted to the new Speaker Modes on startup.
 		game.settings.register("CautiousGamemastersPack", CGMP_LEGACY_OPTIONS.DISABLE_GM_AS_PC, {
@@ -117,7 +115,7 @@ export class CGMPSettings {
 			config: true,
 			default: false,
 			type: Boolean,
-			onChange: () => debouncedReload()
+			requiresReload: true
 		});
 
 		game.settings.register("CautiousGamemastersPack", CGMP_OPTIONS.ALLOW_PLAYERS_TO_SEE_TYPING_NOTIFICATION, {
@@ -127,7 +125,7 @@ export class CGMPSettings {
 			config: true,
 			default: true,
 			type: Boolean,
-			onChange: () => debouncedReload()
+			requiresReload: true
 		});
 
 		game.settings.register("CautiousGamemastersPack", CGMP_OPTIONS.HIDE_NPC_DAMAGE_TEXT, {
@@ -136,7 +134,7 @@ export class CGMPSettings {
 			config: true,
 			default: false,
 			type: Boolean,
-			onChange: () => debouncedReload()
+			requiresReload: true
 		});
 
 		game.settings.register("CautiousGamemastersPack", CGMP_OPTIONS.HIDE_NPC_HEALING_TEXT, {
@@ -145,7 +143,7 @@ export class CGMPSettings {
 			config: true,
 			default: false,
 			type: Boolean,
-			onChange: () => debouncedReload()
+			requiresReload: true
 		});
 	}
 

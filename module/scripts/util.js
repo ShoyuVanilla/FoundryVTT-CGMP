@@ -12,28 +12,7 @@
  */
 
 export class Util {
-    static isV10() {
-		return !isNewerVersion("10", game.version ?? game.data.version);
-	}
-
-	static getMessageData(message) {
-		return (Util.isV10() ? message : message.data);
-	}
-
-	static isEmpty(obj) {
-		return (Util.isV10() ? isEmpty : isObjectEmpty)(obj);
-	}
-
-	static isRoll(messageData) {
-		return (Util.isV10() ? (messageData.rolls.length > 0) : !!messageData.roll);
-	}
-
-	static isTokenHidden(token) {
-		return (Util.isV10() ? token?.document?.hidden : token?.data?.hidden);
-	}
-
-	static updateMessageData(messageData, ...args) {
-		const updateFn = (Util.isV10() ? messageData.updateSource : messageData.update);
-		return updateFn.apply(messageData, args);
+    static isV12() {
+		return !foundry.utils.isNewerVersion("12", game.version);
 	}
 }
