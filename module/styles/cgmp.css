@@ -23,8 +23,7 @@
 }
 
 /* Hide chat portrait for /as and /desc messages */
-#chat-log .message.cgmp-as .message-header .message-portrait,
-#chat-log .message.cgmp-desc .message-header .message-portrait
+#chat-log :is(.message.cgmp-as, .message.cgmp-desc) .message-header :is(.message-portrait, .avatar)
 {
 	display: none !important;
 }
