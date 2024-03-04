@@ -1,0 +1,104 @@
+/*
+ * Cautious Gamemasters Pack
+ * https://github.com/cs96and/FoundryVTT-CGMP
+ *
+ * Copyright (c) 2020 Shoyu Vanilla - All Rights Reserved.
+ * Copyright (c) 2021-2023 Alan Davies - All Rights Reserved.
+ *
+ * You may use, distribute and modify this code under the terms of the MIT license.
+ *
+ * You should have received a copy of the MIT license with this file. If not, please visit:
+ * https://mit-license.org/
+ */
+
+/* Styling for /desc messages */
+#chat-log .message.cgmp-desc {
+	background: #ececec;
+	border-color: gray !important;
+}
+#chat-log .message.cgmp-desc .message-content {
+	text-align: center;
+	color: gray;
+	font-style: italic;
+}
+
+/* Hide chat portrait for /as and /desc messages */
+#chat-log :is(.message.cgmp-as, .message.cgmp-desc) .message-header :is(.message-portrait, .avatar)
+{
+	display: none !important;
+}
+
+/* Hide sender for /desc messages */
+#chat-log .message.cgmp-desc .message-header .message-sender {
+	display: none !important;
+}
+
+/* Ensure metatdata is right aligned when both chat portrait and sender are hidden. */
+#chat-log .message.cgmp-desc .message-header .message-metadata {
+	margin-left: auto;			
+}
+
+/* Styling for emotes */
+#chat-log .message.emote .message-content {
+	text-align: center;
+	color: #323232;
+	font-style: italic;
+}
+
+/* Make the chat-form (parent of the text box) flex, so we can pop the typing notification in and out */
+#chat-form {
+	display: inline-flex;
+	flex-direction: column;
+	justify-content: flex-end;
+}
+
+#cgmp-typing-notify {
+	overflow-wrap: break-word;
+	max-height: 60px;
+	background: transparent;
+	border-radius: 0px;
+	transition: max-height .5s ease-in-out;
+	position: relative;
+	width: 100%;
+	top: 2px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+}
+#cgmp-typing-notify.hidden {
+	max-height: 0px !important;
+	color: transparent !important;
+}
+#cgmp-typing-notify .notify-text {
+	margin: 0 0 0 4px;
+}
+
+#cgmp-typing-notify .dot {
+	width: 5px;
+	height: 5px;
+	background: currentColor;
+    display: inline-block;
+	border-radius: 50%;
+    right: 0px;
+    bottom: 0px;
+    margin: 0px 1.25px;
+    position: relative;
+    animation: cgmp-jump 1s infinite;
+}
+#cgmp-typing-notify .dots-cont .dot-1 {
+    animation-delay: 100ms;
+}
+#cgmp-typing-notify .dots-cont .dot-2 {
+    animation-delay: 200ms;
+}
+#cgmp-typing-notify .dots-cont .dot-3 {
+    animation-delay: 300ms;
+}
+#cgmp-typing-notify .dots-cont .hidden {
+    display: none;
+}
+@keyframes cgmp-jump {
+    0%   {bottom: 0px;}
+	25%  {bottom: 5px;}
+    50%  {bottom: 0px;}
+}

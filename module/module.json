@@ -1,16 +1,48 @@
 {
+	"id": "CautiousGamemastersPack",
 	"name": "CautiousGamemastersPack",
+	"type": "module",
 	"title": "Cautious Gamemaster's Pack",
 	"description": "Offers various simple handy options.",
-	"version": "0.1.6",
-	"minimumCoreVersion" : "0.6.0",
-	"compatibleCoreVersion": "0.7.0",
-	"author": "Shoyu Vanilla",
-
-	"esmodules": ["scripts/main.js"],
-	"styles": ["style.css"],
+	"version": "#{VERSION}#",
+	"library": false,
+	"manifestPlusVersion": "1.2.0",
+	"compatibility": {
+		"minimum": "10",
+		"verified": "12.317"
+	},
+	"authors": [
+		{
+			"name": "Alan Davies",
+			"discord": "cs96and",
+			"ko-fi": "cs96and"
+		},
+		{
+			"name": "Shoyu Vanilla"
+		}
+	],
+	"relationships": {
+		"requires": [
+			{
+				"id": "lib-wrapper",
+				"type": "module"
+			}
+		],
+		"conflicts": [
+			{
+				"id": "cautious-gamemasters-pack-2",
+				"type": "module"
+			}
+		]
+	},
+	"esmodules": [
+		"scripts/main.js"
+	],
+	"scripts": [],
+	"styles": [
+		"styles/cgmp.css"
+	],
 	"socket": true,
-
 	"languages": [
 		{
 			"lang": "en",
@@ -36,10 +68,35 @@
 			"lang": "es",
 			"name": "Castellano",
 			"path": "lang/es-ES.json"
+		},
+		{
+			"lang": "fr-CA",
+			"name": "Francais (Canada)",
+			"path": "lang/fr-CA.json"
+		},
+		{
+			"lang": "fr",
+			"name": "Français",
+			"path": "lang/fr.json"
+		},
+		{
+			"lang": "cn",
+			"name": "中文（简体）",
+			"path": "lang/cn.json"
+		},
+		{
+			"lang": "fi",
+			"name": "Suomi",
+			"path": "lang/fi.json"
+		},
+		{
+			"lang": "pl",
+			"name": "polski",
+			"path": "lang/pl.json"
 		}
 	],
-
-	"url": "https://github.com/ShoyuVanilla/FoundryVTT-CGMP",
-	"manifest": "https://raw.githubusercontent.com/ShoyuVanilla/FoundryVTT-CGMP/master/module/module.json",
-	"download": "https://github.com/ShoyuVanilla/FoundryVTT-CGMP/releases/download/v0.1.6/release.zip"
+	"url": "#{URL}#",
+	"manifest": "#{MANIFEST}#",
+	"download": "#{DOWNLOAD}#",
+	"changelog": "#{CHANGELOG}#"
 }

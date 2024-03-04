@@ -1,38 +1,52 @@
-on:
-  push:
-    # Sequence of patterns matched against refs/tags
-    tags:
-    - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+name: Release Creation
 
-name: Upload Release Asset
+on:
+  release:
+    types: [published]
 
 jobs:
   build:
-    name: Upload Release Asset
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Build project # This would actually build your project, using zip for an example artifact
-        run: |
-          zip -r release.zip module/
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: false
-      - name: Upload Release Asset
-        id: upload-release-asset 
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./release.zip
-          asset_name: release.zip
-          asset_content_type: application/zip
+    - uses: actions/checkout@v3
+
+    # Substitute the Manifest and Download URLs in the module.json
+    - name: Substitute Manifest and Download Links For Versioned Ones
+      id: sub_manifest_link_version
+      uses: cschleiden/replace-tokens@v1
+      with:
+        files: 'module/module.json'
+      env:
+        VERSION: ${{ github.event.release.tag_name }}
+        URL: https://github.com/${{ github.repository }}
+        MANIFEST: https://github.com/${{ github.repository }}/releases/latest/download/module.json
+        DOWNLOAD: https://github.com/${{ github.repository }}/releases/download/${{ github.event.release.tag_name }}/module.zip
+        CHANGELOG: https://github.com/${{ github.repository }}/releases/tag/${{ github.event.release.tag_name }}
+
+    # Create a zip file with all files required by the module to add to the release
+    - name: Zip Files
+      id: zip_files
+      run: zip -r ./module.zip module/ LICENSE
+
+    # Create a release for this specific version
+    - name: Update Release with Files
+      id: create_version_release
+      uses: ncipollo/release-action@v1
+      with:
+        allowUpdates: true # Set this to false if you want to prevent updating existing releases
+        omitNameDuringUpdate: true
+        omitBodyDuringUpdate: true
+        omitDraftDuringUpdate: true
+        omitPrereleaseDuringUpdate: true
+        token: ${{ secrets.GITHUB_TOKEN }}
+        artifacts: './module/module.json, ./module.zip'
+        tag: ${{ github.event.release.tag_name }}
+
+    # Publish the release to FoundryVTT's package repository.
+    - name: Publish Module to FoundryVTT Website
+      id: publish_to_foundry_website
+      if: ${{ !github.event.release.unpublished && !github.event.release.prerelease }}
+      uses: cs96and/FoundryVTT-release-package@v1
+      with:
+        package-token: ${{ secrets.FOUNDRY_PACKAGE_TOKEN }}
+        manifest-url: https://github.com/${{ github.repository }}/releases/download/${{ github.event.release.tag_name }}/module.json
