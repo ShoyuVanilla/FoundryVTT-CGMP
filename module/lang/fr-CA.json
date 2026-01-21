@@ -1,0 +1,9 @@
+{
+	"cgmp.blind-hidden-tokens-s": "Aveugler les messages fait pas les personnages camouflés",
+	"cgmp.blind-hidden-tokens-l": "Aveugler les messages fait par des personnages camouflés, incluant les jets de dés. Seul le GM pourra les voir",
+	"cgmp.notify-typing-s": "Notifié lorsqu'on écrit",
+	"cgmp.notify-typing-l": "Notifié si les autres joueurs sont en train d'écrire des messages",
+	"cgmp.typing-one": "{user} est en train d'écrire...",
+	"cgmp.typing-two": "{user1} et {user2} sont en train d'écrire...",
+	"cgmp.typing-many": "{user1}, {user2} et les autres {others} joueurs sont en train d'écrire..."
+}

@@ -1,13 +1,21 @@
 {
-	"cgmp.disable-gm-as-pc-s": "GMのプレイヤーコマ発言禁止",
-	"cgmp.disable-gm-as-pc-l": "GMがプレイヤーのコマを選択している状態でチャットに発言をした場合、そのコマの名前ではなくGMの名前を出力するようになります。",
+	"cgmp.gm-speaker-mode-s": "GM 発言モード",
+	"cgmp.gm-speaker-mode-l": "「デフォルト」: 発言者は変更されません。 「GMのキャラ発言を無効化する」: ロール以外のすべてのGMチャットをキャラ外チャットにします。  「キャラ外発言を強制」: チャットメッセージは、そのキャラクタがシーンに存在するかチャットを変更したかに関わらず、割り当てられたキャラクターの発言となります。 「常にキャラ外発言」: すべてのメッセージをキャラ外発言にします。 「キャラ発言の際は割り当てられたキャラを使用」: 「キャラ発言を強制」と同じですが、キャラ外発言を変更しません。",
+	"cgmp.player-speaker-mode-s": "プレイヤー 発言モード",
+	"cgmp.speaker-mode.default-s": "デフォルト",
+	"cgmp.speaker-mode.disable-gm-as-pc-s": "GMのキャラ発言を無効化する",
+	"cgmp.speaker-mode.force-in-character-s": "キャラ発言を強制",
+	"cgmp.speaker-mode.always-ooc-s": "常にキャラ外発言",
+	"cgmp.speaker-mode.in-character-always-assigned-s": "キャラ発言の際は割り当てられたキャラを使用",
+	"cgmp.allow-players-to-use-desc-s": "プレイヤーに/descを許可",
+	"cgmp.allow-players-to-use-desc-l": "プレイヤーに/descチャットコマンドの使用を許可します。",
 	"cgmp.blind-hidden-tokens-s": "不可視のコマはブラインドロールを使用する",
-	"cgmp.blind-hidden-tokens-l": "不可視のコマが行うすべてのロールはブラインドロールに変換され、プレイヤーに情報がもれないように処理します。",
-	"cgmp.disable-chat-recall-s": "チャットの上下キーの動作変更",
-	"cgmp.disable-chat-recall-l": "キーボードの上や下キーを使用すると過去のチャットを呼び起こせますが、この機能をオンにすることでこれらを使用不可にし、テキスト内で動きやすくなります。",
+	"cgmp.blind-hidden-tokens-l": "不可視のコマが行うすべてのロールは秘匿ロールに変換され、プレイヤーに情報がもれないように処理します。",
 	"cgmp.notify-typing-s": "入力中表示",
 	"cgmp.notify-typing-l": "他のプレイヤーがキーボードで入力しているときにそれを知らせるメッセージを表示します。",
-	"cgmp.typing-one": "{user}が入力中...", 
+	"cgmp.typing-one": "{user}が入力中...",
 	"cgmp.typing-two": "{user1}と{user2}が入力中...",
-	"cgmp.typing-many": "{user1}、{user2}とその他が入力中..."
+	"cgmp.typing-many": "{user1}、{user2}とその他が入力中...",
+	"cgmp.hide-npc-damage-text-s": "NPCコマのスクロール内ダメージテキストを隠す",
+	"cgmp.hide-npc-healing-text-s": "NPCコマのスクロール内回復テキストを隠す"
 }
